@@ -21,7 +21,7 @@
 ---
 
 ## 文件架构
-根据当前仓库可确认的结构如下：
+当前仓库结构如下：
 
 ```text
 pingpong/
@@ -35,10 +35,6 @@ pingpong/
 ├── system-tables.sql       # 系统表结构脚本
 └── pom.xml                 # Maven 构建与依赖配置
 ```
-
-> 说明：`src/main` 下通常包含 `java` 与 `resources` 等目录，实际以仓库代码为准。
-
----
 
 ## 如何运行项目
 
@@ -61,8 +57,6 @@ cd pingpong
 source system-tables.sql;
 source init.sql;
 ```
-
-> 建议先执行 `system-tables.sql`，再执行 `init.sql`。
 
 ### 4. 配置数据库连接
 修改 `src/main/resources/application.yml`（或 `application.properties`）中的数据源配置：
@@ -98,10 +92,6 @@ java -jar target/project-0.0.1-SNAPSHOT.jar
 http://localhost:8080
 ```
 
-如修改了端口，请以配置文件为准。
-
----
-
 ## 常见问题
 
 ### 启动失败：数据库连接错误
@@ -116,9 +106,3 @@ http://localhost:8080
 ### 端口被占用
 - 修改 `application.yml` 中 `server.port`
 - 或释放占用端口后重启
-
----
-
-## 说明
-当前 README 聚焦三个核心点：**项目介绍、文件架构、运行方式**。  
-后续如需，我可以再帮你补充：接口文档、模块说明、部署说明（Docker/Nginx）和账号初始化说明。
