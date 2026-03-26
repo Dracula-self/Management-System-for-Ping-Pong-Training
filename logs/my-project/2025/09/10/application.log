@@ -1,0 +1,732 @@
+2025-09-10 11:09:07.560 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 14096 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-09-10 11:09:07.561 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-09-10 11:09:07.562 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-10 11:09:08.805 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-09-10 11:09:08.818 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-10 11:09:08.819 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-09-10 11:09:08.820 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-10 11:09:08.864 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-09-10 11:09:08.864 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1100 ms
+2025-09-10 11:09:09.517 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-09-10 11:09:09.787 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-10 11:09:09.795 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-09-10 11:09:09.806 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 2.75 seconds (process running for 6.475)
+2025-09-10 11:12:48.766 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-10 11:12:48.766 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-09-10 11:12:48.767 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-09-10 11:12:49.224 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-09-10 11:12:49.374 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@50699ca2
+2025-09-10 11:12:49.375 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-09-10 11:12:49.478 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:12:49.478 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:12:49.498 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:12:49.498 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:12:49.540 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:12:49.540 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:12:49.545 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:12:49.545 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:12:49.545 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:12:49.545 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:12:49.551 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:12:49.551 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:12:49.819 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-10 11:12:49.819 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-10 11:12:50.107 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:12:52.831 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:12:53.657 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:12:58.250 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:13:00.186 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:13:00.201 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:13:47.017 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown initiated...
+2025-09-10 11:13:47.019 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown completed.
+2025-09-10 11:14:38.497 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 28504 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-09-10 11:14:38.498 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-09-10 11:14:38.498 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-10 11:14:39.398 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-09-10 11:14:39.406 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-10 11:14:39.408 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-09-10 11:14:39.408 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-10 11:14:39.441 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-09-10 11:14:39.441 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 811 ms
+2025-09-10 11:14:39.952 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-09-10 11:14:40.157 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-10 11:14:40.166 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-09-10 11:14:40.175 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 2.033 seconds (process running for 5.047)
+2025-09-10 11:15:27.303 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-10 11:15:27.303 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-09-10 11:15:27.304 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-09-10 11:15:27.488 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:15:27.630 [http-nio-8080-exec-5] ERROR c.q.p.e.GlobalExceptionHandler - 系统异常: java.io.IOException: 你的主机中的软件中止了一个已建立的连接。, 请求路径: /common/plugins/element-plus/index.full.min.js
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: 你的主机中的软件中止了一个已建立的连接。
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:342)
+	at org.apache.catalina.connector.OutputBuffer.flushByteBuffer(OutputBuffer.java:777)
+	at org.apache.catalina.connector.OutputBuffer.append(OutputBuffer.java:674)
+	at org.apache.catalina.connector.OutputBuffer.writeBytes(OutputBuffer.java:377)
+	at org.apache.catalina.connector.OutputBuffer.write(OutputBuffer.java:355)
+	at org.apache.catalina.connector.CoyoteOutputStream.write(CoyoteOutputStream.java:102)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:783)
+	at org.springframework.http.converter.ResourceHttpMessageConverter.writeContent(ResourceHttpMessageConverter.java:160)
+	at org.springframework.http.converter.ResourceHttpMessageConverter.writeInternal(ResourceHttpMessageConverter.java:115)
+	at org.springframework.http.converter.ResourceHttpMessageConverter.writeInternal(ResourceHttpMessageConverter.java:46)
+	at org.springframework.http.converter.AbstractHttpMessageConverter.write(AbstractHttpMessageConverter.java:235)
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:622)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.IOException: 你的主机中的软件中止了一个已建立的连接。
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:54)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:53)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:532)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:125)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1411)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.writeBlocking(SocketWrapperBase.java:572)
+	at org.apache.tomcat.util.net.SocketWrapperBase.write(SocketWrapperBase.java:520)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.doWrite(Http11OutputBuffer.java:548)
+	at org.apache.coyote.http11.filters.IdentityOutputFilter.doWrite(IdentityOutputFilter.java:73)
+	at org.apache.coyote.http11.Http11OutputBuffer.doWrite(Http11OutputBuffer.java:193)
+	at org.apache.coyote.Response.doWrite(Response.java:628)
+	at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:330)
+	... 52 common frames omitted
+2025-09-10 11:15:27.635 [http-nio-8080-exec-5] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Failure in @ExceptionHandler com.quan.project.exception.GlobalExceptionHandler#handleException(Exception, HttpServletRequest)
+org.springframework.http.converter.HttpMessageNotWritableException: No converter for [class com.quan.project.common.R] with preset Content-Type 'text/javascript'
+	at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:319)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor.handleReturnValue(RequestResponseBodyMethodProcessor.java:192)
+	at org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite.handleReturnValue(HandlerMethodReturnValueHandlerComposite.java:78)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver.doResolveHandlerMethodException(ExceptionHandlerExceptionResolver.java:432)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodExceptionResolver.doResolveException(AbstractHandlerMethodExceptionResolver.java:74)
+	at org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver.resolveException(AbstractHandlerExceptionResolver.java:175)
+	at org.springframework.web.servlet.handler.HandlerExceptionResolverComposite.resolveException(HandlerExceptionResolverComposite.java:80)
+	at org.springframework.web.servlet.DispatcherServlet.processHandlerException(DispatcherServlet.java:1358)
+	at org.springframework.web.servlet.DispatcherServlet.processDispatchResult(DispatcherServlet.java:1161)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1106)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-09-10 11:15:27.686 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:15:27.821 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:16:37.735 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:16:37.856 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:18:52.905 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:18:53.034 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:18:54.546 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:18:54.661 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:20:09.191 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:20:09.299 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:27:22.272 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-10 11:27:22.272 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-10 11:27:22.317 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-09-10 11:27:22.414 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@5c0c298b
+2025-09-10 11:27:22.416 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-09-10 11:27:22.491 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:27:22.491 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:27:22.508 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:27:22.508 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:27:22.524 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:27:22.524 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:27:22.529 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:27:22.529 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:27:22.530 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:27:22.530 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:27:22.532 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:27:22.532 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:27:24.592 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:43:06.716 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-10 11:43:06.716 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-10 11:43:06.723 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:43:06.724 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:43:06.725 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:43:06.725 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:43:06.725 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:43:06.725 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:43:06.725 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:43:06.726 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:43:06.726 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:43:06.726 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:43:06.726 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:43:06.727 [http-nio-8080-exec-1] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:43:06.783 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:43:08.813 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:43:13.520 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-09-10 11:43:13.521 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-09-10 11:43:13.575 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-09-10 11:43:13.575 [http-nio-8080-exec-5] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-09-10 11:43:15.023 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-10 11:43:15.023 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-10 11:43:15.031 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:43:15.032 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:43:15.034 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:43:15.034 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:43:15.034 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:43:15.034 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:43:15.034 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:43:15.035 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:43:15.036 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:43:15.036 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:43:15.036 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:43:15.037 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:43:15.077 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:43:18.402 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:43:25.486 [http-nio-8080-exec-7] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-09-10 11:43:25.486 [http-nio-8080-exec-7] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-09-10 11:43:25.487 [http-nio-8080-exec-7] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-09-10 11:43:25.487 [http-nio-8080-exec-7] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-09-10 11:43:26.732 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:43:30.735 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:43:30.735 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:43:30.737 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:43:30.737 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:43:30.738 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:43:30.739 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:43:31.611 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 11:43:31.633 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 11:43:31.637 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 11:43:31.638 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:43:31.640 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:43:31.640 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 11:43:31.640 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:43:31.642 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 11:43:31.660 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 11:43:31.660 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 11:43:32.645 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:43:32.646 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:43:32.647 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:43:32.647 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:43:32.647 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:43:32.648 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:43:39.274 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:45:58.314 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:45:58.571 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:45:58.571 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:45:58.572 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:45:58.573 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:45:58.573 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:45:58.573 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:01.238 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:01.355 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:46:01.355 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:01.357 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:01.357 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:46:01.357 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:01.358 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:03.252 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:03.457 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:46:03.458 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:03.459 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:03.460 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:46:03.460 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:03.461 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:04.340 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:04.425 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 11:46:04.426 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 11:46:04.428 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 11:46:04.428 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:04.429 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:04.430 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 11:46:04.430 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:04.431 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 11:46:04.471 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 11:46:04.471 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 11:46:06.155 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:06.341 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:46:06.342 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:06.343 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:06.343 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:46:06.343 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:06.344 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:07.840 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:08.005 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 11:46:08.006 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 11:46:08.008 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 11:46:08.009 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:08.010 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:08.010 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 11:46:08.010 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:08.011 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 11:46:08.064 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 11:46:08.064 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 11:46:09.195 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:09.381 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:46:09.382 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:09.383 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:09.384 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:46:09.384 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:09.385 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:13.220 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:13.421 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:46:13.421 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:13.423 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:13.423 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:46:13.423 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:13.424 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:14.257 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:14.432 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 11:46:14.433 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 11:46:14.436 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 11:46:14.436 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:14.437 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:14.437 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 11:46:14.437 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:14.439 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 11:46:14.488 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 11:46:14.488 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 11:46:16.390 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:16.579 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:46:16.579 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:16.580 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:16.580 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:46:16.581 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:16.581 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:17.575 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:17.737 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:46:17.737 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:17.738 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:17.739 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:46:17.739 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:17.740 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:18.441 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:18.592 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 11:46:18.593 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 11:46:18.595 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 11:46:18.595 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:18.596 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:18.596 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 11:46:18.596 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:18.598 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 11:46:18.636 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 11:46:18.636 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 11:46:20.823 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:21.004 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:46:21.004 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:21.005 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:21.005 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:46:21.005 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:21.006 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:22.739 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:22.899 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:46:22.899 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:22.900 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:22.901 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:46:22.901 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:22.901 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:46:23.325 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:46:23.504 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:46:23.504 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:46:23.505 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:46:23.505 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:46:23.506 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:46:23.506 [http-nio-8080-exec-9] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:52:00.086 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:52:00.192 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:58:28.078 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-10 11:58:28.078 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-10 11:58:28.084 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:58:28.084 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:58:28.085 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:58:28.085 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:58:28.085 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:58:28.086 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:58:28.086 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:58:28.086 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:58:28.087 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:58:28.087 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:58:28.087 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:58:28.088 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:58:28.140 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:58:30.401 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-10 11:58:30.401 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-10 11:58:30.404 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:58:30.404 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:58:30.406 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:58:30.406 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:58:30.407 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:58:30.408 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:58:30.408 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:58:30.408 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:58:30.409 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:58:30.409 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:58:30.409 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:58:30.411 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:58:30.429 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:58:32.106 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:58:34.080 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:58:35.678 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:59:29.235 [http-nio-8080-exec-4] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-09-10 11:59:29.236 [http-nio-8080-exec-4] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-09-10 11:59:29.237 [http-nio-8080-exec-4] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-09-10 11:59:29.237 [http-nio-8080-exec-4] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-09-10 11:59:30.383 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:59:30.587 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-10 11:59:30.587 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-10 11:59:30.596 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:59:30.597 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:59:30.598 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:59:30.598 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 11:59:30.599 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:59:30.599 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:59:30.599 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:59:30.599 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 11:59:30.600 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:59:30.600 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 11:59:30.600 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-10 11:59:30.600 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 11:59:30.667 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:59:34.153 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:59:34.261 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:59:39.727 [http-nio-8080-exec-7] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-09-10 11:59:39.728 [http-nio-8080-exec-7] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-09-10 11:59:39.729 [http-nio-8080-exec-7] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-09-10 11:59:39.729 [http-nio-8080-exec-7] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-09-10 11:59:40.884 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:59:41.161 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-09-10 11:59:41.245 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 11:59:42.965 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 11:59:43.170 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 11:59:43.170 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 11:59:43.171 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 11:59:43.171 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 11:59:43.171 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 11:59:43.172 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:09:21.929 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:09:22.256 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:09:22.549 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:09:22.549 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:09:22.550 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:09:22.550 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:09:22.551 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:09:22.553 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:09:22.697 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:09:23.531 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:09:23.735 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:09:24.003 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:09:24.003 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:09:24.005 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:09:24.005 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:09:24.005 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:09:24.006 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:09:24.153 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:10:10.387 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:10.593 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:10.800 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:10:10.800 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:10.800 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:10.801 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:10:10.801 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:10.801 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:10:10.889 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:10:14.246 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-09-10 12:10:14.777 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:14.971 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 12:10:14.972 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 12:10:14.974 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 12:10:14.974 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:14.976 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:14.976 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 12:10:14.976 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:14.977 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 12:10:15.028 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 12:10:15.028 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 12:10:15.275 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:15.547 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:10:15.547 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:15.548 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:15.548 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:10:15.549 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:15.549 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:10:15.893 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:16.071 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:10:16.071 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:16.072 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:16.072 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:10:16.072 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:16.073 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:10:22.285 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:22.511 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:22.743 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:10:22.744 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:22.745 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:22.745 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:10:22.745 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:22.746 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:10:22.835 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:10:38.093 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:38.349 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:38.538 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:10:38.538 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:38.541 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:38.541 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:10:38.541 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:38.542 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:10:38.657 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:10:46.810 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:46.992 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 12:10:46.993 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 12:10:46.995 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 12:10:46.996 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:46.997 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:46.997 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 12:10:46.997 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:46.997 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 12:10:47.040 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 12:10:47.040 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 12:10:47.938 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:47.974 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:10:48.216 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:10:48.216 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:10:48.218 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:10:48.218 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:10:48.218 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:10:48.219 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:11:28.016 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:11:28.425 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:11:28.507 [http-nio-8080-exec-8] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:11:28.507 [http-nio-8080-exec-8] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:11:28.508 [http-nio-8080-exec-8] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:11:28.509 [http-nio-8080-exec-8] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:11:28.509 [http-nio-8080-exec-8] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:11:28.510 [http-nio-8080-exec-8] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:11:28.612 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:15:23.566 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:23.753 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:23.944 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:15:23.944 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:23.945 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:23.945 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:15:23.945 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:23.946 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:15:24.048 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:15:30.373 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:30.665 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:15:30.665 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:30.666 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:30.667 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:15:30.667 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:30.668 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:15:30.795 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:31.033 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 12:15:31.035 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 12:15:31.037 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 12:15:31.037 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:31.039 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:31.040 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 12:15:31.040 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:31.041 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 12:15:31.066 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 12:15:31.066 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 12:15:31.764 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:31.963 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:15:31.963 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:31.964 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:31.964 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:15:31.964 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:31.965 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:15:32.743 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:32.899 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 12:15:32.901 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 12:15:32.903 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 12:15:32.903 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:32.904 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:32.905 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 12:15:32.905 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:32.906 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 12:15:32.944 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 12:15:32.944 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 12:15:35.253 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:35.450 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:15:35.450 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:35.451 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:35.451 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:15:35.452 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:35.452 [http-nio-8080-exec-5] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:15:35.717 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:35.917 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:15:35.917 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:35.919 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:35.919 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:15:35.919 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:35.920 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:15:38.477 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:38.632 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 12:15:38.634 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 12:15:38.636 [http-nio-8080-exec-2] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 12:15:38.636 [http-nio-8080-exec-2] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:38.637 [http-nio-8080-exec-2] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:38.637 [http-nio-8080-exec-2] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 12:15:38.637 [http-nio-8080-exec-2] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:38.638 [http-nio-8080-exec-2] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 12:15:38.675 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 12:15:38.675 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 12:15:40.138 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:40.424 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:15:40.424 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:40.425 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:40.425 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:15:40.425 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:40.427 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:15:40.626 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:40.769 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 12:15:40.771 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 12:15:40.773 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 12:15:40.773 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:40.774 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:40.774 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 12:15:40.774 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:40.775 [http-nio-8080-exec-6] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 12:15:40.814 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 12:15:40.814 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 12:15:42.541 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:42.728 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:15:42.729 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:42.730 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:42.730 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:15:42.730 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:42.730 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:15:44.532 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:15:44.726 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:15:44.727 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:15:44.728 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:15:44.728 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:15:44.728 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:15:44.728 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:18:06.355 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:18:06.702 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:18:06.848 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:18:06.849 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:18:06.850 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:18:06.850 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:18:06.850 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:18:06.851 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:18:06.971 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-10 12:18:10.907 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:18:11.173 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:18:11.174 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:18:11.175 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:18:11.175 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:18:11.175 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:18:11.175 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 12:18:11.377 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:18:11.532 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:18:11.532 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:18:11.533 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:18:11.533 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:18:11.533 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:18:11.534 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:18:11.847 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:18:11.972 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-10 12:18:11.973 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-10 12:18:11.975 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-10 12:18:11.975 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:18:11.976 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:18:11.976 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-10 12:18:11.976 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:18:11.977 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-10 12:18:12.026 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-10 12:18:12.026 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-10 12:18:12.255 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-09-10 12:18:12.885 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:18:13.073 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-10 12:18:13.074 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:18:13.075 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:18:13.075 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-10 12:18:13.075 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:18:13.075 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-10 12:18:13.501 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-10 12:18:13.691 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-10 12:18:13.691 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-10 12:18:13.692 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-10 12:18:13.692 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-10 12:18:13.692 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-10 12:18:13.693 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-10 13:46:20.231 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown initiated...
+2025-09-10 13:46:20.233 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown completed.
+2025-09-10 13:46:26.750 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 23464 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-09-10 13:46:26.751 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-09-10 13:46:26.752 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-10 13:46:28.064 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-09-10 13:46:28.074 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-10 13:46:28.076 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-09-10 13:46:28.076 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-10 13:46:28.127 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-09-10 13:46:28.127 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1154 ms
+2025-09-10 13:46:28.984 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-09-10 13:46:29.473 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-10 13:46:29.493 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-09-10 13:46:29.504 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 3.194 seconds (process running for 3.472)

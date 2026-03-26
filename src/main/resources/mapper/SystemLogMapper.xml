@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.SystemLogMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="SystemLogResultMap" type="com.quan.project.entity.SystemLog">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="action" column="action"/>
+        <result property="details" column="details"/>
+        <result property="logTime" column="log_time"/>
+    </resultMap>
+    
+    <!-- SystemLogVO结果映射 -->
+    <resultMap id="SystemLogVOResultMap" type="com.quan.project.vo.SystemLogVO">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="action" column="action"/>
+        <result property="details" column="details"/>
+        <result property="logTime" column="log_time"/>
+        <result property="username" column="username"/>
+        <result property="realName" column="real_name"/>
+    </resultMap>
+
+    <!-- 插入系统日志 -->
+    <insert id="insert" parameterType="com.quan.project.entity.SystemLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_logs (user_id, action, details, log_time)
+        VALUES (#{userId}, #{action}, #{details}, NOW())
+    </insert>
+
+    <!-- 根据ID删除系统日志 -->
+    <delete id="deleteById">
+        DELETE FROM system_logs WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID查询系统日志 -->
+    <select id="selectById" resultMap="SystemLogResultMap">
+        SELECT * FROM system_logs WHERE id = #{id}
+    </select>
+
+    <!-- 分页查询系统日志（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="SystemLogResultMap">
+        SELECT * FROM system_logs
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.userId != null">
+                    AND user_id = #{request.params.userId}
+                </if>
+                <if test="request.params.action != null and request.params.action != '' and request.params.action.trim() != ''">
+                    AND action LIKE CONCAT('%', #{request.params.action}, '%')
+                </if>
+                <if test="request.params.startDate != null">
+                    AND DATE(log_time) >= #{request.params.startDate}
+                </if>
+                <if test="request.params.endDate != null">
+                    AND DATE(log_time) &lt;= #{request.params.endDate}
+                </if>
+            </if>
+        </where>
+        ORDER BY log_time DESC
+    </select>
+    
+    <!-- 分页查询系统日志VO（包含用户信息） -->
+    <select id="selectPageVOByConditions" resultMap="SystemLogVOResultMap">
+        SELECT sl.*, u.username, u.real_name
+        FROM system_logs sl
+        LEFT JOIN users u ON sl.user_id = u.id
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.userId != null">
+                    AND sl.user_id = #{request.params.userId}
+                </if>
+                <if test="request.params.action != null and request.params.action != '' and request.params.action.trim() != ''">
+                    AND sl.action LIKE CONCAT('%', #{request.params.action}, '%')
+                </if>
+                <if test="request.params.username != null and request.params.username != '' and request.params.username.trim() != ''">
+                    AND (u.username LIKE CONCAT('%', #{request.params.username}, '%') 
+                         OR u.real_name LIKE CONCAT('%', #{request.params.username}, '%'))
+                </if>
+                <if test="request.params.startDate != null">
+                    AND DATE(sl.log_time) >= #{request.params.startDate}
+                </if>
+                <if test="request.params.endDate != null">
+                    AND DATE(sl.log_time) &lt;= #{request.params.endDate}
+                </if>
+            </if>
+        </where>
+        ORDER BY sl.log_time DESC
+    </select>
+
+    <!-- 根据用户ID查询操作日志 -->
+    <select id="selectByUserId" resultMap="SystemLogResultMap">
+        SELECT * FROM system_logs WHERE user_id = #{userId} ORDER BY log_time DESC
+    </select>
+
+    <!-- 删除过期日志（超过指定天数） -->
+    <delete id="deleteExpiredLogs">
+        DELETE FROM system_logs 
+        WHERE log_time &lt; DATE_SUB(NOW(), INTERVAL #{days} DAY)
+    </delete>
+
+    <!-- 统计用户操作次数 -->
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*) FROM system_logs WHERE user_id = #{userId}
+    </select>
+
+</mapper>

@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>比赛管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+
+        .status-action-card {
+            transition: all 0.3s ease;
+        }
+
+        .status-action-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .space-y-3>*+* {
+            margin-top: 0.75rem;
+        }
+
+        .match-card {
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .match-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .match-process-content {
+            min-height: 400px;
+        }
+
+        .matches-display {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__competitions" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="比赛名称">
+                            <el-input v-model="searchParams.name" placeholder="请输入比赛名称" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="状态">
+                            <el-select v-model="searchParams.status" placeholder="请选择状态" clearable
+                                style="width: 178px;">
+                                <el-option label="报名中" :value="0"></el-option>
+                                <el-option label="报名结束" :value="1"></el-option>
+                                <el-option label="进行中" :value="2"></el-option>
+                                <el-option label="已完成" :value="3"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="比赛日期">
+                            <el-date-picker v-model="searchParams.competitionDate" type="date" placeholder="请选择比赛日期"
+                                value-format="YYYY-MM-DD" style="width: 178px;"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div>
+                        <el-button type="primary" @click="handleAdd">
+                            <iconify-icon icon="mdi:plus" width="16" height="16" class="mr-1"></iconify-icon>新增比赛
+                        </el-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 比赛表格 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-medium">比赛列表</h3>
+                    <el-button size="small" @click="loadCompetitionsList">
+                        <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                    </el-button>
+                </div>
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无比赛数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                    <el-table-column prop="name" label="比赛名称"></el-table-column>
+                    <el-table-column prop="competitionDate" label="比赛日期"></el-table-column>
+                    <el-table-column prop="status" label="状态">
+                        <template #default="scope">
+                            <el-tag v-if="scope.row.status === 0" type="success" size="small">报名中</el-tag>
+                            <el-tag v-else-if="scope.row.status === 1" type="warning" size="small">报名结束</el-tag>
+                            <el-tag v-else-if="scope.row.status === 2" type="primary" size="small">进行中</el-tag>
+                            <el-tag v-else-if="scope.row.status === 3" type="info" size="small">已完成</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="participantCount" label="报名人数">
+                        <template #default="scope">
+                            <el-button link type="primary" @click="handleViewParticipants(scope.row)">
+                                {{ scope.row.participantCount || 0 }} 人
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="560" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2 flex-wrap">
+                                <el-button size="small" @click="handleView(scope.row)">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="mr-1"></iconify-icon>查看
+                                </el-button>
+                                <el-button size="small" type="primary" @click="handleEdit(scope.row)">
+                                    <iconify-icon icon="mdi:pencil" width="16" height="16"
+                                        class="mr-1"></iconify-icon>编辑
+                                </el-button>
+                                <el-button size="small" type="warning" @click="handleStatusManage(scope.row)">
+                                    <iconify-icon icon="mdi:cog" width="16" height="16" class="mr-1"></iconify-icon>状态
+                                </el-button>
+                                <el-button size="small" type="info" @click="handleViewParticipants(scope.row)">
+                                    <iconify-icon icon="mdi:account-group" width="16" height="16"
+                                        class="mr-1"></iconify-icon>报名情况
+                                </el-button>
+                                <el-button size="small" type="success" @click="handleMatchProcess(scope.row)"
+                                    v-if="scope.row.status >= 2">
+                                    <iconify-icon icon="mdi:tournament" width="16" height="16"
+                                        class="mr-1"></iconify-icon>比赛进程
+                                </el-button>
+                                <el-button size="small" type="danger" @click="handleDelete(scope.row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 新增/编辑对话框-->
+            <el-dialog :title="dialogTitle" v-model="dialogVisible" width="600px" :before-close="handleDialogClose">
+                <el-form ref="competitionFormRef" :model="competitionForm" :rules="competitionRules"
+                    label-width="100px">
+                    <el-form-item label="比赛名称" prop="name">
+                        <el-input v-model="competitionForm.name" placeholder="请输入比赛名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="比赛日期" prop="competitionDate">
+                        <el-date-picker v-model="competitionForm.competitionDate" type="date" placeholder="请选择比赛日期"
+                            value-format="YYYY-MM-DD" style="width: 100%;"></el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="状态" prop="status">
+                        <el-select v-model="competitionForm.status" placeholder="请选择状态" style="width: 100%;">
+                            <el-option label="报名中" :value="0"></el-option>
+                            <el-option label="报名结束" :value="1"></el-option>
+                            <el-option label="进行中" :value="2"></el-option>
+                            <el-option label="已完成" :value="3"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="handleDialogClose">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>确定
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+
+            <!-- 查看详情对话框-->
+            <el-dialog title="比赛详情" v-model="viewDialogVisible" width="600px">
+                <el-descriptions :column="2" border v-if="viewCompetition">
+                    <el-descriptions-item label="比赛ID">{{ viewCompetition.id }}</el-descriptions-item>
+                    <el-descriptions-item label="比赛名称">{{ viewCompetition.name }}</el-descriptions-item>
+                    <el-descriptions-item label="比赛日期">{{ viewCompetition.competitionDate }}</el-descriptions-item>
+                    <el-descriptions-item label="状态">
+                        <el-tag v-if="viewCompetition.status === 0" type="success" size="small">报名中</el-tag>
+                        <el-tag v-else-if="viewCompetition.status === 1" type="warning" size="small">报名结束</el-tag>
+                        <el-tag v-else-if="viewCompetition.status === 2" type="primary" size="small">进行中</el-tag>
+                        <el-tag v-else-if="viewCompetition.status === 3" type="info" size="small">已完成</el-tag>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="报名人数" :span="2">{{ viewCompetition.participantCount || 0 }}
+                        人</el-descriptions-item>
+                </el-descriptions>
+            </el-dialog>
+
+            <!-- 报名情况对话框-->
+            <el-dialog title="报名情况" v-model="participantsDialogVisible" width="800px">
+                <el-tabs v-model="activeTab" type="card">
+                    <el-tab-pane label="甲组" name="1">
+                        <el-table :data="participantsByGroup[1] || []" :border="true" stripe>
+                            <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                            <el-table-column prop="studentName" label="学员姓名"></el-table-column>
+                            <el-table-column prop="studentUsername" label="用户名"></el-table-column>
+                            <el-table-column prop="campusName" label="校区"></el-table-column>
+                            <el-table-column label="操作" width="100">
+                                <template #default="scope">
+                                    <el-button link type="danger" size="small"
+                                        @click="handleRemoveParticipant(scope.row)">
+                                        移除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="乙组" name="2">
+                        <el-table :data="participantsByGroup[2] || []" :border="true" stripe>
+                            <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                            <el-table-column prop="studentName" label="学员姓名"></el-table-column>
+                            <el-table-column prop="studentUsername" label="用户名"></el-table-column>
+                            <el-table-column prop="campusName" label="校区"></el-table-column>
+                            <el-table-column label="操作" width="100">
+                                <template #default="scope">
+                                    <el-button link type="danger" size="small"
+                                        @click="handleRemoveParticipant(scope.row)">
+                                        移除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane label="丙组" name="3">
+                        <el-table :data="participantsByGroup[3] || []" :border="true" stripe>
+                            <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                            <el-table-column prop="studentName" label="学员姓名"></el-table-column>
+                            <el-table-column prop="studentUsername" label="用户名"></el-table-column>
+                            <el-table-column prop="campusName" label="校区"></el-table-column>
+                            <el-table-column label="操作" width="100">
+                                <template #default="scope">
+                                    <el-button link type="danger" size="small"
+                                        @click="handleRemoveParticipant(scope.row)">
+                                        移除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-dialog>
+
+            <!-- 状态管理对话框 -->
+            <el-dialog title="比赛状态管理" v-model="statusDialogVisible" width="500px">
+                <div v-if="currentStatusCompetition">
+                    <el-descriptions :column="1" border class="mb-4">
+                        <el-descriptions-item label="比赛名称">{{ currentStatusCompetition.name }}</el-descriptions-item>
+                        <el-descriptions-item label="比赛日期">{{ currentStatusCompetition.competitionDate
+                            }}</el-descriptions-item>
+                        <el-descriptions-item label="当前状态">
+                            <el-tag v-if="currentStatusCompetition.status === 0" type="success"
+                                size="small">报名中</el-tag>
+                            <el-tag v-else-if="currentStatusCompetition.status === 1" type="warning"
+                                size="small">报名结束</el-tag>
+                            <el-tag v-else-if="currentStatusCompetition.status === 2" type="primary"
+                                size="small">进行中</el-tag>
+                            <el-tag v-else-if="currentStatusCompetition.status === 3" type="info"
+                                size="small">已完成</el-tag>
+                        </el-descriptions-item>
+                        <el-descriptions-item label="报名人数">{{ currentStatusCompetition.participantCount || 0 }}
+                            人</el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-divider content-position="left">状态操作</el-divider>
+
+                    <div class="space-y-3">
+                        <!-- 报名中 -> 报名结束 -->
+                        <div v-if="currentStatusCompetition.status === 0"
+                            class="status-action-card flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                                <div class="font-medium">结束报名</div>
+                                <div class="text-sm text-gray-500">不再接受新的报名，准备开始比赛</div>
+                            </div>
+                            <el-button type="warning" size="small" @click="handleUpdateStatus(1)">
+                                <iconify-icon icon="mdi:stop-circle" width="16" height="16"
+                                    class="mr-1"></iconify-icon>结束报名
+                            </el-button>
+                        </div>
+
+                        <!-- 报名结束 -> 进行中 -->
+                        <div v-if="currentStatusCompetition.status === 1"
+                            class="status-action-card flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                                <div class="font-medium">开始比赛</div>
+                                <div class="text-sm text-gray-500">比赛正式开始，生成赛程安排</div>
+                            </div>
+                            <el-button type="primary" size="small" @click="handleUpdateStatus(2)">
+                                <iconify-icon icon="mdi:play-circle" width="16" height="16"
+                                    class="mr-1"></iconify-icon>开始比赛
+                            </el-button>
+                        </div>
+
+                        <!-- 进行中 -> 已完成 -->
+                        <div v-if="currentStatusCompetition.status === 2"
+                            class="status-action-card flex items-center justify-between p-3 border rounded-lg">
+                            <div>
+                                <div class="font-medium">完成比赛</div>
+                                <div class="text-sm text-gray-500">比赛全部结束，生成最终成绩</div>
+                            </div>
+                            <el-button type="info" size="small" @click="handleUpdateStatus(3)">
+                                <iconify-icon icon="mdi:check-circle" width="16" height="16"
+                                    class="mr-1"></iconify-icon>完成比赛
+                            </el-button>
+                        </div>
+
+                        <!-- 重新开放报名 -->
+                        <div v-if="currentStatusCompetition.status === 1"
+                            class="status-action-card flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+                            <div>
+                                <div class="font-medium">重新开放报名</div>
+                                <div class="text-sm text-gray-500">重新接受学员报名</div>
+                            </div>
+                            <el-button type="success" size="small" @click="handleUpdateStatus(0)">
+                                <iconify-icon icon="mdi:restart" width="16" height="16" class="mr-1"></iconify-icon>重新开放
+                            </el-button>
+                        </div>
+
+                        <!-- 已完成状态提示 -->
+                        <div v-if="currentStatusCompetition.status === 3" class="p-3 border rounded-lg bg-green-50">
+                            <div class="flex items-center">
+                                <iconify-icon icon="mdi:check-circle" width="20" height="20"
+                                    class="text-green-500 mr-2"></iconify-icon>
+                                <span class="text-green-700">比赛已完成，无需进一步操作</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </el-dialog>
+
+            <!-- 比赛进程管理对话框 -->
+            <el-dialog title="比赛进程管理" v-model="matchProcessDialogVisible" width="1200px">
+                <div v-if="currentMatchCompetition">
+                    <el-descriptions :column="3" border class="mb-4">
+                        <el-descriptions-item label="比赛名称">{{ currentMatchCompetition.name }}</el-descriptions-item>
+                        <el-descriptions-item label="比赛日期">{{ currentMatchCompetition.competitionDate
+                            }}</el-descriptions-item>
+                        <el-descriptions-item label="比赛状态">
+                            <el-tag v-if="currentMatchCompetition.status === 2" type="primary" size="small">进行中</el-tag>
+                            <el-tag v-else-if="currentMatchCompetition.status === 3" type="info"
+                                size="small">已完成</el-tag>
+                        </el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-tabs v-model="activeMatchTab" type="card">
+                        <!-- 甲组 -->
+                        <el-tab-pane label="甲组" name="1">
+                            <div class="match-process-content">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex gap-2">
+                                        <el-button type="primary" size="small" @click="generateMatches(1)"
+                                            :disabled="currentMatchCompetition.status !== 2">
+                                            <iconify-icon icon="mdi:auto-fix" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            生成对阵
+                                        </el-button>
+                                        <el-button type="success" size="small" @click="generateNextRound(1)"
+                                            :disabled="!canGenerateNextRound[1]">
+                                            <iconify-icon icon="mdi:skip-next" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            下一轮
+                                        </el-button>
+                                        <el-button type="info" size="small" @click="viewRanking(1)">
+                                            <iconify-icon icon="mdi:trophy" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            查看排名
+                                        </el-button>
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        当前轮次: 第{{ currentRounds[1] || 0 }}轮
+                                    </div>
+                                </div>
+                                <div class="matches-display">
+                                    <div v-if="matchesByGroup[1] && matchesByGroup[1].length > 0">
+                                        <div v-for="round in getMatchesByRound(1)"
+                                            :key="'group1-round' + round.roundNumber" class="mb-6">
+                                            <h4 class="text-lg font-medium mb-3">第{{ round.roundNumber }}轮</h4>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                <div v-for="match in round.matches" :key="match.id"
+                                                    class="match-card border rounded-lg p-4">
+                                                    <div class="flex justify-between items-center mb-2">
+                                                        <span class="text-sm text-gray-500">对阵 #{{ match.id }}</span>
+                                                        <el-tag :type="getMatchStatusType(match.matchStatus)"
+                                                            size="small">
+                                                            {{ getMatchStatusText(match.matchStatus) }}
+                                                        </el-tag>
+                                                    </div>
+                                                    <div class="match-players mb-3">
+                                                        <div class="flex justify-between items-center">
+                                                            <span class="font-medium">{{ match.player1Name }}</span>
+                                                            <span class="text-gray-400">VS</span>
+                                                            <span class="font-medium">{{ match.player2Name || '轮空'
+                                                                }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="match.matchStatus === 2" class="match-result mb-3">
+                                                        <div class="text-center">
+                                                            <span class="text-green-600 font-bold">{{ match.winnerName
+                                                                }}</span>
+                                                            <span class="text-gray-500 ml-2">{{ match.score }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="match.matchStatus === 0 && match.player2Name"
+                                                        class="match-actions">
+                                                        <el-button type="primary" size="small"
+                                                            @click="recordResult(match)">
+                                                            <iconify-icon icon="mdi:clipboard-edit" width="16"
+                                                                height="16" class="mr-1"></iconify-icon>
+                                                            录入结果
+                                                        </el-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-else class="text-center py-8 text-gray-500">
+                                        暂无对阵信息，请先生成对阵
+                                    </div>
+                                </div>
+                            </div>
+                        </el-tab-pane>
+
+                        <!-- 乙组 -->
+                        <el-tab-pane label="乙组" name="2">
+                            <div class="match-process-content">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex gap-2">
+                                        <el-button type="primary" size="small" @click="generateMatches(2)"
+                                            :disabled="currentMatchCompetition.status !== 2">
+                                            <iconify-icon icon="mdi:auto-fix" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            生成对阵
+                                        </el-button>
+                                        <el-button type="success" size="small" @click="generateNextRound(2)"
+                                            :disabled="!canGenerateNextRound[2]">
+                                            <iconify-icon icon="mdi:skip-next" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            下一轮
+                                        </el-button>
+                                        <el-button type="info" size="small" @click="viewRanking(2)">
+                                            <iconify-icon icon="mdi:trophy" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            查看排名
+                                        </el-button>
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        当前轮次: 第{{ currentRounds[2] || 0 }}轮
+                                    </div>
+                                </div>
+                                <div class="matches-display">
+                                    <div v-if="matchesByGroup[2] && matchesByGroup[2].length > 0">
+                                        <div v-for="round in getMatchesByRound(2)"
+                                            :key="'group2-round' + round.roundNumber" class="mb-6">
+                                            <h4 class="text-lg font-medium mb-3">第{{ round.roundNumber }}轮</h4>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                <div v-for="match in round.matches" :key="match.id"
+                                                    class="match-card border rounded-lg p-4">
+                                                    <div class="flex justify-between items-center mb-2">
+                                                        <span class="text-sm text-gray-500">对阵 #{{ match.id }}</span>
+                                                        <el-tag :type="getMatchStatusType(match.matchStatus)"
+                                                            size="small">
+                                                            {{ getMatchStatusText(match.matchStatus) }}
+                                                        </el-tag>
+                                                    </div>
+                                                    <div class="match-players mb-3">
+                                                        <div class="flex justify-between items-center">
+                                                            <span class="font-medium">{{ match.player1Name }}</span>
+                                                            <span class="text-gray-400">VS</span>
+                                                            <span class="font-medium">{{ match.player2Name || '轮空'
+                                                                }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="match.matchStatus === 2" class="match-result mb-3">
+                                                        <div class="text-center">
+                                                            <span class="text-green-600 font-bold">{{ match.winnerName
+                                                                }}</span>
+                                                            <span class="text-gray-500 ml-2">{{ match.score }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="match.matchStatus === 0 && match.player2Name"
+                                                        class="match-actions">
+                                                        <el-button type="primary" size="small"
+                                                            @click="recordResult(match)">
+                                                            <iconify-icon icon="mdi:clipboard-edit" width="16"
+                                                                height="16" class="mr-1"></iconify-icon>
+                                                            录入结果
+                                                        </el-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-else class="text-center py-8 text-gray-500">
+                                        暂无对阵信息，请先生成对阵
+                                    </div>
+                                </div>
+                            </div>
+                        </el-tab-pane>
+
+                        <!-- 丙组 -->
+                        <el-tab-pane label="丙组" name="3">
+                            <div class="match-process-content">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex gap-2">
+                                        <el-button type="primary" size="small" @click="generateMatches(3)"
+                                            :disabled="currentMatchCompetition.status !== 2">
+                                            <iconify-icon icon="mdi:auto-fix" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            生成对阵
+                                        </el-button>
+                                        <el-button type="success" size="small" @click="generateNextRound(3)"
+                                            :disabled="!canGenerateNextRound[3]">
+                                            <iconify-icon icon="mdi:skip-next" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            下一轮
+                                        </el-button>
+                                        <el-button type="info" size="small" @click="viewRanking(3)">
+                                            <iconify-icon icon="mdi:trophy" width="16" height="16"
+                                                class="mr-1"></iconify-icon>
+                                            查看排名
+                                        </el-button>
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        当前轮次: 第{{ currentRounds[3] || 0 }}轮
+                                    </div>
+                                </div>
+                                <div class="matches-display">
+                                    <div v-if="matchesByGroup[3] && matchesByGroup[3].length > 0">
+                                        <div v-for="round in getMatchesByRound(3)"
+                                            :key="'group3-round' + round.roundNumber" class="mb-6">
+                                            <h4 class="text-lg font-medium mb-3">第{{ round.roundNumber }}轮</h4>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                <div v-for="match in round.matches" :key="match.id"
+                                                    class="match-card border rounded-lg p-4">
+                                                    <div class="flex justify-between items-center mb-2">
+                                                        <span class="text-sm text-gray-500">对阵 #{{ match.id }}</span>
+                                                        <el-tag :type="getMatchStatusType(match.matchStatus)"
+                                                            size="small">
+                                                            {{ getMatchStatusText(match.matchStatus) }}
+                                                        </el-tag>
+                                                    </div>
+                                                    <div class="match-players mb-3">
+                                                        <div class="flex justify-between items-center">
+                                                            <span class="font-medium">{{ match.player1Name }}</span>
+                                                            <span class="text-gray-400">VS</span>
+                                                            <span class="font-medium">{{ match.player2Name || '轮空'
+                                                                }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="match.matchStatus === 2" class="match-result mb-3">
+                                                        <div class="text-center">
+                                                            <span class="text-green-600 font-bold">{{ match.winnerName
+                                                                }}</span>
+                                                            <span class="text-gray-500 ml-2">{{ match.score }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="match.matchStatus === 0 && match.player2Name"
+                                                        class="match-actions">
+                                                        <el-button type="primary" size="small"
+                                                            @click="recordResult(match)">
+                                                            <iconify-icon icon="mdi:clipboard-edit" width="16"
+                                                                height="16" class="mr-1"></iconify-icon>
+                                                            录入结果
+                                                        </el-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-else class="text-center py-8 text-gray-500">
+                                        暂无对阵信息，请先生成对阵
+                                    </div>
+                                </div>
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
+                </div>
+            </el-dialog>
+
+            <!-- 录入比赛结果对话框 -->
+            <el-dialog title="录入比赛结果" v-model="resultDialogVisible" width="500px">
+                <div v-if="currentMatch">
+                    <el-descriptions :column="1" border class="mb-4">
+                        <el-descriptions-item label="对阵">{{ currentMatch.player1Name }} VS {{ currentMatch.player2Name
+                            }}</el-descriptions-item>
+                        <el-descriptions-item label="轮次">第{{ currentMatch.roundNumber }}轮</el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-form ref="resultFormRef" :model="resultForm" :rules="resultRules" label-width="100px">
+                        <el-form-item label="获胜者" prop="winnerId">
+                            <el-select v-model="resultForm.winnerId" placeholder="请选择获胜者" style="width: 100%;">
+                                <el-option :label="currentMatch.player1Name"
+                                    :value="currentMatch.player1Id"></el-option>
+                                <el-option :label="currentMatch.player2Name"
+                                    :value="currentMatch.player2Id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="比分" prop="score">
+                            <el-input v-model="resultForm.score" placeholder="请输入比分，如：3:1"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="resultDialogVisible = false">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="submitResult" :loading="resultSubmitting">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>确定
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+
+            <!-- 排名对话框 -->
+            <el-dialog title="比赛排名" v-model="rankingDialogVisible" width="800px">
+                <div v-if="currentRanking && currentRanking.length > 0">
+                    <el-table :data="currentRanking" :border="true" stripe>
+                        <el-table-column prop="rank" label="排名" width="80" align="center">
+                            <template #default="scope">
+                                <el-tag v-if="scope.row.rank === 1" type="danger" size="small">🥇 {{ scope.row.rank
+                                    }}</el-tag>
+                                <el-tag v-else-if="scope.row.rank === 2" type="warning" size="small">🥈 {{
+                                    scope.row.rank }}</el-tag>
+                                <el-tag v-else-if="scope.row.rank === 3" type="success" size="small">🥉 {{
+                                    scope.row.rank }}</el-tag>
+                                <span v-else>{{ scope.row.rank }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="playerName" label="选手姓名"></el-table-column>
+                        <el-table-column prop="score" label="积分" width="100" align="center">
+                            <template #default="scope">
+                                <span class="font-bold text-blue-600">{{ scope.row.score }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="wins" label="胜场" width="80" align="center">
+                            <template #default="scope">
+                                <span class="text-green-600">{{ scope.row.wins }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="losses" label="负场" width="80" align="center">
+                            <template #default="scope">
+                                <span class="text-red-600">{{ scope.row.losses }}</span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <div v-else class="text-center py-8 text-gray-500">
+                    暂无排名数据
+                </div>
+            </el-dialog>
+
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 查询参数
+                    searchParams: {
+                        name: "",
+                        status: undefined,
+                        competitionDate: undefined
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 对话框相关
+                    dialogVisible: false,
+                    dialogTitle: "新增比赛",
+                    isEdit: false,
+                    submitLoading: false,
+                    // 查看详情对话框
+                    viewDialogVisible: false,
+                    viewCompetition: null,
+                    // 报名情况对话框
+                    participantsDialogVisible: false,
+                    participantsByGroup: {},
+                    activeTab: '1',
+                    currentCompetition: null,
+                    // 状态管理对话框
+                    statusDialogVisible: false,
+                    currentStatusCompetition: null,
+                    // 比赛进程管理对话框
+                    matchProcessDialogVisible: false,
+                    currentMatchCompetition: null,
+                    activeMatchTab: '1',
+                    matchesByGroup: { 1: [], 2: [], 3: [] },
+                    currentRounds: { 1: 0, 2: 0, 3: 0 },
+                    canGenerateNextRound: { 1: false, 2: false, 3: false },
+                    // 录入结果对话框
+                    resultDialogVisible: false,
+                    currentMatch: null,
+                    resultForm: {
+                        winnerId: undefined,
+                        score: ''
+                    },
+                    resultRules: {
+                        winnerId: [
+                            { required: true, message: "请选择获胜者", trigger: "change" }
+                        ],
+                        score: [
+                            { required: true, message: "请输入比分", trigger: "blur" }
+                        ]
+                    },
+                    resultSubmitting: false,
+                    // 排名对话框
+                    rankingDialogVisible: false,
+                    currentRanking: [],
+                    // 表单数据
+                    competitionForm: {
+                        id: undefined,
+                        name: "",
+                        competitionDate: "",
+                        status: 0
+                    },
+                    // 表单验证规则
+                    competitionRules: {
+                        name: [
+                            { required: true, message: "请输入比赛名称", trigger: "blur" },
+                            { min: 2, max: 100, message: "长度在2到100个字符", trigger: "blur" }
+                        ],
+                        competitionDate: [
+                            { required: true, message: "请选择比赛日期", trigger: "change" }
+                        ],
+                        status: [
+                            { required: true, message: "请选择状态", trigger: "change" }
+                        ]
+                    }
+                };
+            },
+
+            methods: {
+                // 加载比赛列表
+                async loadCompetitionsList() {
+                    this.loading = true;
+                    try {
+                        const response = await apiClient.post('/competitions/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.searchParams
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                        } else {
+                            this.$message.error(response.message || '获取比赛列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取比赛列表失败:', error);
+                        this.$message.error('获取比赛列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadCompetitionsList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        name: "",
+                        status: undefined,
+                        competitionDate: undefined
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadCompetitionsList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadCompetitionsList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadCompetitionsList();
+                },
+
+                // 新增
+                handleAdd() {
+                    this.isEdit = false;
+                    this.dialogTitle = "新增比赛";
+                    this.resetForm();
+                    this.dialogVisible = true;
+                },
+
+                // 编辑
+                handleEdit(row) {
+                    this.isEdit = true;
+                    this.dialogTitle = "编辑比赛";
+                    this.competitionForm = { ...row };
+                    this.dialogVisible = true;
+                },
+
+                // 查看详情
+                handleView(row) {
+                    this.viewCompetition = row;
+                    this.viewDialogVisible = true;
+                },
+
+                // 查看报名情况
+                async handleViewParticipants(row) {
+                    this.currentCompetition = row;
+                    this.participantsDialogVisible = true;
+
+                    try {
+                        const response = await apiClient.get(`/competitions/${row.id}/participants`);
+                        if (response.code === 200) {
+                            const participants = response.data || [];
+                            // 按组别分组
+                            this.participantsByGroup = {
+                                1: participants.filter(p => p.groupLevel === 1),
+                                2: participants.filter(p => p.groupLevel === 2),
+                                3: participants.filter(p => p.groupLevel === 3)
+                            };
+                        }
+                    } catch (error) {
+                        console.error('获取报名情况失败:', error);
+                        this.$message.error('获取报名情况失败');
+                    }
+                },
+
+
+                // 移除参赛者
+                async handleRemoveParticipant(participant) {
+                    this.$confirm(`确定要移除参赛者"${participant.studentName}"吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            // 这里需要根据实际API调整
+                            const response = await apiClient.delete(`/competitions/participants/${participant.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('移除成功');
+                                this.handleViewParticipants(this.currentCompetition);
+                            } else {
+                                this.$message.error(response.message || '移除失败');
+                            }
+                        } catch (error) {
+                            console.error('移除参赛者失败:', error);
+                            this.$message.error('移除失败');
+                        }
+                    });
+                },
+
+                // 状态管理
+                handleStatusManage(row) {
+                    this.currentStatusCompetition = { ...row };
+                    this.statusDialogVisible = true;
+                },
+
+                // 更新比赛状态
+                async handleUpdateStatus(newStatus) {
+                    const statusNames = {
+                        0: '报名中',
+                        1: '报名结束',
+                        2: '进行中',
+                        3: '已完成'
+                    };
+
+                    const currentStatusName = statusNames[this.currentStatusCompetition.status];
+                    const newStatusName = statusNames[newStatus];
+
+                    this.$confirm(`确定要将比赛"${this.currentStatusCompetition.name}"的状态从"${currentStatusName}"更改为"${newStatusName}"吗？`, '状态变更确认', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.put(`/competitions/${this.currentStatusCompetition.id}/status`, null, {
+                                params: { status: newStatus }
+                            });
+
+                            if (response.code === 200) {
+                                this.$message.success(`状态更新成功：${newStatusName}`);
+                                this.statusDialogVisible = false;
+                                this.loadCompetitionsList();
+                            } else {
+                                this.$message.error(response.message || '状态更新失败');
+                            }
+                        } catch (error) {
+                            console.error('更新比赛状态失败:', error);
+                            this.$message.error('状态更新失败');
+                        }
+                    });
+                },
+
+                // 比赛进程管理
+                async handleMatchProcess(row) {
+                    this.currentMatchCompetition = { ...row };
+                    this.matchProcessDialogVisible = true;
+                    this.activeMatchTab = '1';
+
+                    // 加载各组别的对阵信息
+                    await Promise.all([
+                        this.loadMatches(1),
+                        this.loadMatches(2),
+                        this.loadMatches(3)
+                    ]);
+                },
+
+                // 加载对阵信息
+                async loadMatches(groupLevel) {
+                    try {
+                        const response = await apiClient.get(`/matches/competition/${this.currentMatchCompetition.id}`, {
+                            params: { groupLevel: groupLevel }
+                        });
+
+                        if (response.code === 200) {
+                            this.matchesByGroup[groupLevel] = response.data || [];
+
+                            // 获取当前轮次
+                            const roundResponse = await apiClient.get('/matches/current-round', {
+                                params: {
+                                    competitionId: this.currentMatchCompetition.id,
+                                    groupLevel: groupLevel
+                                }
+                            });
+
+                            if (roundResponse.code === 200) {
+                                this.currentRounds[groupLevel] = roundResponse.data || 0;
+
+                                // 检查是否可以生成下一轮
+                                if (this.currentRounds[groupLevel] > 0) {
+                                    const statusResponse = await apiClient.get('/matches/round-status', {
+                                        params: {
+                                            competitionId: this.currentMatchCompetition.id,
+                                            groupLevel: groupLevel,
+                                            roundNumber: this.currentRounds[groupLevel]
+                                        }
+                                    });
+
+                                    this.canGenerateNextRound[groupLevel] = statusResponse.code === 200 && statusResponse.data === true;
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        console.error(`获取组别${groupLevel}对阵信息失败:`, error);
+                    }
+                },
+
+                // 生成对阵
+                async generateMatches(groupLevel) {
+                    try {
+                        const response = await apiClient.post('/matches/generate', null, {
+                            params: {
+                                competitionId: this.currentMatchCompetition.id,
+                                groupLevel: groupLevel
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.$message.success(`第${groupLevel === 1 ? '甲' : groupLevel === 2 ? '乙' : '丙'}组对阵生成成功`);
+                            await this.loadMatches(groupLevel);
+                        } else {
+                            this.$message.error(response.message || '生成对阵失败');
+                        }
+                    } catch (error) {
+                        console.error('生成对阵失败:', error);
+                        this.$message.error('生成对阵失败');
+                    }
+                },
+
+                // 生成下一轮
+                async generateNextRound(groupLevel) {
+                    try {
+                        const response = await apiClient.post('/matches/next-round', null, {
+                            params: {
+                                competitionId: this.currentMatchCompetition.id,
+                                groupLevel: groupLevel,
+                                currentRound: this.currentRounds[groupLevel]
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            const matches = response.data || [];
+                            if (matches.length === 0) {
+                                this.$message.info(`第${groupLevel === 1 ? '甲' : groupLevel === 2 ? '乙' : '丙'}组比赛已结束`);
+                            } else {
+                                this.$message.success(`第${groupLevel === 1 ? '甲' : groupLevel === 2 ? '乙' : '丙'}组下一轮生成成功`);
+                            }
+                            await this.loadMatches(groupLevel);
+                        } else {
+                            this.$message.error(response.message || '生成下一轮失败');
+                        }
+                    } catch (error) {
+                        console.error('生成下一轮失败:', error);
+                        this.$message.error('生成下一轮失败');
+                    }
+                },
+
+                // 查看排名
+                async viewRanking(groupLevel) {
+                    try {
+                        const response = await apiClient.get('/matches/ranking', {
+                            params: {
+                                competitionId: this.currentMatchCompetition.id,
+                                groupLevel: groupLevel
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.currentRanking = response.data || [];
+                            this.rankingDialogVisible = true;
+                        } else {
+                            this.$message.error(response.message || '获取排名失败');
+                        }
+                    } catch (error) {
+                        console.error('获取排名失败:', error);
+                        this.$message.error('获取排名失败');
+                    }
+                },
+
+                // 录入比赛结果
+                recordResult(match) {
+                    this.currentMatch = match;
+                    this.resultForm = {
+                        winnerId: undefined,
+                        score: ''
+                    };
+                    this.resultDialogVisible = true;
+                },
+
+                // 提交比赛结果
+                async submitResult() {
+                    try {
+                        const valid = await this.$refs.resultFormRef.validate();
+                        if (!valid) return;
+
+                        this.resultSubmitting = true;
+
+                        const response = await apiClient.put(`/matches/${this.currentMatch.id}/result`, null, {
+                            params: {
+                                winnerId: this.resultForm.winnerId,
+                                score: this.resultForm.score
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.$message.success('比赛结果录入成功');
+                            this.resultDialogVisible = false;
+
+                            // 重新加载当前组别的对阵信息
+                            await this.loadMatches(this.currentMatch.groupLevel);
+                        } else {
+                            this.$message.error(response.message || '录入比赛结果失败');
+                        }
+                    } catch (error) {
+                        console.error('录入比赛结果失败:', error);
+                        this.$message.error('录入比赛结果失败');
+                    } finally {
+                        this.resultSubmitting = false;
+                    }
+                },
+
+                // 按轮次分组对阵
+                getMatchesByRound(groupLevel) {
+                    const matches = this.matchesByGroup[groupLevel] || [];
+                    const roundMap = {};
+
+                    matches.forEach(match => {
+                        if (!roundMap[match.roundNumber]) {
+                            roundMap[match.roundNumber] = {
+                                roundNumber: match.roundNumber,
+                                matches: []
+                            };
+                        }
+                        roundMap[match.roundNumber].matches.push(match);
+                    });
+
+                    return Object.values(roundMap).sort((a, b) => a.roundNumber - b.roundNumber);
+                },
+
+                // 获取比赛状态类型
+                getMatchStatusType(status) {
+                    switch (status) {
+                        case 0: return 'info';
+                        case 1: return 'warning';
+                        case 2: return 'success';
+                        default: return 'info';
+                    }
+                },
+
+                // 获取比赛状态文本
+                getMatchStatusText(status) {
+                    switch (status) {
+                        case 0: return '未开始';
+                        case 1: return '进行中';
+                        case 2: return '已完成';
+                        default: return '未知';
+                    }
+                },
+
+                // 删除
+                handleDelete(row) {
+                    this.$confirm(`确定要删除比赛"${row.name}"吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/competitions/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('删除成功');
+                                this.loadCompetitionsList();
+                            } else {
+                                this.$message.error(response.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除比赛失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+
+                // 提交表单
+                async handleSubmit() {
+                    try {
+                        const valid = await this.$refs.competitionFormRef.validate();
+                        if (!valid) return;
+
+                        this.submitLoading = true;
+
+                        let response;
+                        if (this.isEdit) {
+                            response = await apiClient.put(`/competitions/${this.competitionForm.id}`, this.competitionForm);
+                        } else {
+                            response = await apiClient.post('/competitions', this.competitionForm);
+                        }
+
+                        if (response.code === 200) {
+                            this.$message.success(this.isEdit ? '更新成功' : '创建成功');
+                            this.dialogVisible = false;
+                            this.loadCompetitionsList();
+                        } else {
+                            this.$message.error(response.message || '操作失败');
+                        }
+                    } catch (error) {
+                        console.error('提交失败:', error);
+                        this.$message.error('操作失败');
+                    } finally {
+                        this.submitLoading = false;
+                    }
+                },
+
+                // 关闭对话框
+                handleDialogClose() {
+                    this.dialogVisible = false;
+                    this.resetForm();
+                },
+
+                // 重置表单
+                resetForm() {
+                    this.competitionForm = {
+                        id: undefined,
+                        name: "",
+                        competitionDate: "",
+                        status: 0
+                    };
+                    if (this.$refs.competitionFormRef) {
+                        this.$refs.competitionFormRef.clearValidate();
+                    }
+                }
+            },
+
+            async mounted() {
+                await this.loadCompetitionsList();
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__competitions");
+    </script>
+</body>
+
+</html>

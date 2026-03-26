@@ -1,0 +1,130 @@
+# Spring Boot 应用配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  # 应用名称
+  application:
+    name: my-project
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/pingpang?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    # HikariCP 连接池配置
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: SpringBootHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      # 启用文件上传支持
+      enabled: true
+      # 单个文件最大大小
+      max-file-size: 100MB
+      # 请求最大大小（包含所有文件）
+      max-request-size: 200MB
+
+  # Jackson 配置
+  jackson:
+    # 日期时间格式配置
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+# MyBatis 配置
+mybatis:
+  # 指定 mapper.xml 文件位置
+  mapper-locations: classpath:mapper/*.xml
+  # 指定实体类包路径
+  type-aliases-package: com.quan.project.entity
+  configuration:
+    # 开启驼峰命名转换
+    map-underscore-to-camel-case: true
+    # 开启二级缓存
+    cache-enabled: true
+    # 延迟加载
+    lazy-loading-enabled: true
+    # 积极延迟加载
+    aggressive-lazy-loading: false
+    # 允许多结果集
+    multiple-result-sets-enabled: true
+    # 使用列标签
+    use-column-label: true
+    # 使用生成的键
+    use-generated-keys: true
+    # 自动映射行为
+    auto-mapping-behavior: partial
+
+# PageHelper 分页插件配置
+pagehelper:
+  # 数据库方言，自动检测
+  auto-dialect: true
+  # 分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum<=0 时会查询第一页，pageNum>pages（超过总数时），会查询最后一页
+  reasonable: true
+  # 支持通过 Mapper 接口参数来传递分页参数，默认值false
+  support-methods-arguments: true
+  # 为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值
+  params: count=countSql
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.quan.project: DEBUG
+    # MyBatis SQL 日志
+    com.quan.project.mapper: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"
+  # 移除重复的file pattern配置
+
+# 自定义日志配置（通过 logback-spring.xml 使用）
+app:
+  log:
+    # 日志根目录，使用相对路径
+    path: ./logs
+    # 是否按日期创建目录
+    date-folder: true
+    # 日期格式
+    date-pattern: yyyy/MM/dd
+
+# JWT 配置
+jwt:
+  # 密钥
+  secret: mySecretKey123456789abcdefghijklmnopqrstuvwxyz
+  # 过期时间，单位为毫秒 当前为60分钟
+  expiration: 3600000
+
+# 验证码配置
+captcha:
+  # AES密钥，必须是16位（128位）
+  secret: CaptchaKey123456
+  # 过期时间，单位为毫秒（5分钟）
+  expiration: 300000
+
+# 文件上传配置
+file:
+  upload:
+    # 文件上传根目录，使用相对路径（相对于项目根目录）
+    root-path: ${user.dir}/uploads
+    # 支持的文件类型配置
+    allowed-types:
+      # 支持的图片文件类型
+      images: jpg,jpeg,png,gif,webp
+      # 支持的视频文件类型
+      videos: mp4,avi,mov
+    # 文件大小限制配置（单位：字节）
+    max-size:
+      # 图片文件大小限制：10MB
+      image: 10485760
+      # 视频文件大小限制：100MB
+      video: 104857600

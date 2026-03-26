@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quan.project.mapper.MatchMapper">
+
+    <!-- 基本结果映射 -->
+    <resultMap id="BaseResultMap" type="com.quan.project.entity.Match">
+        <id column="id" property="id" />
+        <result column="competition_id" property="competitionId" />
+        <result column="group_level" property="groupLevel" />
+        <result column="round_number" property="roundNumber" />
+        <result column="player1_id" property="player1Id" />
+        <result column="player2_id" property="player2Id" />
+        <result column="table_id" property="tableId" />
+        <result column="winner_id" property="winnerId" />
+        <result column="score" property="score" />
+    </resultMap>
+
+    <!-- MatchVO结果映射 -->
+    <resultMap id="MatchVOResultMap" type="com.quan.project.vo.MatchVO" extends="BaseResultMap">
+        <result column="player1_name" property="player1Name" />
+        <result column="player2_name" property="player2Name" />
+        <result column="winner_name" property="winnerName" />
+        <result column="table_name" property="tableName" />
+        <result column="match_status" property="matchStatus" />
+    </resultMap>
+
+    <!-- 插入对阵记录 -->
+    <insert id="insert" parameterType="com.quan.project.entity.Match" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO matches (
+            competition_id, group_level, round_number, 
+            player1_id, player2_id, table_id, winner_id, score
+        ) VALUES (
+            #{competitionId}, #{groupLevel}, #{roundNumber}, 
+            #{player1Id}, #{player2Id}, #{tableId}, #{winnerId}, #{score}
+        )
+    </insert>
+
+    <!-- 批量插入对阵记录 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO matches (
+            competition_id, group_level, round_number, 
+            player1_id, player2_id, table_id, winner_id, score
+        ) VALUES
+        <foreach collection="matches" item="match" separator=",">
+            (#{match.competitionId}, #{match.groupLevel}, #{match.roundNumber}, 
+             #{match.player1Id}, #{match.player2Id}, #{match.tableId}, #{match.winnerId}, #{match.score})
+        </foreach>
+    </insert>
+
+    <!-- 根据ID查询对阵 -->
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM matches WHERE id = #{id}
+    </select>
+
+    <!-- 查询比赛的所有对阵（包含选手姓名等详细信息） -->
+    <select id="selectByCompetitionAndGroup" resultMap="MatchVOResultMap">
+        SELECT 
+            m.id,
+            m.competition_id,
+            m.group_level,
+            m.round_number,
+            m.player1_id,
+            m.player2_id,
+            m.table_id,
+            m.winner_id,
+            m.score,
+            u1.real_name AS player1_name,
+            u2.real_name AS player2_name,
+            uw.real_name AS winner_name,
+            t.table_number AS table_name,
+            CASE 
+                WHEN m.winner_id IS NOT NULL AND m.score IS NOT NULL THEN 2
+                WHEN m.player2_id IS NULL THEN 2
+                ELSE 0
+            END AS match_status
+        FROM matches m
+        LEFT JOIN users u1 ON m.player1_id = u1.id
+        LEFT JOIN users u2 ON m.player2_id = u2.id
+        LEFT JOIN users uw ON m.winner_id = uw.id
+        LEFT JOIN tables t ON m.table_id = t.id
+        WHERE m.competition_id = #{competitionId} AND m.group_level = #{groupLevel}
+        ORDER BY m.round_number ASC, m.id ASC
+    </select>
+
+    <!-- 查询指定轮次的对阵 -->
+    <select id="selectByRound" resultMap="BaseResultMap">
+        SELECT * FROM matches 
+        WHERE competition_id = #{competitionId} 
+        AND group_level = #{groupLevel} 
+        AND round_number = #{roundNumber}
+        ORDER BY id ASC
+    </select>
+
+    <!-- 更新比赛结果 -->
+    <update id="updateResult">
+        UPDATE matches 
+        SET winner_id = #{winnerId}, score = #{score}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 获取最大轮次 -->
+    <select id="selectMaxRound" resultType="java.lang.Integer">
+        SELECT COALESCE(MAX(round_number), 0) 
+        FROM matches 
+        WHERE competition_id = #{competitionId} AND group_level = #{groupLevel}
+    </select>
+
+    <!-- 统计指定轮次已完成的比赛数量 -->
+    <select id="countCompletedMatches" resultType="java.lang.Integer">
+        SELECT COUNT(*) 
+        FROM matches 
+        WHERE competition_id = #{competitionId} 
+        AND group_level = #{groupLevel} 
+        AND round_number = #{roundNumber}
+        AND (winner_id IS NOT NULL OR player2_id IS NULL)
+    </select>
+
+    <!-- 统计指定轮次的总比赛数量 -->
+    <select id="countTotalMatches" resultType="java.lang.Integer">
+        SELECT COUNT(*) 
+        FROM matches 
+        WHERE competition_id = #{competitionId} 
+        AND group_level = #{groupLevel} 
+        AND round_number = #{roundNumber}
+    </select>
+
+    <!-- 删除比赛的所有对阵记录 -->
+    <delete id="deleteByCompetition">
+        DELETE FROM matches 
+        WHERE competition_id = #{competitionId} AND group_level = #{groupLevel}
+    </delete>
+
+</mapper>

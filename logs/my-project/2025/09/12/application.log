@@ -1,0 +1,212 @@
+2025-09-12 11:36:21.346 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 24944 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-09-12 11:36:21.348 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-09-12 11:36:21.348 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-12 11:36:22.713 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-09-12 11:36:22.725 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-12 11:36:22.727 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-09-12 11:36:22.727 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-12 11:36:22.771 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-09-12 11:36:22.771 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1162 ms
+2025-09-12 11:36:23.401 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-09-12 11:36:23.628 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-12 11:36:23.635 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-09-12 11:36:23.642 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 3.358 seconds (process running for 4.493)
+2025-09-12 11:36:33.136 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-12 11:36:33.136 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-09-12 11:36:33.137 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-09-12 11:36:33.219 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 11:36:33.411 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 11:36:33.647 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 11:36:33.653 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-09-12 11:36:33.768 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@1e8baa21
+2025-09-12 11:36:33.769 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-09-12 11:36:33.860 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-12 11:36:33.878 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 11:36:33.912 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 11:36:33.917 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-12 11:36:33.918 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 11:36:33.921 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-12 11:39:03.989 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown initiated...
+2025-09-12 11:39:03.996 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown completed.
+2025-09-12 15:56:40.557 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 10700 (D:\workspace\project-qqq\20250912__pingpangqiu\my-springboot-project-17\target\classes started by Administrator in d:\workspace\project-qqq\20250912__pingpangqiu\my-springboot-project-17)
+2025-09-12 15:56:40.558 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-09-12 15:56:40.559 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-12 15:56:41.367 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-09-12 15:56:41.375 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-12 15:56:41.376 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-09-12 15:56:41.377 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-12 15:56:41.423 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-09-12 15:56:41.424 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 827 ms
+2025-09-12 15:56:41.836 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-09-12 15:56:42.157 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-12 15:56:42.178 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-09-12 15:56:42.187 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 2.03 seconds (process running for 2.259)
+2025-09-12 15:58:09.241 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-12 15:58:09.242 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-09-12 15:58:09.242 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2025-09-12 15:58:10.384 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-12 15:58:10.384 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-12 15:58:10.428 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 15:58:10.433 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-09-12 15:58:10.546 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@2e1aa0b7
+2025-09-12 15:58:10.548 [http-nio-8080-exec-5] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-09-12 15:58:10.644 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-12 15:58:10.661 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 15:58:10.693 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 15:58:10.698 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-12 15:58:10.700 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-12 15:58:10.703 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-12 16:02:51.093 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-12 16:02:51.093 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-12 16:02:51.101 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-12 16:02:51.101 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 16:02:51.102 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 16:02:51.103 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-12 16:02:51.103 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-12 16:02:51.104 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-12 16:02:52.051 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 16:02:55.836 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-09-12 16:02:55.836 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-09-12 16:02:55.883 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-09-12 16:02:55.883 [http-nio-8080-exec-10] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-09-12 16:02:57.319 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 16:03:00.034 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:03:00.034 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-09-12 16:03:02.655 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:03:02.901 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-09-12 16:03:02.902 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 16:03:03.273 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:03:03.450 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-12 16:03:03.472 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-12 16:03:03.476 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-12 16:03:03.477 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 16:03:03.479 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 16:03:03.479 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-12 16:03:03.479 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 16:03:03.481 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-12 16:03:03.511 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-12 16:03:03.511 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-12 16:03:03.812 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:03:03.986 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-12 16:03:03.986 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 16:03:03.988 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 16:03:03.988 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-12 16:03:03.988 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 16:03:03.989 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-12 16:53:45.240 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:53:45.531 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-09-12 16:53:45.614 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 16:53:47.880 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-09-12 16:53:47.880 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:53:50.680 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:53:51.315 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-12 16:53:51.320 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-12 16:53:51.329 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-12 16:53:51.330 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 16:53:51.334 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 16:53:51.335 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-12 16:53:51.335 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 16:53:51.337 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-12 16:53:51.894 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-12 16:53:51.894 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:53:51.894 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-12 16:53:51.911 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 16:57:51.024 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:57:51.437 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-12 16:57:51.439 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-12 16:57:51.441 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-12 16:57:51.442 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 16:57:51.443 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 16:57:51.443 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-12 16:57:51.444 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 16:57:51.444 [http-nio-8080-exec-4] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-12 16:57:52.080 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 16:57:52.080 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-12 16:57:52.080 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-12 16:57:52.095 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 17:02:55.900 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 17:02:55.903 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 17:02:58.554 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 17:02:58.972 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-12 17:02:58.975 [http-nio-8080-exec-1] WARN  c.q.p.interceptor.JwtInterceptor - API请求token验证失败: 令牌已过期, 请求路径: /api/users/search
+2025-09-12 17:02:59.596 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 17:02:59.597 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 17:03:00.221 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 17:03:00.344 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 17:03:03.308 [http-nio-8080-exec-4] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-09-12 17:03:03.309 [http-nio-8080-exec-4] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-09-12 17:03:03.310 [http-nio-8080-exec-4] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-09-12 17:03:03.310 [http-nio-8080-exec-4] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-09-12 17:03:04.415 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 17:03:04.591 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-12 17:03:04.808 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-12 17:03:04.810 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-12 17:03:04.813 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-12 17:03:04.813 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 17:03:04.814 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 17:03:04.815 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-12 17:03:04.816 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 17:03:04.818 [http-nio-8080-exec-3] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-09-12 17:03:04.861 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-12 17:03:04.863 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-12 17:03:04.922 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-12 17:03:21.219 [http-nio-8080-exec-8] INFO  c.quan.project.utils.FileUploadUtil - 创建目录: d:\workspace\project-qqq\20250912__pingpangqiu\my-springboot-project-17\uploads\images\2025\09\12
+2025-09-12 17:03:21.222 [http-nio-8080-exec-8] INFO  c.quan.project.utils.FileUploadUtil - 文件保存成功: d:\workspace\project-qqq\20250912__pingpangqiu\my-springboot-project-17\uploads\images\2025\09\12\326d0d01f99d470b9c53b1d849dc3af2.jpg
+2025-09-12 17:03:21.224 [http-nio-8080-exec-8] INFO  c.quan.project.utils.FileUploadUtil - 文件上传成功，文件名: 1.jpg, 大小: 688.9 KB
+2025-09-12 17:03:36.668 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users
+2025-09-12 17:03:36.670 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users
+2025-09-12 17:03:36.677 [http-nio-8080-exec-4] DEBUG c.q.p.m.UserMapper.countByUsername - ==>  Preparing: SELECT COUNT(*) FROM users WHERE username = ?
+2025-09-12 17:03:36.677 [http-nio-8080-exec-4] DEBUG c.q.p.m.UserMapper.countByUsername - ==> Parameters: admin(String)
+2025-09-12 17:03:36.678 [http-nio-8080-exec-4] DEBUG c.q.p.m.UserMapper.countByUsername - <==      Total: 1
+2025-09-12 17:03:36.681 [http-nio-8080-exec-4] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 用户名已存在，不能重复添加, 请求路径: /api/users
+2025-09-12 17:03:41.740 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users
+2025-09-12 17:03:41.742 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users
+2025-09-12 17:03:41.745 [http-nio-8080-exec-2] DEBUG c.q.p.m.UserMapper.countByUsername - ==>  Preparing: SELECT COUNT(*) FROM users WHERE username = ?
+2025-09-12 17:03:41.745 [http-nio-8080-exec-2] DEBUG c.q.p.m.UserMapper.countByUsername - ==> Parameters: admin(String)
+2025-09-12 17:03:41.746 [http-nio-8080-exec-2] DEBUG c.q.p.m.UserMapper.countByUsername - <==      Total: 1
+2025-09-12 17:03:41.747 [http-nio-8080-exec-2] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 用户名已存在，不能重复添加, 请求路径: /api/users
+2025-09-12 17:03:46.984 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users
+2025-09-12 17:03:46.986 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users
+2025-09-12 17:03:46.987 [http-nio-8080-exec-6] DEBUG c.q.p.m.UserMapper.countByUsername - ==>  Preparing: SELECT COUNT(*) FROM users WHERE username = ?
+2025-09-12 17:03:46.987 [http-nio-8080-exec-6] DEBUG c.q.p.m.UserMapper.countByUsername - ==> Parameters: admin1(String)
+2025-09-12 17:03:46.988 [http-nio-8080-exec-6] DEBUG c.q.p.m.UserMapper.countByUsername - <==      Total: 1
+2025-09-12 17:03:46.989 [http-nio-8080-exec-6] DEBUG c.q.p.mapper.UserMapper.countByPhone - ==>  Preparing: SELECT COUNT(*) FROM users WHERE phone = ?
+2025-09-12 17:03:46.989 [http-nio-8080-exec-6] DEBUG c.q.p.mapper.UserMapper.countByPhone - ==> Parameters: 18811111111(String)
+2025-09-12 17:03:46.991 [http-nio-8080-exec-6] DEBUG c.q.p.mapper.UserMapper.countByPhone - <==      Total: 1
+2025-09-12 17:03:46.991 [http-nio-8080-exec-6] DEBUG c.q.project.mapper.UserMapper.insert - ==>  Preparing: INSERT INTO users(username, password, phone, email, user_role, user_status, avatar, create_time) VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+2025-09-12 17:03:46.992 [http-nio-8080-exec-6] DEBUG c.q.project.mapper.UserMapper.insert - ==> Parameters: admin1(String), 123456(String), 18811111111(String), (String), 4(Integer), 1(Integer), /uploads/images/2025/09/12/326d0d01f99d470b9c53b1d849dc3af2.jpg(String), 2025-09-12T17:03:46.991344500(LocalDateTime)
+2025-09-12 17:03:46.997 [http-nio-8080-exec-6] DEBUG c.q.project.mapper.UserMapper.insert - <==    Updates: 1
+2025-09-12 17:03:46.999 [http-nio-8080-exec-6] INFO  c.q.p.service.impl.UserServiceImpl - 成功添加用户，ID: 8, 用户名: admin1
+2025-09-12 17:03:47.024 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-12 17:03:47.025 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-12 17:03:47.028 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-12 17:03:47.028 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 17:03:47.030 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 17:03:47.030 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-12 17:03:47.030 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 17:03:47.032 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 5
+2025-09-12 17:03:47.077 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-09-12 17:03:47.077 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-09-12 17:03:54.683 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/8
+2025-09-12 17:03:54.685 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/8
+2025-09-12 17:03:54.688 [http-nio-8080-exec-5] DEBUG c.q.p.mapper.UserMapper.selectById - ==>  Preparing: SELECT * FROM users WHERE id = ?
+2025-09-12 17:03:54.688 [http-nio-8080-exec-5] DEBUG c.q.p.mapper.UserMapper.selectById - ==> Parameters: 8(Integer)
+2025-09-12 17:03:54.689 [http-nio-8080-exec-5] DEBUG c.q.p.mapper.UserMapper.selectById - <==      Total: 1
+2025-09-12 17:03:54.690 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.countByUsernameExcludeId - ==>  Preparing: SELECT COUNT(*) FROM users WHERE username = ? AND id != ?
+2025-09-12 17:03:54.690 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.countByUsernameExcludeId - ==> Parameters: admin1(String), 8(Integer)
+2025-09-12 17:03:54.690 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.countByUsernameExcludeId - <==      Total: 1
+2025-09-12 17:03:54.691 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.countByPhoneExcludeId - ==>  Preparing: SELECT COUNT(*) FROM users WHERE phone = ? AND id != ?
+2025-09-12 17:03:54.691 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.countByPhoneExcludeId - ==> Parameters: 18811111111(String), 8(Integer)
+2025-09-12 17:03:54.691 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.countByPhoneExcludeId - <==      Total: 1
+2025-09-12 17:03:54.694 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.update - ==>  Preparing: UPDATE users SET username = ?, phone = ?, email = ?, user_role = ?, user_status = ?, avatar = ?, update_time = ? WHERE id = ?
+2025-09-12 17:03:54.695 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.update - ==> Parameters: admin1(String), 18811111111(String), (String), 4(Integer), 1(Integer), /uploads/images/2025/09/12/326d0d01f99d470b9c53b1d849dc3af2.jpg(String), 2025-09-12T17:03:54.692266300(LocalDateTime), 8(Integer)
+2025-09-12 17:03:54.697 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.update - <==    Updates: 1
+2025-09-12 17:03:54.697 [http-nio-8080-exec-5] INFO  c.q.p.service.impl.UserServiceImpl - 成功更新用户，ID: 8, 用户名: admin1
+2025-09-12 17:03:54.714 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-09-12 17:03:54.716 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-09-12 17:03:54.718 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-09-12 17:03:54.719 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-12 17:03:54.720 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-12 17:03:54.720 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-09-12 17:03:54.720 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-12 17:03:54.722 [http-nio-8080-exec-7] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 5

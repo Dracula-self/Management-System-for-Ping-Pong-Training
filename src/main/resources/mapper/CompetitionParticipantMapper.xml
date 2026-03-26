@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.CompetitionParticipantMapper">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.quan.project.entity.CompetitionParticipant">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="competition_id" property="competitionId" jdbcType="INTEGER"/>
+        <result column="student_id" property="studentId" jdbcType="INTEGER"/>
+        <result column="group_level" property="groupLevel" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 扩展结果映射（包含学员信息和比赛信息） -->
+    <resultMap id="ParticipantVOResultMap" type="com.quan.project.vo.CompetitionParticipantVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="competition_id" property="competitionId" jdbcType="INTEGER"/>
+        <result column="student_id" property="studentId" jdbcType="INTEGER"/>
+        <result column="group_level" property="groupLevel" jdbcType="INTEGER"/>
+        <result column="student_name" property="studentName" jdbcType="VARCHAR"/>
+        <result column="student_username" property="studentUsername" jdbcType="VARCHAR"/>
+        <result column="campus_name" property="campusName" jdbcType="VARCHAR"/>
+        <result column="student_phone" property="studentPhone" jdbcType="VARCHAR"/>
+        <result column="competition_name" property="competitionName" jdbcType="VARCHAR"/>
+        <result column="competition_date" property="competitionDate" jdbcType="VARCHAR"/>
+        <result column="competition_status" property="competitionStatus" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 基础字段 -->
+    <sql id="Base_Column_List">
+        id, competition_id, student_id, group_level
+    </sql>
+
+    <!-- 插入参赛者记录 -->
+    <insert id="insert" parameterType="com.quan.project.entity.CompetitionParticipant" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO competition_participants (competition_id, student_id, group_level)
+        VALUES (#{competitionId}, #{studentId}, #{groupLevel})
+    </insert>
+
+    <!-- 根据ID删除参赛者记录 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM competition_participants WHERE id = #{id}
+    </delete>
+
+    <!-- 根据比赛ID和学员ID删除参赛者记录 -->
+    <delete id="deleteByCompetitionAndStudent">
+        DELETE FROM competition_participants 
+        WHERE competition_id = #{competitionId} AND student_id = #{studentId}
+    </delete>
+
+    <!-- 根据ID查询参赛者记录 -->
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM competition_participants
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据比赛ID查询参赛者列表（包含学员信息） -->
+    <select id="selectByCompetitionId" parameterType="java.lang.Integer" resultMap="ParticipantVOResultMap">
+        SELECT 
+            cp.id,
+            cp.competition_id,
+            cp.student_id,
+            cp.group_level,
+            u.real_name AS student_name,
+            u.username AS student_username,
+            u.phone AS student_phone,
+            c.name AS campus_name,
+            comp.name AS competition_name,
+            comp.competition_date,
+            comp.status AS competition_status
+        FROM competition_participants cp
+        LEFT JOIN users u ON cp.student_id = u.id
+        LEFT JOIN campus c ON u.campus_id = c.id
+        LEFT JOIN competitions comp ON cp.competition_id = comp.id
+        WHERE cp.competition_id = #{competitionId}
+        ORDER BY cp.group_level ASC, u.real_name ASC
+    </select>
+
+    <!-- 根据学员ID查询参赛记录列表 -->
+    <select id="selectByStudentId" parameterType="java.lang.Integer" resultMap="ParticipantVOResultMap">
+        SELECT 
+            cp.id,
+            cp.competition_id,
+            cp.student_id,
+            cp.group_level,
+            u.real_name AS student_name,
+            u.username AS student_username,
+            u.phone AS student_phone,
+            c.name AS campus_name,
+            comp.name AS competition_name,
+            comp.competition_date,
+            comp.status AS competition_status
+        FROM competition_participants cp
+        LEFT JOIN users u ON cp.student_id = u.id
+        LEFT JOIN campus c ON u.campus_id = c.id
+        LEFT JOIN competitions comp ON cp.competition_id = comp.id
+        WHERE cp.student_id = #{studentId}
+        ORDER BY cp.id DESC
+    </select>
+
+    <!-- 检查学员是否已报名该比赛 -->
+    <select id="countByCompetitionAndStudent" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM competition_participants
+        WHERE competition_id = #{competitionId} AND student_id = #{studentId}
+    </select>
+
+    <!-- 统计比赛报名人数 -->
+    <select id="countByCompetitionId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM competition_participants
+        WHERE competition_id = #{competitionId}
+    </select>
+
+</mapper>

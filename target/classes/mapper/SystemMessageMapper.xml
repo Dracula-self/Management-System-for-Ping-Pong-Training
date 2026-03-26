@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.SystemMessageMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="SystemMessageResultMap" type="com.quan.project.entity.SystemMessage">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="type" column="type"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- 插入系统消息 -->
+    <insert id="insert" parameterType="com.quan.project.entity.SystemMessage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_messages (title, content, type, status, create_time)
+        VALUES (#{title}, #{content}, #{type}, #{status}, NOW())
+    </insert>
+
+    <!-- 根据ID更新系统消息 -->
+    <update id="updateById" parameterType="com.quan.project.entity.SystemMessage">
+        UPDATE system_messages 
+        SET title = #{title}, 
+            content = #{content}, 
+            type = #{type}, 
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除系统消息 -->
+    <delete id="deleteById">
+        DELETE FROM system_messages WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID查询系统消息 -->
+    <select id="selectById" resultMap="SystemMessageResultMap">
+        SELECT * FROM system_messages WHERE id = #{id}
+    </select>
+
+    <!-- 分页查询系统消息（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="SystemMessageResultMap">
+        SELECT * FROM system_messages
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.title != null and request.params.title != '' and request.params.title.trim() != ''">
+                    AND title LIKE CONCAT('%', #{request.params.title}, '%')
+                </if>
+                <if test="request.params.content != null and request.params.content != '' and request.params.content.trim() != ''">
+                    AND content LIKE CONCAT('%', #{request.params.content}, '%')
+                </if>
+                <if test="request.params.type != null">
+                    AND type = #{request.params.type}
+                </if>
+                <if test="request.params.status != null">
+                    AND status = #{request.params.status}
+                </if>
+                <if test="request.params.startDate != null">
+                    AND DATE(create_time) >= #{request.params.startDate}
+                </if>
+                <if test="request.params.endDate != null">
+                    AND DATE(create_time) &lt;= #{request.params.endDate}
+                </if>
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据状态查询消息 -->
+    <select id="selectByStatus" resultMap="SystemMessageResultMap">
+        SELECT * FROM system_messages WHERE status = #{status} ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据类型查询消息 -->
+    <select id="selectByType" resultMap="SystemMessageResultMap">
+        SELECT * FROM system_messages WHERE type = #{type} ORDER BY create_time DESC
+    </select>
+
+    <!-- 删除已归档消息（超过指定天数） -->
+    <delete id="deleteArchivedMessages">
+        DELETE FROM system_messages 
+        WHERE status = 3 AND create_time &lt; DATE_SUB(NOW(), INTERVAL #{days} DAY)
+    </delete>
+
+</mapper>

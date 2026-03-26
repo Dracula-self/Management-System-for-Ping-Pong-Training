@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首页</title>
+  <!-- Element Plus CSS -->
+  <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+  <!-- Iconify 图标 -->
+  <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+  <!-- Vue 3 -->
+  <script src="/common/plugins/vue/vue.global.js"></script>
+  <!-- Element Plus -->
+  <script src="/common/plugins/element-plus/index.full.min.js"></script>
+
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="max-w-3xl mx-auto my-12 text-center">
+      <!-- 欢迎卡片 -->
+      <div class="bg-gradient-to-br from-indigo-400 to-purple-600 text-white rounded-xl p-10 md:p-16 shadow-xl">
+        <div class="text-4xl font-semibold mb-4">欢迎使用后台管理系统</div>
+        <div class="text-lg opacity-90 leading-relaxed">
+          一个简单、高效的后台管理解决方案<br />
+          让后台管理变得更加轻松便捷
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    const app = createApp({
+      data() {
+        return {
+          // 简单的数据
+        };
+      },
+      mounted() {
+        console.log("仪表盘页面加载完成");
+      },
+    });
+
+    app.use(ElementPlus);
+    app.mount("#app");
+  </script>
+</body>
+
+</html>

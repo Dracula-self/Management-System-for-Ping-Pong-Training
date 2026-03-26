@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>训练评价管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+
+        .evaluation-card {
+            transition: all 0.3s ease;
+        }
+
+        .evaluation-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-content {
+            max-height: 100px;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending-student {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-pending-coach {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-no-evaluation {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__evaluations" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="学员姓名">
+                            <el-input v-model="searchParams.studentName" placeholder="请输入学员姓名" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="教练姓名">
+                            <el-input v-model="searchParams.coachName" placeholder="请输入教练姓名" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="评价状态">
+                            <el-select v-model="searchParams.evaluationStatus" placeholder="请选择评价状态" clearable
+                                style="width: 178px;">
+                                <el-option label="已完成" value="completed"></el-option>
+                                <el-option label="待学员评价" value="pending-student"></el-option>
+                                <el-option label="待教练评价" value="pending-coach"></el-option>
+                                <el-option label="未评价" value="no-evaluation"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="课程日期">
+                            <el-date-picker v-model="searchParams.courseDate" type="date" placeholder="请选择课程日期"
+                                value-format="YYYY-MM-DD" style="width: 178px;"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div>
+                        <el-button type="primary" @click="handleRefresh">
+                            <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新数据
+                        </el-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价列表 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium">训练评价列表</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">共 {{ pagination.total }} 条记录</span>
+                        <el-button size="small" @click="loadEvaluationsList">
+                            <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                        </el-button>
+                    </div>
+                </div>
+
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无评价数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="评价ID" width="80"></el-table-column>
+                    <el-table-column prop="appointmentId" label="预约ID" width="80"></el-table-column>
+                    <el-table-column prop="studentName" label="学员姓名" width="120"></el-table-column>
+                    <el-table-column prop="coachName" label="教练姓名" width="120"></el-table-column>
+                    <el-table-column prop="courseDate" label="课程日期" width="120"></el-table-column>
+                    <el-table-column prop="courseTime" label="课程时间" width="140"></el-table-column>
+                    <el-table-column label="评价状态" width="120">
+                        <template #default="scope">
+                            <span :class="['status-badge', getStatusClass(scope.row)]">
+                                {{ getStatusText(scope.row) }}
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="studentFeedback" label="学员评价" min-width="200">
+                        <template #default="scope">
+                            <div v-if="scope.row.studentFeedback" class="feedback-content">
+                                {{ scope.row.studentFeedback }}
+                            </div>
+                            <span v-else class="text-gray-400 text-sm">暂无评价</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="coachFeedback" label="教练评价" min-width="200">
+                        <template #default="scope">
+                            <div v-if="scope.row.coachFeedback" class="feedback-content">
+                                {{ scope.row.coachFeedback }}
+                            </div>
+                            <span v-else class="text-gray-400 text-sm">暂无评价</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="createTime" label="评价时间" width="180"></el-table-column>
+                    <el-table-column label="操作" width="320" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2">
+                                <el-button size="small" @click="handleView(scope.row)">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="mr-1"></iconify-icon>查看
+                                </el-button>
+                                <el-button size="small" type="primary" @click="handleEdit(scope.row)"
+                                    v-if="canEdit(scope.row)">
+                                    <iconify-icon icon="mdi:pencil" width="16" height="16"
+                                        class="mr-1"></iconify-icon>编辑
+                                </el-button>
+                                <el-button size="small" type="danger" @click="handleDelete(scope.row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 查看评价详情对话框 -->
+            <el-dialog title="评价详情" v-model="viewDialogVisible" width="800px">
+                <div v-if="viewEvaluation">
+                    <el-descriptions :column="2" border class="mb-4">
+                        <el-descriptions-item label="评价ID">{{ viewEvaluation.id }}</el-descriptions-item>
+                        <el-descriptions-item label="预约ID">{{ viewEvaluation.appointmentId }}</el-descriptions-item>
+                        <el-descriptions-item label="学员姓名">{{ viewEvaluation.studentName }}</el-descriptions-item>
+                        <el-descriptions-item label="教练姓名">{{ viewEvaluation.coachName }}</el-descriptions-item>
+                        <el-descriptions-item label="课程日期">{{ viewEvaluation.courseDate }}</el-descriptions-item>
+                        <el-descriptions-item label="课程时间">{{ viewEvaluation.courseTime }}</el-descriptions-item>
+                        <el-descriptions-item label="评价状态" :span="2">
+                            <span :class="['status-badge', getStatusClass(viewEvaluation)]">
+                                {{ getStatusText(viewEvaluation) }}
+                            </span>
+                        </el-descriptions-item>
+                        <el-descriptions-item label="评价时间" :span="2">{{ viewEvaluation.createTime
+                            }}</el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-divider content-position="left">评价内容</el-divider>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <el-card>
+                            <template #header>
+                                <div class="flex items-center">
+                                    <iconify-icon icon="mdi:account-student" width="20" height="20"
+                                        class="mr-2 text-blue-500"></iconify-icon>
+                                    <span class="font-medium">学员评价</span>
+                                </div>
+                            </template>
+                            <div v-if="viewEvaluation.studentFeedback"
+                                class="whitespace-pre-wrap text-sm leading-relaxed">
+                                {{ viewEvaluation.studentFeedback }}
+                            </div>
+                            <div v-else class="text-gray-400 text-center py-8">
+                                <iconify-icon icon="mdi:comment-outline" width="48" height="48"
+                                    class="mb-2"></iconify-icon>
+                                <p>学员暂未评价</p>
+                            </div>
+                        </el-card>
+
+                        <el-card>
+                            <template #header>
+                                <div class="flex items-center">
+                                    <iconify-icon icon="mdi:account-tie" width="20" height="20"
+                                        class="mr-2 text-green-500"></iconify-icon>
+                                    <span class="font-medium">教练评价</span>
+                                </div>
+                            </template>
+                            <div v-if="viewEvaluation.coachFeedback"
+                                class="whitespace-pre-wrap text-sm leading-relaxed">
+                                {{ viewEvaluation.coachFeedback }}
+                            </div>
+                            <div v-else class="text-gray-400 text-center py-8">
+                                <iconify-icon icon="mdi:comment-outline" width="48" height="48"
+                                    class="mb-2"></iconify-icon>
+                                <p>教练暂未评价</p>
+                            </div>
+                        </el-card>
+                    </div>
+                </div>
+            </el-dialog>
+
+            <!-- 编辑评价对话框 -->
+            <el-dialog title="编辑评价" v-model="editDialogVisible" width="600px">
+                <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="100px">
+                    <el-form-item label="预约信息">
+                        <div class="text-sm text-gray-600">
+                            <p>学员：{{ editForm.studentName }}</p>
+                            <p>教练：{{ editForm.coachName }}</p>
+                            <p>时间：{{ editForm.courseDate }} {{ editForm.courseTime }}</p>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="学员评价" prop="studentFeedback">
+                        <el-input v-model="editForm.studentFeedback" type="textarea" :rows="4"
+                            placeholder="请输入学员对本次训练的收获和教训"></el-input>
+                    </el-form-item>
+                    <el-form-item label="教练评价" prop="coachFeedback">
+                        <el-input v-model="editForm.coachFeedback" type="textarea" :rows="4"
+                            placeholder="请输入教练对学员表现的评价和建议"></el-input>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="editDialogVisible = false">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="handleUpdateSubmit" :loading="updateLoading">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>保存
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 查询参数
+                    searchParams: {
+                        studentName: "",
+                        coachName: "",
+                        evaluationStatus: undefined,
+                        courseDate: undefined
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 查看详情对话框
+                    viewDialogVisible: false,
+                    viewEvaluation: null,
+                    // 编辑对话框
+                    editDialogVisible: false,
+                    editForm: {
+                        id: undefined,
+                        appointmentId: undefined,
+                        studentName: "",
+                        coachName: "",
+                        courseDate: "",
+                        courseTime: "",
+                        studentFeedback: "",
+                        coachFeedback: ""
+                    },
+                    editRules: {
+                        studentFeedback: [
+                            { max: 500, message: "学员评价不能超过500字", trigger: "blur" }
+                        ],
+                        coachFeedback: [
+                            { max: 500, message: "教练评价不能超过500字", trigger: "blur" }
+                        ]
+                    },
+                    updateLoading: false
+                };
+            },
+
+            methods: {
+                // 加载评价列表
+                async loadEvaluationsList() {
+                    this.loading = true;
+                    try {
+                        const response = await apiClient.post('/evaluations/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.searchParams
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                        } else {
+                            this.$message.error(response.message || '获取评价列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取评价列表失败:', error);
+                        this.$message.error('获取评价列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadEvaluationsList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        studentName: "",
+                        coachName: "",
+                        evaluationStatus: undefined,
+                        courseDate: undefined
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadEvaluationsList();
+                },
+
+                // 刷新
+                handleRefresh() {
+                    this.loadEvaluationsList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadEvaluationsList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadEvaluationsList();
+                },
+
+                // 查看详情
+                handleView(row) {
+                    this.viewEvaluation = { ...row };
+                    this.viewDialogVisible = true;
+                },
+
+                // 编辑评价
+                handleEdit(row) {
+                    this.editForm = { ...row };
+                    this.editDialogVisible = true;
+                },
+
+                // 提交更新
+                async handleUpdateSubmit() {
+                    try {
+                        const valid = await this.$refs.editFormRef.validate();
+                        if (!valid) return;
+
+                        this.updateLoading = true;
+
+                        const response = await apiClient.put(`/evaluations/${this.editForm.id}`, {
+                            studentFeedback: this.editForm.studentFeedback,
+                            coachFeedback: this.editForm.coachFeedback
+                        });
+
+                        if (response.code === 200) {
+                            this.$message.success('评价更新成功');
+                            this.editDialogVisible = false;
+                            this.loadEvaluationsList();
+                        } else {
+                            this.$message.error(response.message || '更新评价失败');
+                        }
+                    } catch (error) {
+                        console.error('更新评价失败:', error);
+                        this.$message.error('更新评价失败');
+                    } finally {
+                        this.updateLoading = false;
+                    }
+                },
+
+                // 删除评价
+                handleDelete(row) {
+                    this.$confirm(`确定要删除这条评价记录吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/evaluations/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('删除成功');
+                                this.loadEvaluationsList();
+                            } else {
+                                this.$message.error(response.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除评价失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+
+                // 判断是否可以编辑
+                canEdit(row) {
+                    // 管理员可以编辑所有评价
+                    return true;
+                },
+
+                // 获取评价状态样式类
+                getStatusClass(row) {
+                    if (row.studentFeedback && row.coachFeedback) {
+                        return 'status-completed';
+                    } else if (!row.studentFeedback && row.coachFeedback) {
+                        return 'status-pending-student';
+                    } else if (row.studentFeedback && !row.coachFeedback) {
+                        return 'status-pending-coach';
+                    } else {
+                        return 'status-no-evaluation';
+                    }
+                },
+
+                // 获取评价状态文本
+                getStatusText(row) {
+                    if (row.studentFeedback && row.coachFeedback) {
+                        return '已完成';
+                    } else if (!row.studentFeedback && row.coachFeedback) {
+                        return '待学员评价';
+                    } else if (row.studentFeedback && !row.coachFeedback) {
+                        return '待教练评价';
+                    } else {
+                        return '未评价';
+                    }
+                }
+            },
+
+            async mounted() {
+                await this.loadEvaluationsList();
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__evaluations");
+    </script>
+</body>
+
+</html>

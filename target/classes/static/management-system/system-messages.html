@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>系统消息管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+
+        .message-card {
+            transition: all 0.3s ease;
+        }
+
+        .message-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-preview {
+            max-height: 60px;
+            overflow: hidden;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .type-system {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .type-update {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .type-activity {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-draft {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .status-published {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-archived {
+            background-color: #fef2f2;
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__system-messages" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="消息标题">
+                            <el-input v-model="searchParams.title" placeholder="请输入消息标题" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="消息类型">
+                            <el-select v-model="searchParams.type" placeholder="请选择消息类型" clearable
+                                style="width: 178px;">
+                                <el-option label="系统通知" :value="1"></el-option>
+                                <el-option label="更新公告" :value="2"></el-option>
+                                <el-option label="活动消息" :value="3"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="状态">
+                            <el-select v-model="searchParams.status" placeholder="请选择状态" clearable
+                                style="width: 178px;">
+                                <el-option label="草稿" :value="1"></el-option>
+                                <el-option label="已发布" :value="2"></el-option>
+                                <el-option label="已归档" :value="3"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div>
+                        <el-button type="primary" @click="handleAdd">
+                            <iconify-icon icon="mdi:plus" width="16" height="16" class="mr-1"></iconify-icon>新增消息
+                        </el-button>
+                        <el-button type="success" @click="handleRefresh">
+                            <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新数据
+                        </el-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 消息列表 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium">系统消息列表</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">共 {{ pagination.total }} 条记录</span>
+                        <el-button size="small" @click="loadMessagesList">
+                            <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                        </el-button>
+                    </div>
+                </div>
+
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无消息数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="消息ID" width="80"></el-table-column>
+                    <el-table-column prop="title" label="消息标题" width="200"></el-table-column>
+                    <el-table-column label="消息类型" width="120">
+                        <template #default="scope">
+                            <span :class="['type-badge', getTypeClass(scope.row.type)]">
+                                {{ getTypeText(scope.row.type) }}
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="content" label="消息内容" min-width="300">
+                        <template #default="scope">
+                            <div class="content-preview">
+                                {{ scope.row.content }}
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="状态" width="100">
+                        <template #default="scope">
+                            <span :class="['status-badge', getStatusClass(scope.row.status)]">
+                                {{ getStatusText(scope.row.status) }}
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+                    <el-table-column label="操作" width="360" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2">
+                                <el-button size="small" @click="handleView(scope.row)">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="mr-1"></iconify-icon>查看
+                                </el-button>
+                                <el-button size="small" type="primary" @click="handleEdit(scope.row)">
+                                    <iconify-icon icon="mdi:pencil" width="16" height="16"
+                                        class="mr-1"></iconify-icon>编辑
+                                </el-button>
+                                <el-button size="small" type="success" @click="handlePublish(scope.row)"
+                                    v-if="scope.row.status === 1">
+                                    <iconify-icon icon="mdi:publish" width="16" height="16"
+                                        class="mr-1"></iconify-icon>发布
+                                </el-button>
+                                <el-button size="small" type="warning" @click="handleArchive(scope.row)"
+                                    v-if="scope.row.status === 2">
+                                    <iconify-icon icon="mdi:archive" width="16" height="16"
+                                        class="mr-1"></iconify-icon>归档
+                                </el-button>
+                                <el-button size="small" type="danger" @click="handleDelete(scope.row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 查看消息详情对话框 -->
+            <el-dialog title="消息详情" v-model="viewDialogVisible" width="800px">
+                <div v-if="viewMessage">
+                    <el-descriptions :column="2" border class="mb-4">
+                        <el-descriptions-item label="消息ID">{{ viewMessage.id }}</el-descriptions-item>
+                        <el-descriptions-item label="消息标题">{{ viewMessage.title }}</el-descriptions-item>
+                        <el-descriptions-item label="消息类型">
+                            <span :class="['type-badge', getTypeClass(viewMessage.type)]">
+                                {{ getTypeText(viewMessage.type) }}
+                            </span>
+                        </el-descriptions-item>
+                        <el-descriptions-item label="状态">
+                            <span :class="['status-badge', getStatusClass(viewMessage.status)]">
+                                {{ getStatusText(viewMessage.status) }}
+                            </span>
+                        </el-descriptions-item>
+                        <el-descriptions-item label="创建时间" :span="2">{{ viewMessage.createTime }}</el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-divider content-position="left">消息内容</el-divider>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="whitespace-pre-wrap text-sm leading-relaxed">
+                            {{ viewMessage.content }}
+                        </div>
+                    </div>
+                </div>
+            </el-dialog>
+
+            <!-- 新增/编辑消息对话框 -->
+            <el-dialog :title="dialogTitle" v-model="dialogVisible" width="700px">
+                <el-form ref="messageFormRef" :model="messageForm" :rules="messageRules" label-width="100px">
+                    <el-form-item label="消息标题" prop="title">
+                        <el-input v-model="messageForm.title" placeholder="请输入消息标题"></el-input>
+                    </el-form-item>
+                    <el-form-item label="消息类型" prop="type">
+                        <el-select v-model="messageForm.type" placeholder="请选择消息类型" style="width: 100%">
+                            <el-option label="系统通知" :value="1"></el-option>
+                            <el-option label="更新公告" :value="2"></el-option>
+                            <el-option label="活动消息" :value="3"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="状态" prop="status">
+                        <el-select v-model="messageForm.status" placeholder="请选择状态" style="width: 100%">
+                            <el-option label="草稿" :value="1"></el-option>
+                            <el-option label="已发布" :value="2"></el-option>
+                            <el-option label="已归档" :value="3"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="消息内容" prop="content">
+                        <el-input v-model="messageForm.content" type="textarea" :rows="6"
+                            placeholder="请输入消息内容"></el-input>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="dialogVisible = false">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>{{
+                            isEdit ? '更新' : '创建' }}
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 查询参数
+                    searchParams: {
+                        title: "",
+                        type: undefined,
+                        status: undefined
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 查看详情对话框
+                    viewDialogVisible: false,
+                    viewMessage: null,
+                    // 新增/编辑对话框
+                    dialogVisible: false,
+                    dialogTitle: "新增消息",
+                    isEdit: false,
+                    submitLoading: false,
+                    messageForm: {
+                        id: undefined,
+                        title: "",
+                        content: "",
+                        type: 1,
+                        status: 2
+                    },
+                    messageRules: {
+                        title: [
+                            { required: true, message: '请输入消息标题', trigger: 'blur' },
+                            { max: 100, message: '标题不能超过100字', trigger: 'blur' }
+                        ],
+                        type: [
+                            { required: true, message: '请选择消息类型', trigger: 'change' }
+                        ],
+                        status: [
+                            { required: true, message: '请选择状态', trigger: 'change' }
+                        ],
+                        content: [
+                            { required: true, message: '请输入消息内容', trigger: 'blur' },
+                            { max: 2000, message: '内容不能超过2000字', trigger: 'blur' }
+                        ]
+                    }
+                };
+            },
+
+            methods: {
+                // 加载消息列表
+                async loadMessagesList() {
+                    this.loading = true;
+                    try {
+                        const response = await apiClient.post('/system-messages/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.searchParams
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                        } else {
+                            this.$message.error(response.message || '获取消息列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取消息列表失败:', error);
+                        this.$message.error('获取消息列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadMessagesList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        title: "",
+                        type: undefined,
+                        status: undefined
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadMessagesList();
+                },
+
+                // 刷新
+                handleRefresh() {
+                    this.loadMessagesList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadMessagesList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadMessagesList();
+                },
+
+                // 查看详情
+                handleView(row) {
+                    this.viewMessage = { ...row };
+                    this.viewDialogVisible = true;
+                },
+
+                // 新增消息
+                handleAdd() {
+                    this.isEdit = false;
+                    this.dialogTitle = "新增消息";
+                    this.messageForm = {
+                        id: undefined,
+                        title: "",
+                        content: "",
+                        type: 1,
+                        status: 2
+                    };
+                    this.dialogVisible = true;
+                },
+
+                // 编辑消息
+                handleEdit(row) {
+                    this.isEdit = true;
+                    this.dialogTitle = "编辑消息";
+                    this.messageForm = { ...row };
+                    this.dialogVisible = true;
+                },
+
+                // 提交表单
+                async handleSubmit() {
+                    try {
+                        const valid = await this.$refs.messageFormRef.validate();
+                        if (!valid) return;
+
+                        this.submitLoading = true;
+
+                        const url = this.isEdit ? `/system-messages/${this.messageForm.id}` : '/system-messages';
+                        const method = this.isEdit ? 'put' : 'post';
+
+                        const response = await apiClient[method](url, this.messageForm);
+
+                        if (response.code === 200) {
+                            this.$message.success(this.isEdit ? '更新成功' : '创建成功');
+                            this.dialogVisible = false;
+                            this.loadMessagesList();
+                        } else {
+                            this.$message.error(response.message || (this.isEdit ? '更新失败' : '创建失败'));
+                        }
+                    } catch (error) {
+                        console.error('提交失败:', error);
+                        this.$message.error(this.isEdit ? '更新失败' : '创建失败');
+                    } finally {
+                        this.submitLoading = false;
+                    }
+                },
+
+                // 发布消息
+                async handlePublish(row) {
+                    this.$confirm('确定要发布这条消息吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'info',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.put(`/system-messages/${row.id}`, {
+                                ...row,
+                                status: 2
+                            });
+                            if (response.code === 200) {
+                                this.$message.success('发布成功');
+                                this.loadMessagesList();
+                            } else {
+                                this.$message.error(response.message || '发布失败');
+                            }
+                        } catch (error) {
+                            console.error('发布失败:', error);
+                            this.$message.error('发布失败');
+                        }
+                    });
+                },
+
+                // 归档消息
+                async handleArchive(row) {
+                    this.$confirm('确定要归档这条消息吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.put(`/system-messages/${row.id}`, {
+                                ...row,
+                                status: 3
+                            });
+                            if (response.code === 200) {
+                                this.$message.success('归档成功');
+                                this.loadMessagesList();
+                            } else {
+                                this.$message.error(response.message || '归档失败');
+                            }
+                        } catch (error) {
+                            console.error('归档失败:', error);
+                            this.$message.error('归档失败');
+                        }
+                    });
+                },
+
+                // 删除消息
+                handleDelete(row) {
+                    this.$confirm(`确定要删除消息"${row.title}"吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/system-messages/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('删除成功');
+                                this.loadMessagesList();
+                            } else {
+                                this.$message.error(response.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+
+                // 获取消息类型样式类
+                getTypeClass(type) {
+                    const typeMap = {
+                        1: 'type-system',
+                        2: 'type-update',
+                        3: 'type-activity'
+                    };
+                    return typeMap[type] || 'type-system';
+                },
+
+                // 获取消息类型文本
+                getTypeText(type) {
+                    const typeMap = {
+                        1: '系统通知',
+                        2: '更新公告',
+                        3: '活动消息'
+                    };
+                    return typeMap[type] || '未知';
+                },
+
+                // 获取状态样式类
+                getStatusClass(status) {
+                    const statusMap = {
+                        1: 'status-draft',
+                        2: 'status-published',
+                        3: 'status-archived'
+                    };
+                    return statusMap[status] || 'status-draft';
+                },
+
+                // 获取状态文本
+                getStatusText(status) {
+                    const statusMap = {
+                        1: '草稿',
+                        2: '已发布',
+                        3: '已归档'
+                    };
+                    return statusMap[status] || '未知';
+                }
+            },
+
+            async mounted() {
+                await this.loadMessagesList();
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__system-messages");
+    </script>
+</body>
+
+</html>

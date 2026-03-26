@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>后台管理系统</title>
+  <!-- Element Plus CSS -->
+  <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+  <!-- Iconify 图标 -->
+  <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+  <script src="/common/plugins/vue/vue.global.js"></script>
+  <script src="/common/plugins/element-plus/index.full.js"></script>
+  <script src="/common/plugins/axios/axios.min.js"></script>
+  <script src="/common/js/axios-config.js"></script>
+  <style>
+    /* 全局样式 */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* iframe样式 */
+    .content-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* 菜单项激活状态 */
+    .menu-item.active {
+      background-color: #2563eb;
+      color: white;
+      border-right-width: 4px;
+      border-right-color: #60a5fa;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+  <div id="app">
+    <div class="flex flex-col h-screen">
+      <!-- 顶部导航栏 -->
+      <header class="h-16 bg-gray-800 flex items-center justify-between px-5 text-white shadow-md">
+        <div class="flex items-center">
+          <span class="text-xl font-semibold">乒乓球培训管理系统</span>
+        </div>
+
+        <div class="flex items-center">
+          <div class="flex items-center mr-4 px-3 py-2 rounded-lg hover:bg-gray-700 cursor-pointer">
+            <!-- 显示用户头像，如果有 -->
+            <div v-if="userInfo && userInfo.avatar" class="w-8 h-8 rounded-full overflow-hidden mr-3">
+              <img :src="userInfo.avatar" class="w-full h-full object-cover" alt="用户头像" />
+            </div>
+            <!-- 如果没有头像，显示默认图标或首字母 -->
+            <div v-else class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center mr-3">
+              <iconify-icon icon="mdi:account" width="16" height="16" class="text-white"></iconify-icon>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-white text-sm font-medium">{{ userDisplayName }}</span>
+              <span class="text-gray-400">|</span>
+              <span class="text-gray-300 text-sm">{{ userInfo ? userInfo.username : '' }}</span>
+              <span class="text-gray-400">|</span>
+              <el-tag :type="getRoleTagType(userInfo ? userInfo.userRole : 0)" size="small" class="!text-xs">
+                {{ getRoleText(userInfo ? userInfo.userRole : 0) }}
+              </el-tag>
+            </div>
+          </div>
+          <el-button type="danger" size="small" @click="handleLogout">
+            <iconify-icon icon="mdi:logout" width="16" height="16" class="mr-1"></iconify-icon>
+            退出登录
+          </el-button>
+        </div>
+      </header>
+
+      <!-- 主体内容区 -->
+      <main class="flex flex-1 overflow-hidden">
+        <!-- 左侧菜单 -->
+        <aside class="w-52 bg-gray-800 text-gray-300">
+          <!-- 菜单列表 -->
+          <nav class="py-2">
+            <div v-for="(item, index) in menuItems" :key="index" :class="['menu-item flex items-center px-5 py-3 cursor-pointer hover:bg-gray-700 hover:text-white', 
+                  currentPath === item.path ? 'active' : '']" @click="navigateTo(item.path, item.title)">
+              <iconify-icon :icon="item.icon" width="16" height="16" class="mr-3"></iconify-icon>
+              <span class="text-sm">{{ item.title }}</span>
+            </div>
+          </nav>
+        </aside>
+
+        <!-- 右侧内容区 -->
+        <section class="flex-1 flex flex-col overflow-hidden">
+          <!-- 面包屑导航 -->
+          <div class="h-12 bg-white shadow-sm flex items-center px-5">
+            <div class="flex items-center text-gray-600">
+              <iconify-icon icon="mdi:home" width="16" height="16" class="mr-2 text-gray-400"></iconify-icon>
+              <span class="text-gray-400 mr-2">后台管理</span>
+              <iconify-icon icon="mdi:chevron-right" width="16" height="16" class="mr-2 text-gray-400"></iconify-icon>
+              <span class="font-medium">{{ currentTitle }}</span>
+            </div>
+          </div>
+
+          <!-- iframe 内容区 -->
+          <div class="flex-1 overflow-hidden">
+            <iframe ref="contentIframe" class="content-iframe" :src="currentSrc" frameborder="0"></iframe>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref, reactive, computed, onMounted } = Vue;
+
+    const app = createApp({
+      data() {
+        return {
+          currentPath: this.getStoredPath() || "/home",
+          currentTitle: this.getStoredTitle() || "首页",
+          userDisplayName: "管理员",
+          userAvatar: "无",
+          userInfo: null,
+          allMenuItems: [
+            { path: "/home", title: "首页", icon: "mdi:view-dashboard", roles: [1, 2, 3, 4] },
+            { path: "/campus", title: "校区管理", icon: "mdi:office-building", roles: [1] },
+            { path: "/users", title: "用户管理", icon: "mdi:account-group", roles: [1] },
+            { path: "/appointments", title: "预约管理", icon: "mdi:calendar-clock", roles: [2, 3, 4] },
+            { path: "/my-schedule", title: "我的课表", icon: "mdi:calendar-check", roles: [3] }, // ← 添加这行（仅教练可见）
+            { path: "/coach-relations", title: "师生关系", icon: "mdi:account-heart", roles: [3, 4] },
+            { path: "/evaluations", title: "训练评价", icon: "mdi:comment-text", roles: [2, 3, 4] },
+            { path: "/competitions", title: "比赛管理", icon: "mdi:trophy", roles: [2] },
+            { path: "/my-competitions", title: "我的比赛", icon: "mdi:trophy-variant", roles: [4] },
+            { path: "/transactions", title: "流水管理", icon: "mdi:format-list-bulleted", roles: [2] },
+            { path: "/my-transactions", title: "我的流水", icon: "mdi:receipt", roles: [4] },
+            { path: "/tables", title: "球台管理", icon: "mdi:table-tennis", roles: [2] },
+            { path: "/system-messages", title: "系统消息", icon: "mdi:message-text", roles: [1, 2] },
+            { path: "/system-logs", title: "系统日志", icon: "mdi:file-document-outline", roles: [1, 2] },
+          ],
+          menuItems: [],
+        };
+      },
+
+      computed: {
+        currentSrc() {
+          const pathMap = {
+            "/home": "/management-system/home.html",
+            "/campus": "/management-system/campus.html",
+            "/users": "/management-system/users.html",
+            "/appointments": "/management-system/appointments.html",
+            "/my-schedule": "/management-system/my-schedule.html", //
+            "/coach-relations": "/management-system/coach-relations.html",
+            "/evaluations": "/management-system/evaluations.html",
+            "/competitions": "/management-system/competitions.html",
+            "/my-competitions": "/management-system/my-competitions.html",
+            "/transactions": "/management-system/transactions.html",
+            "/my-transactions": "/management-system/my-transactions.html",
+            "/tables": "/management-system/tables.html",
+            "/system-messages": "/management-system/system-messages.html",
+            "/system-logs": "/management-system/system-logs.html",
+          };
+
+          return pathMap[this.currentPath] || "/management-system/home.html";
+        },
+      },
+
+      methods: {
+        // 从 sessionStorage 获取保存的路径
+        getStoredPath() {
+          return sessionStorage.getItem("management_currentPath");
+        },
+
+        // 从 sessionStorage 获取保存的标题
+        getStoredTitle() {
+          return sessionStorage.getItem("management_currentTitle");
+        },
+
+        // 保存当前路径到 sessionStorage
+        saveCurrentState(path, title) {
+          sessionStorage.setItem("management_currentPath", path);
+          sessionStorage.setItem("management_currentTitle", title);
+        },
+
+        // 导航到指定页面
+        navigateTo(path, title) {
+          this.currentPath = path;
+          this.currentTitle = title;
+          // 保存当前状态到 sessionStorage
+          this.saveCurrentState(path, title);
+        },
+
+        // 处理退出登录
+        handleLogout() {
+          this.$confirm("确定要退出登录吗？", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          })
+            .then(() => {
+              // 清理页面状态缓存
+              this.clearStoredState();
+              // 使用统一的退出登录方法
+              logout();
+            })
+            .catch(() => { });
+        },
+
+        // 清理 sessionStorage 中的状�?
+        clearStoredState() {
+          sessionStorage.removeItem("management_currentPath");
+          sessionStorage.removeItem("management_currentTitle");
+        },
+
+        // 加载用户信息
+        loadUserInfo() {
+          // 使用统一的用户信息获取方法
+          const userInfo = getCurrentUserInfo();
+          if (userInfo) {
+            // 保存用户信息到 data 中
+            this.userInfo = userInfo;
+
+            // 更新用户显示名称
+            this.userDisplayName =
+              userInfo.realName || userInfo.username || "用户";
+
+            // 如果没有头像，更新用户头像为姓名的第一个字符
+            if (!userInfo.avatar) {
+              this.userAvatar = (
+                this.userDisplayName.charAt(0) || "无"
+              ).toUpperCase();
+            }
+
+            // 根据用户角色过滤菜单
+            this.filterMenuByRole(userInfo.userRole);
+
+            console.log("用户信息加载成功:", userInfo);
+          } else {
+            console.log("未找到用户信息，可能需要重新登录");
+            // 检查是否已登录，如果没有则跳转到登录页
+            if (!isLoggedIn()) {
+              window.location.href = "/management-system/login.html";
+            }
+          }
+        },
+
+        // 根据用户角色过滤菜单
+        filterMenuByRole(userRole) {
+          this.menuItems = this.allMenuItems.filter(item => {
+            return item.roles.includes(userRole);
+          });
+
+          // 如果当前路径不在允许的菜单中，重定向到首页
+          const currentItem = this.menuItems.find(item => item.path === this.currentPath);
+          if (!currentItem) {
+            this.navigateTo("/home", "首页");
+          }
+        },
+
+        // 检查用户是否有访问某个路径的权限
+        hasPermission(path) {
+          if (!this.userInfo) return false;
+          const menuItem = this.allMenuItems.find(item => item.path === path);
+          return menuItem && menuItem.roles.includes(this.userInfo.userRole);
+        },
+
+        // 获取角色文本
+        getRoleText(role) {
+          const roleMap = {
+            1: '超级管理员',
+            2: '校区管理员',
+            3: '教练',
+            4: '学员'
+          };
+          return roleMap[role] || '未知';
+        },
+
+        // 获取角色标签类型
+        getRoleTagType(role) {
+          const typeMap = {
+            1: 'danger',
+            2: 'warning',
+            3: 'primary',
+            4: 'success'
+          };
+          return typeMap[role] || '';
+        },
+      },
+
+      mounted() {
+        console.log("后台管理系统加载完成");
+        this.loadUserInfo();
+        // 保存当前状态到 sessionStorage（确保初始状态也被保存）
+        this.saveCurrentState(this.currentPath, this.currentTitle);
+      },
+    });
+
+    app.use(ElementPlus);
+    app.mount("#app");
+  </script>
+</body>
+
+</html>

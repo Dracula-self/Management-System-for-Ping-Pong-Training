@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quan.project.mapper.UserMapper">
+
+    <!-- 基础列定义 -->
+    <sql id="Base_Column_List">
+        id, username, password, real_name, gender, age, phone, email, campus_id, 
+        user_role, user_status, avatar, achievements, coach_level, balance, create_time, update_time
+    </sql>
+
+    <!-- 结果映射 -->
+    <resultMap id="UserResultMap" type="com.quan.project.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="realName" column="real_name"/>
+        <result property="gender" column="gender"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="campusId" column="campus_id"/>
+        <result property="userRole" column="user_role"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="avatar" column="avatar"/>
+        <result property="achievements" column="achievements"/>
+        <result property="coachLevel" column="coach_level"/>
+        <result property="balance" column="balance"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 查询所有用户 -->
+    <select id="selectAll" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users ORDER BY id DESC
+    </select>
+
+    <!-- 分页查询用户列表 -->
+    <select id="selectPage" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users ORDER BY id DESC
+    </select>
+
+    <!-- 分页搜索用户（根据用户名模糊查询） -->
+    <select id="selectByUsernameLikePage" parameterType="java.lang.String" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE username LIKE CONCAT('%', #{username}, '%') ORDER BY id DESC
+    </select>
+
+    <!-- 根据ID查询用户 -->
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE id = #{id}
+    </select>
+
+    <!-- 根据用户名查询用户 -->
+    <select id="selectByUsername" parameterType="java.lang.String" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE username = #{username}
+    </select>
+
+    <!-- 根据邮箱查询用户 -->
+    <select id="selectByEmail" parameterType="java.lang.String" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE email = #{email}
+    </select>
+
+    <!-- 根据手机号查询用户 -->
+    <select id="selectByPhone" parameterType="java.lang.String" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE phone = #{phone}
+    </select>
+
+    <!-- 根据用户名模糊查询用户 -->
+    <select id="selectByUsernameLike" parameterType="java.lang.String" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE username LIKE CONCAT('%', #{username}, '%') ORDER BY id DESC
+    </select>
+
+    <!-- 新增用户 -->
+    <insert id="insert" parameterType="com.quan.project.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users(username, password, real_name, gender, age, phone, email, campus_id, user_role, user_status, avatar, achievements, coach_level, balance, create_time) 
+        VALUES(#{username}, #{password}, #{realName}, #{gender}, #{age}, #{phone}, #{email}, #{campusId}, #{userRole}, #{userStatus}, #{avatar}, #{achievements}, #{coachLevel}, #{balance}, #{createTime})
+    </insert>
+
+    <!-- 更新用户信息 -->
+    <update id="update" parameterType="com.quan.project.entity.User">
+        UPDATE users
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="campusId != null">
+                campus_id = #{campusId},
+            </if>
+            <if test="userRole != null">
+                user_role = #{userRole},
+            </if>
+            <if test="userStatus != null">
+                user_status = #{userStatus},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="achievements != null">
+                achievements = #{achievements},
+            </if>
+            <if test="coachLevel != null">
+                coach_level = #{coachLevel},
+            </if>
+            <if test="balance != null">
+                balance = #{balance},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 更新用户密码 -->
+    <update id="updatePassword">
+        UPDATE users SET password = #{password} WHERE id = #{id}
+    </update>
+
+    <!-- 删除用户 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+    <!-- 检查用户名是否存在 -->
+    <select id="countByUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM users WHERE username = #{username}
+    </select>
+
+    <!-- 检查用户名是否存在（排除指定ID） -->
+    <select id="countByUsernameExcludeId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM users WHERE username = #{username} AND id != #{id}
+    </select>
+
+    <!-- 检查邮箱是否存在 -->
+    <select id="countByEmail" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM users WHERE email = #{email}
+    </select>
+
+    <!-- 检查邮箱是否存在（排除指定ID） -->
+    <select id="countByEmailExcludeId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM users WHERE email = #{email} AND id != #{id}
+    </select>
+
+    <!-- 检查手机号是否存在 -->
+    <select id="countByPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM users WHERE phone = #{phone}
+    </select>
+
+    <!-- 检查手机号是否存在（排除指定ID） -->
+    <select id="countByPhoneExcludeId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM users WHERE phone = #{phone} AND id != #{id}
+    </select>
+
+    <!-- 用户登录验证 -->
+    <select id="login" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE username = #{username} AND password = #{password}
+    </select>
+
+    <!-- 根据角色查询用户 -->
+    <select id="selectByRole" parameterType="java.lang.String" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE user_role = #{userRole} ORDER BY id DESC
+    </select>
+
+    <!-- 根据状态查询用户 -->
+    <select id="selectByStatus" parameterType="java.lang.String" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users WHERE user_status = #{userStatus} ORDER BY id DESC
+    </select>
+
+    <!-- 更新用户状态 -->
+    <update id="updateStatus">
+        UPDATE users SET user_status = #{userStatus}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <!-- 更新用户角色 -->
+    <update id="updateRole">
+        UPDATE users SET user_role = #{userRole}, update_time = NOW() WHERE id = #{id}
+    </update>
+    
+    <!-- 更新用户头像 -->
+    <update id="updateAvatar">
+        UPDATE users SET avatar = #{avatar}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <!-- 通用分页查询用户（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM users
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.username != null and request.params.username != '' and request.params.username.trim() != ''">
+                    AND username LIKE CONCAT('%', #{request.params.username}, '%')
+                </if>
+                <if test="request.params.realName != null and request.params.realName != '' and request.params.realName.trim() != ''">
+                    AND real_name LIKE CONCAT('%', #{request.params.realName}, '%')
+                </if>
+                <if test="request.params.gender != null">
+                    AND gender = #{request.params.gender}
+                </if>
+                <if test="request.params.age != null">
+                    AND age = #{request.params.age}
+                </if>
+                <if test="request.params.campusId != null">
+                    AND campus_id = #{request.params.campusId}
+                </if>
+                <if test="request.params.userRole != null">
+                    AND user_role = #{request.params.userRole}
+                </if>
+                <if test="request.params.userStatus != null">
+                    AND user_status = #{request.params.userStatus}
+                </if>
+                <if test="request.params.coachLevel != null">
+                    AND coach_level = #{request.params.coachLevel}
+                </if>
+                <if test="request.params.email != null and request.params.email != '' and request.params.email.trim() != ''">
+                    AND email LIKE CONCAT('%', #{request.params.email}, '%')
+                </if>
+                <if test="request.params.phone != null and request.params.phone != '' and request.params.phone.trim() != ''">
+                    AND phone LIKE CONCAT('%', #{request.params.phone}, '%')
+                </if>
+                <if test="request.params.id != null">
+                    AND id = #{request.params.id}
+                </if>
+                <if test="request.params.createTimeStart != null and request.params.createTimeStart != ''">
+                    AND create_time &gt;= #{request.params.createTimeStart}
+                </if>
+                <if test="request.params.createTimeEnd != null and request.params.createTimeEnd != ''">
+                    AND create_time &lt;= #{request.params.createTimeEnd} 
+                </if>
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <!-- 根据角色和校区查询用户 -->
+    <select id="selectByRoleAndCampus" resultMap="UserResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM users
+        WHERE user_role = #{userRole}
+        AND campus_id = #{campusId}
+        AND user_status = 1
+        ORDER BY id ASC
+    </select>
+</mapper> 

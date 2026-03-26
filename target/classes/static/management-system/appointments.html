@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>课程预约管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__appointments" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <!-- 教练选择器 (教练角色时隐藏，因为只能看自己的) -->
+                        <el-form-item label="教练" v-if="!isCoach">
+                            <el-select v-model="searchParams.coachId" placeholder="请选择教练" clearable filterable
+                                style="width: 178px;">
+                                <el-option v-for="coach in coachOptions" :key="coach.id"
+                                    :label="coach.realName || coach.username" :value="coach.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="学员">
+                            <el-select v-model="searchParams.studentId" placeholder="请选择学员" clearable filterable
+                                style="width: 178px;">
+                                <el-option v-for="student in studentOptions" :key="student.id"
+                                    :label="student.realName || student.username" :value="student.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="球台">
+                            <el-select v-model="searchParams.tableId" placeholder="请选择球台" clearable
+                                style="width: 178px;">
+                                <el-option v-for="table in tableOptions" :key="table.id" :label="table.tableNumber"
+                                    :value="table.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="状态">
+                            <el-select v-model="searchParams.status" placeholder="请选择状态" clearable
+                                style="width: 178px;">
+                                <el-option label="待教练确认" :value="0"></el-option>
+                                <el-option label="已预约" :value="1"></el-option>
+                                <el-option label="已完成" :value="2"></el-option>
+                                <el-option label="已取消" :value="3"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="开始时间">
+                            <el-date-picker v-model="searchParams.startTime" type="date" placeholder="请选择开始时间"
+                                value-format="YYYY-MM-DD" style="width: 178px;"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div v-if="showAddButton">
+                        <el-button type="primary" @click="handleAdd">
+                            <iconify-icon icon="mdi:plus" width="16" height="16" class="mr-1"></iconify-icon>新增预约
+                        </el-button>
+                    </div>
+                    <div v-else class="text-gray-500 text-sm">
+                        {{ isCoach ? '教练查看和确认模式' : '查看模式' }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预约表格 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-medium">预约列表</h3>
+                    <el-button size="small" @click="loadAppointmentsList">
+                        <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                    </el-button>
+                </div>
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无预约数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                    <el-table-column prop="coachName" label="教练"></el-table-column>
+                    <el-table-column prop="studentName" label="学员"></el-table-column>
+                    <el-table-column prop="tableNumber" label="球台"></el-table-column>
+                    <el-table-column prop="startTime" label="开始时间"></el-table-column>
+                    <el-table-column prop="endTime" label="结束时间"></el-table-column>
+                    <el-table-column prop="cost" label="费用">
+                        <template #default="scope">
+                            <span class="text-green-600 font-semibold">¥{{ scope.row.cost }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="status" label="状态">
+                        <template #default="scope">
+                            <el-tag v-if="scope.row.status === 0" type="warning" size="small">待教练确认</el-tag>
+                            <el-tag v-else-if="scope.row.status === 1" type="success" size="small">已预约</el-tag>
+                            <el-tag v-else-if="scope.row.status === 2" type="info" size="small">已完成</el-tag>
+                            <el-tag v-else-if="scope.row.status === 3" type="danger" size="small">已取消</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="createTime" label="创建时间"></el-table-column>
+                    <el-table-column label="操作" width="420" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2">
+                                <el-button size="small" @click="handleView(scope.row)">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="mr-1"></iconify-icon>查看
+                                </el-button>
+                                <!-- 教练确认预约按钮 (只有教练且是自己的预约才能确认) -->
+                                <el-button v-if="scope.row.status === 0 && isCoach && scope.row.coachId === userInfo.id"
+                                    size="small" type="success" @click="handleConfirm(scope.row)">
+                                    <iconify-icon icon="mdi:check" width="16" height="16" class="mr-1"></iconify-icon>确认
+                                </el-button>
+                                <!-- 校区管理员可以确认任何预约 -->
+                                <el-button v-if="scope.row.status === 0 && userRole === 2" size="small" type="success"
+                                    @click="handleConfirm(scope.row)">
+                                    <iconify-icon icon="mdi:check" width="16" height="16" class="mr-1"></iconify-icon>确认
+                                </el-button>
+                                <!-- 完成课程按钮 (教练自己的课程或校区管理员) -->
+                                <el-button
+                                    v-if="scope.row.status === 1 && ((isCoach && scope.row.coachId === userInfo.id) || userRole === 2)"
+                                    size="small" type="warning" @click="handleComplete(scope.row)">
+                                    <iconify-icon icon="mdi:check-circle" width="16" height="16"
+                                        class="mr-1"></iconify-icon>完成
+                                </el-button>
+                                <!-- 评价按钮 (课程已完成后显示) -->
+                                <el-button v-if="scope.row.status === 2" size="small" type="primary"
+                                    @click="handleEvaluation(scope.row)">
+                                    <iconify-icon icon="mdi:comment-text" width="16" height="16"
+                                        class="mr-1"></iconify-icon>评价
+                                </el-button>
+                                <!-- 取消预约按钮 (学员自己的预约、教练自己的预约、或校区管理员) -->
+                                <el-button
+                                    v-if="scope.row.status <= 1 && ((isStudent && scope.row.studentId === userInfo.id) || (isCoach && scope.row.coachId === userInfo.id) || userRole === 2)"
+                                    size="small" type="danger" @click="handleCancel(scope.row)">
+                                    <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                                </el-button>
+                                <!-- 删除按钮 (只有管理员可以删除) -->
+                                <el-button v-if="showDeleteButton" size="small" type="danger"
+                                    @click="handleDelete(scope.row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 新增/编辑对话框 -->
+            <el-dialog :title="dialogTitle" v-model="dialogVisible" width="700px" :before-close="handleDialogClose">
+                <el-form ref="appointmentFormRef" :model="appointmentForm" :rules="getCurrentRules()"
+                    label-width="100px">
+                    <el-row :gutter="20">
+                        <el-col :span="12">
+                            <el-form-item label="教练" prop="coachId">
+                                <el-select v-model="appointmentForm.coachId" placeholder="请选择教练" filterable
+                                    @change="handleCoachChange">
+                                    <el-option v-for="coach in coachOptions" :key="coach.id"
+                                        :label="coach.realName || coach.username" :value="coach.id">
+                                        <span>{{ coach.realName || coach.username }}</span>
+                                        <span style="color: #8492a6; font-size: 13px; float: right;">{{
+                                            getCoachLevelText(coach.coachLevel) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12" v-if="!isStudent">
+                            <el-form-item label="学员" prop="studentId">
+                                <el-select v-model="appointmentForm.studentId" placeholder="请选择学员" filterable>
+                                    <el-option v-for="student in studentOptions" :key="student.id"
+                                        :label="student.realName || student.username" :value="student.id">
+                                        <span>{{ student.realName || student.username }}</span>
+                                        <span style="color: #8492a6; font-size: 13px; float: right;">余额: ¥{{
+                                            student.balance }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12" v-if="isStudent">
+                            <el-form-item label="学员">
+                                <el-input :value="userInfo.realName || userInfo.username" disabled></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                        <el-col :span="12">
+                            <el-form-item label="球台" prop="tableId">
+                                <el-select v-model="appointmentForm.tableId" placeholder="请选择球台">
+                                    <el-option v-for="table in tableOptions" :key="table.id" :label="table.tableNumber"
+                                        :value="table.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="状态" prop="status">
+                                <el-select v-model="appointmentForm.status" placeholder="请选择状态">
+                                    <el-option label="待教练确认" :value="0"></el-option>
+                                    <el-option label="已预约" :value="1"></el-option>
+                                    <el-option label="已完成" :value="2"></el-option>
+                                    <el-option label="已取消" :value="3"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                        <el-col :span="12">
+                            <el-form-item label="开始时间" prop="startTime">
+                                <el-date-picker v-model="appointmentForm.startTime" type="datetime"
+                                                placeholder="请选择开始时间" value-format="YYYY-MM-DDTHH:mm:ss"
+                                                @change="handleStartTimeChange"></el-date-picker>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="结束时间" prop="endTime">
+                                <el-date-picker v-model="appointmentForm.endTime" type="datetime" placeholder="请选择结束时间"
+                                                value-format="YYYY-MM-DDTHH:mm:ss" @change="handleEndTimeChange"></el-date-picker>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-form-item label="课程费用" prop="cost">
+                        <div class="flex items-center gap-2">
+                            <el-input-number v-model="appointmentForm.cost" :min="0" :precision="2"
+                                placeholder="点击预览计算费用" readonly style="width: 200px;"></el-input-number>
+                            <el-button size="small" type="primary" @click="previewCost"
+                                :disabled="!appointmentForm.coachId || !appointmentForm.startTime || !appointmentForm.endTime">
+                                <iconify-icon icon="mdi:calculator" width="16" height="16"
+                                    class="mr-1"></iconify-icon>预览费用
+                            </el-button>
+                            <span class="text-gray-500 text-sm">选择教练和时间后点击预览</span>
+                        </div>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="handleDialogClose">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>{{
+                            isEdit ? '更新' : '创建' }}
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+
+            <!-- 查看详情对话框 -->
+            <el-dialog title="预约详情" v-model="viewDialogVisible" width="600px">
+                <el-descriptions :column="2" border v-if="viewAppointment">
+                    <el-descriptions-item label="预约ID">{{ viewAppointment.id }}</el-descriptions-item>
+                    <el-descriptions-item label="教练">{{ viewAppointment.coachName }}</el-descriptions-item>
+                    <el-descriptions-item label="学员">{{ viewAppointment.studentName }}</el-descriptions-item>
+                    <el-descriptions-item label="球台">{{ viewAppointment.tableNumber }}</el-descriptions-item>
+                    <el-descriptions-item label="开始时间">{{ viewAppointment.startTime }}</el-descriptions-item>
+                    <el-descriptions-item label="结束时间">{{ viewAppointment.endTime }}</el-descriptions-item>
+                    <el-descriptions-item label="课程费用">
+                        <span class="text-green-600 font-semibold">¥{{ viewAppointment.cost }}</span>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="状态">
+                        <el-tag v-if="viewAppointment.status === 0" type="warning" size="small">待教练确认</el-tag>
+                        <el-tag v-else-if="viewAppointment.status === 1" type="success" size="small">已预约</el-tag>
+                        <el-tag v-else-if="viewAppointment.status === 2" type="info" size="small">已完成</el-tag>
+                        <el-tag v-else-if="viewAppointment.status === 3" type="danger" size="small">已取消</el-tag>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="创建时间" :span="2">{{ viewAppointment.createTime }}</el-descriptions-item>
+                </el-descriptions>
+            </el-dialog>
+
+            <!-- 评价对话框 -->
+            <el-dialog title="课程评价" v-model="evaluationDialogVisible" width="700px">
+                <div v-if="currentAppointment">
+                    <el-descriptions :column="2" border class="mb-4">
+                        <el-descriptions-item label="学员">{{ currentAppointment.studentName }}</el-descriptions-item>
+                        <el-descriptions-item label="教练">{{ currentAppointment.coachName }}</el-descriptions-item>
+                        <el-descriptions-item label="课程日期">{{ currentAppointment.appointmentDate
+                            }}</el-descriptions-item>
+                        <el-descriptions-item label="课程时间">{{ currentAppointment.startTime }} - {{
+                            currentAppointment.endTime }}</el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-tabs v-model="evaluationActiveTab" type="card">
+                        <!-- 查看评价 -->
+                        <el-tab-pane label="查看评价" name="view" v-if="currentEvaluation">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <el-card>
+                                    <template #header>
+                                        <div class="flex items-center">
+                                            <iconify-icon icon="mdi:account-student" width="20" height="20"
+                                                class="mr-2 text-blue-500"></iconify-icon>
+                                            <span class="font-medium">学员评价</span>
+                                        </div>
+                                    </template>
+                                    <div v-if="currentEvaluation.studentFeedback"
+                                        class="whitespace-pre-wrap text-sm leading-relaxed">
+                                        {{ currentEvaluation.studentFeedback }}
+                                    </div>
+                                    <div v-else class="text-gray-400 text-center py-8">
+                                        <iconify-icon icon="mdi:comment-outline" width="48" height="48"
+                                            class="mb-2"></iconify-icon>
+                                        <p>学员暂未评价</p>
+                                    </div>
+                                </el-card>
+
+                                <el-card>
+                                    <template #header>
+                                        <div class="flex items-center">
+                                            <iconify-icon icon="mdi:account-tie" width="20" height="20"
+                                                class="mr-2 text-green-500"></iconify-icon>
+                                            <span class="font-medium">教练评价</span>
+                                        </div>
+                                    </template>
+                                    <div v-if="currentEvaluation.coachFeedback"
+                                        class="whitespace-pre-wrap text-sm leading-relaxed">
+                                        {{ currentEvaluation.coachFeedback }}
+                                    </div>
+                                    <div v-else class="text-gray-400 text-center py-8">
+                                        <iconify-icon icon="mdi:comment-outline" width="48" height="48"
+                                            class="mb-2"></iconify-icon>
+                                        <p>教练暂未评价</p>
+                                    </div>
+                                </el-card>
+                            </div>
+                        </el-tab-pane>
+
+                        <!-- 学员评价 -->
+                        <el-tab-pane label="学员评价" name="student" v-if="canSubmitStudentEvaluation">
+                            <el-form ref="studentEvaluationFormRef" :model="studentEvaluationForm"
+                                :rules="evaluationRules" label-width="100px">
+                                <el-form-item label="训练收获" prop="studentFeedback">
+                                    <el-input v-model="studentEvaluationForm.studentFeedback" type="textarea" :rows="6"
+                                        placeholder="请分享您在本次训练中的收获和教训，这将有助于教练了解您的学习情况并调整教学方法"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="handleSubmitStudentEvaluation"
+                                        :loading="evaluationSubmitting">
+                                        <iconify-icon icon="mdi:content-save" width="16" height="16"
+                                            class="mr-1"></iconify-icon>提交评价
+                                    </el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-tab-pane>
+
+                        <!-- 教练评价 -->
+                        <el-tab-pane label="教练评价" name="coach" v-if="canSubmitCoachEvaluation">
+                            <el-form ref="coachEvaluationFormRef" :model="coachEvaluationForm" :rules="evaluationRules"
+                                label-width="100px">
+                                <el-form-item label="学员表现" prop="coachFeedback">
+                                    <el-input v-model="coachEvaluationForm.coachFeedback" type="textarea" :rows="6"
+                                        placeholder="请评价学员在本次训练中的表现，并给出改进建议"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @click="handleSubmitCoachEvaluation"
+                                        :loading="evaluationSubmitting">
+                                        <iconify-icon icon="mdi:content-save" width="16" height="16"
+                                            class="mr-1"></iconify-icon>提交评价
+                                    </el-button>
+                                </el-form-item>
+                            </el-form>
+                        </el-tab-pane>
+                    </el-tabs>
+                </div>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 用户信息
+                    userInfo: null,
+                    userRole: 0,
+                    // 查询参数
+                    searchParams: {
+                        coachId: undefined,
+                        studentId: undefined,
+                        tableId: undefined,
+                        status: undefined,
+                        startTime: undefined
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 选项数据
+                    coachOptions: [],
+                    studentOptions: [],
+                    tableOptions: [],
+                    // 对话框相关
+                    dialogVisible: false,
+                    dialogTitle: "新增预约",
+                    isEdit: false,
+                    submitLoading: false,
+                    // 查看详情对话框
+                    viewDialogVisible: false,
+                    viewAppointment: null,
+                    // 评价对话框
+                    evaluationDialogVisible: false,
+                    evaluationActiveTab: 'view',
+                    currentAppointment: null,
+                    currentEvaluation: null,
+                    evaluationSubmitting: false,
+                    // 学员评价表单
+                    studentEvaluationForm: {
+                        studentFeedback: ''
+                    },
+                    // 教练评价表单
+                    coachEvaluationForm: {
+                        coachFeedback: ''
+                    },
+                    // 评价表单验证规则
+                    evaluationRules: {
+                        studentFeedback: [
+                            { required: true, message: '请输入训练收获', trigger: 'blur' },
+                            { max: 500, message: '评价内容不能超过500字', trigger: 'blur' }
+                        ],
+                        coachFeedback: [
+                            { required: true, message: '请输入学员表现评价', trigger: 'blur' },
+                            { max: 500, message: '评价内容不能超过500字', trigger: 'blur' }
+                        ]
+                    },
+                    // 表单数据
+                    appointmentForm: {
+                        id: undefined,
+                        coachId: undefined,
+                        studentId: undefined,
+                        tableId: undefined,
+                        startTime: "",
+                        endTime: "",
+                        cost: 0,
+                        status: 0
+                    },
+                    // 表单验证规则
+                    appointmentRules: {
+                        coachId: [
+                            { required: true, message: "请选择教练", trigger: "change" }
+                        ],
+                        studentId: [
+                            { required: true, message: "请选择学员", trigger: "change" }
+                        ],
+                        tableId: [
+                            { required: true, message: "请选择球台", trigger: "change" }
+                        ],
+                        startTime: [
+                            { required: true, message: "请选择开始时间", trigger: "change" }
+                        ],
+                        endTime: [
+                            { required: true, message: "请选择结束时间", trigger: "change" }
+                        ]
+                    },
+                    // 防抖定时器
+                    previewCostTimer: null
+                };
+            },
+
+            computed: {
+                // 是否显示新增按钮 (只有学员可以新增预约)
+                showAddButton() {
+                    return this.userRole === 4; // 只有学员
+                },
+
+                // 是否显示删除按钮 (只有校区管理员可以删除)
+                showDeleteButton() {
+                    return this.userRole === 2; // 只有校区管理员
+                },
+
+                // 是否显示所有预约 (校区管理员能看全部，其他角色看自己相关的)
+                canViewAllAppointments() {
+                    return this.userRole === 2; // 校区管理员
+                },
+
+                // 是否是教练角色
+                isCoach() {
+                    return this.userRole === 3;
+                },
+
+                // 是否是学员角色
+                isStudent() {
+                    return this.userRole === 4;
+                },
+
+                // 是否可以提交学员评价
+                canSubmitStudentEvaluation() {
+                    return this.userRole === 4 && this.currentAppointment &&
+                        (this.currentAppointment.studentId === this.userInfo?.id) &&
+                        (!this.currentEvaluation || !this.currentEvaluation.studentFeedback);
+                },
+
+                // 是否可以提交教练评价
+                canSubmitCoachEvaluation() {
+                    return this.userRole === 3 && this.currentAppointment &&
+                        (this.currentAppointment.coachId === this.userInfo?.id) &&
+                        (!this.currentEvaluation || !this.currentEvaluation.coachFeedback);
+                }
+            },
+
+            methods: {
+                // 加载用户信息
+                loadUserInfo() {
+                    const userInfo = getCurrentUserInfo();
+                    if (userInfo) {
+                        this.userInfo = userInfo;
+                        this.userRole = userInfo.userRole;
+                    }
+                },
+
+                // 加载预约列表
+                async loadAppointmentsList() {
+                    this.loading = true;
+                    try {
+                        // 后端已根据用户角色自动过滤数据，前端直接传递搜索参数即可
+                        const response = await apiClient.post('/appointments/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.searchParams
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                        } else {
+                            this.$message.error(response.message || '获取预约列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取预约列表失败:', error);
+                        this.$message.error('获取预约列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 加载教练选项
+                async loadCoachOptions() {
+                    try {
+                        // 如果是学员，只加载自己的教练；否则加载所有教练（用于查询条件）
+                        if (this.isStudent) {
+                            const response = await apiClient.get('/coach-student-relations/my-coaches');
+                            if (response.code === 200) {
+                                this.coachOptions = response.data || [];
+                            }
+                        } else {
+                            const response = await apiClient.post('/users/search', {
+                                pageNum: 1,
+                                pageSize: 1000,
+                                params: {
+                                    userRole: 3, // 教练
+                                    userStatus: 1 // 正常状态
+                                }
+                            });
+
+                            if (response.code === 200) {
+                                this.coachOptions = response.data.list || [];
+                            }
+                        }
+                    } catch (error) {
+                        console.error('获取教练列表失败:', error);
+                    }
+                },
+
+                // 加载学员选项
+                async loadStudentOptions() {
+                    try {
+                        const response = await apiClient.post('/users/search', {
+                            pageNum: 1,
+                            pageSize: 1000,
+                            params: {
+                                userRole: 4, // 学员
+                                userStatus: 1 // 正常状态
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.studentOptions = response.data.list || [];
+                        }
+                    } catch (error) {
+                        console.error('获取学员列表失败:', error);
+                    }
+                },
+
+                // 加载球台选项
+                async loadTableOptions() {
+                    try {
+                        // 球台选项会由后端根据用户角色和校区自动过滤
+                        const response = await apiClient.post('/tables/search', {
+                            pageNum: 1,
+                            pageSize: 1000,
+                            params: {}
+                        });
+
+                        if (response.code === 200) {
+                            this.tableOptions = response.data.list || [];
+                        }
+                    } catch (error) {
+                        console.error('获取球台列表失败:', error);
+                    }
+                },
+
+                // 获取教练级别文本
+                getCoachLevelText(level) {
+                    const levelMap = {
+                        1: '高级 (200元/小时)',
+                        2: '中级 (150元/小时)',
+                        3: '初级 (80元/小时)'
+                    };
+                    return levelMap[level] || '未知级别';
+                },
+
+                // 处理教练变化
+                handleCoachChange() {
+                    // 清空费用，等待用户手动预览
+                    this.appointmentForm.cost = 0;
+                },
+
+                // 处理开始时间变化
+                handleStartTimeChange() {
+                    // 清空费用，等待用户手动预览
+                    this.appointmentForm.cost = 0;
+
+                    // 如果已经选择了结束时间，验证时间逻辑
+                    if (this.appointmentForm.endTime) {
+                        this.validateTimeRange();
+                    }
+                },
+
+                // 处理结束时间变化
+                handleEndTimeChange() {
+                    // 清空费用，等待用户手动预览
+                    this.appointmentForm.cost = 0;
+
+                    // 验证时间逻辑
+                    this.validateTimeRange();
+                },
+
+                // 验证时间范围
+                validateTimeRange() {
+                    if (this.appointmentForm.startTime && this.appointmentForm.endTime) {
+                        const startTime = new Date(this.appointmentForm.startTime);
+                        const endTime = new Date(this.appointmentForm.endTime);
+
+                        if (endTime <= startTime) {
+                            this.$message.warning('结束时间必须晚于开始时间');
+                            this.appointmentForm.endTime = '';
+                            this.appointmentForm.cost = 0;
+                            return false;
+                        }
+
+                        // 验证课程时长不能少于30分钟
+                        const diffMinutes = (endTime - startTime) / (1000 * 60);
+                        if (diffMinutes < 30) {
+                            this.$message.warning('课程时长不能少于30分钟');
+                            this.appointmentForm.endTime = '';
+                            this.appointmentForm.cost = 0;
+                            return false;
+                        }
+
+                        return true;
+                    }
+                    return false;
+                },
+
+                // 预览费用（防抖处理）
+                debouncedPreviewCost() {
+                    clearTimeout(this.previewCostTimer);
+                    this.previewCostTimer = setTimeout(() => {
+                        this.previewCost();
+                    }, 500); // 500ms防抖
+                },
+
+                // 预览费用
+                async previewCost() {
+                    if (!this.appointmentForm.coachId || !this.appointmentForm.startTime || !this.appointmentForm.endTime) {
+                        this.appointmentForm.cost = 0;
+                        return;
+                    }
+
+                    // 再次验证时间格式和逻辑
+                    const startTime = new Date(this.appointmentForm.startTime);
+                    const endTime = new Date(this.appointmentForm.endTime);
+
+                    if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
+                        console.warn('时间格式不正确');
+                        this.appointmentForm.cost = 0;
+                        return;
+                    }
+
+                    if (endTime <= startTime) {
+                        console.warn('结束时间必须晚于开始时间');
+                        this.appointmentForm.cost = 0;
+                        return;
+                    }
+
+                    try {
+                        const response = await apiClient.get('/appointments/preview-cost', {
+                            params: {
+                                coachId: this.appointmentForm.coachId,
+                                startTime: this.appointmentForm.startTime,
+                                endTime: this.appointmentForm.endTime
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.appointmentForm.cost = response.data;
+                        } else {
+                            this.appointmentForm.cost = 0;
+                            console.warn('预览费用失败:', response.message);
+                        }
+                    } catch (error) {
+                        this.appointmentForm.cost = 0;
+                        console.error('预览费用失败:', error);
+                    }
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadAppointmentsList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        coachId: undefined,
+                        studentId: undefined,
+                        tableId: undefined,
+                        status: undefined,
+                        startTime: undefined
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadAppointmentsList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadAppointmentsList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadAppointmentsList();
+                },
+
+
+                // 新增
+                handleAdd() {
+                    this.isEdit = false;
+                    this.dialogTitle = "新增预约";
+                    this.resetForm();
+
+                    // 如果是学员，自动设置学员ID
+                    if (this.isStudent && this.userInfo) {
+                        this.appointmentForm.studentId = this.userInfo.id;
+                    }
+
+                    this.dialogVisible = true;
+                },
+
+                // 查看详情
+                handleView(row) {
+                    this.viewAppointment = row;
+                    this.viewDialogVisible = true;
+                },
+
+                // 处理评价
+                async handleEvaluation(row) {
+                    this.currentAppointment = row;
+                    this.evaluationDialogVisible = true;
+
+                    // 重置表单
+                    this.studentEvaluationForm.studentFeedback = '';
+                    this.coachEvaluationForm.coachFeedback = '';
+
+                    // 加载现有评价
+                    await this.loadEvaluation(row.id);
+
+                    // 设置默认标签页
+                    if (this.currentEvaluation) {
+                        this.evaluationActiveTab = 'view';
+                    } else if (this.canSubmitStudentEvaluation) {
+                        this.evaluationActiveTab = 'student';
+                    } else if (this.canSubmitCoachEvaluation) {
+                        this.evaluationActiveTab = 'coach';
+                    } else {
+                        this.evaluationActiveTab = 'view';
+                    }
+                },
+
+                // 加载评价信息
+                async loadEvaluation(appointmentId) {
+                    try {
+                        const response = await apiClient.get(`/evaluations/appointment/${appointmentId}`);
+                        if (response.code === 200 && response.data) {
+                            this.currentEvaluation = response.data;
+                            // 如果有现有评价，填充到表单中
+                            if (this.currentEvaluation.studentFeedback) {
+                                this.studentEvaluationForm.studentFeedback = this.currentEvaluation.studentFeedback;
+                            }
+                            if (this.currentEvaluation.coachFeedback) {
+                                this.coachEvaluationForm.coachFeedback = this.currentEvaluation.coachFeedback;
+                            }
+                        } else {
+                            this.currentEvaluation = null;
+                        }
+                    } catch (error) {
+                        console.error('加载评价信息失败:', error);
+                        this.currentEvaluation = null;
+                    }
+                },
+
+                // 提交学员评价
+                async handleSubmitStudentEvaluation() {
+                    try {
+                        const valid = await this.$refs.studentEvaluationFormRef.validate();
+                        if (!valid) return;
+
+                        this.evaluationSubmitting = true;
+
+                        const response = await apiClient.post('/evaluations/student', null, {
+                            params: {
+                                appointmentId: this.currentAppointment.id,
+                                studentFeedback: this.studentEvaluationForm.studentFeedback
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.$message.success('学员评价提交成功');
+                            await this.loadEvaluation(this.currentAppointment.id);
+                            this.evaluationActiveTab = 'view';
+                        } else {
+                            this.$message.error(response.message || '提交评价失败');
+                        }
+                    } catch (error) {
+                        console.error('提交学员评价失败:', error);
+                        this.$message.error('提交评价失败');
+                    } finally {
+                        this.evaluationSubmitting = false;
+                    }
+                },
+
+                // 提交教练评价
+                async handleSubmitCoachEvaluation() {
+                    try {
+                        const valid = await this.$refs.coachEvaluationFormRef.validate();
+                        if (!valid) return;
+
+                        this.evaluationSubmitting = true;
+
+                        const response = await apiClient.post('/evaluations/coach', null, {
+                            params: {
+                                appointmentId: this.currentAppointment.id,
+                                coachFeedback: this.coachEvaluationForm.coachFeedback
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.$message.success('教练评价提交成功');
+                            await this.loadEvaluation(this.currentAppointment.id);
+                            this.evaluationActiveTab = 'view';
+                        } else {
+                            this.$message.error(response.message || '提交评价失败');
+                        }
+                    } catch (error) {
+                        console.error('提交教练评价失败:', error);
+                        this.$message.error('提交评价失败');
+                    } finally {
+                        this.evaluationSubmitting = false;
+                    }
+                },
+
+                // 确认预约
+                async handleConfirm(row) {
+                    try {
+                        const response = await apiClient.put(`/appointments/${row.id}/approve`, null, {
+                            params: { approved: true }
+                        });
+                        if (response.code === 200) {
+                            this.$message.success('确认成功');
+                            this.loadAppointmentsList();
+                        } else {
+                            this.$message.error(response.message || '确认失败');
+                        }
+                    } catch (error) {
+                        console.error('确认预约失败:', error);
+                        this.$message.error('确认失败');
+                    }
+                },
+
+                // 完成课程
+                async handleComplete(row) {
+                    this.$confirm('确定要标记该课程为已完成吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const updateData = { ...row, status: 2 };
+                            const response = await apiClient.put(`/appointments/${row.id}`, updateData);
+                            if (response.code === 200) {
+                                this.$message.success('标记完成成功');
+                                this.loadAppointmentsList();
+                            } else {
+                                this.$message.error(response.message || '操作失败');
+                            }
+                        } catch (error) {
+                            console.error('标记完成失败:', error);
+                            this.$message.error('操作失败');
+                        }
+                    });
+                },
+
+                // 取消预约
+                async handleCancel(row) {
+                    this.$confirm('确定要取消该预约吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.put(`/appointments/${row.id}/cancel`);
+                            if (response.code === 200) {
+                                this.$message.success('取消成功');
+                                this.loadAppointmentsList();
+                            } else {
+                                this.$message.error(response.message || '取消失败');
+                            }
+                        } catch (error) {
+                            console.error('取消预约失败:', error);
+                            this.$message.error('取消失败');
+                        }
+                    });
+                },
+
+
+                // 删除
+                handleDelete(row) {
+                    this.$confirm(`确定要删除该预约记录吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/appointments/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('删除成功');
+                                this.loadAppointmentsList();
+                            } else {
+                                this.$message.error(response.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除预约失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+
+                // 提交表单
+                async handleSubmit() {
+                    try {
+                        const valid = await this.$refs.appointmentFormRef.validate();
+                        if (!valid) return;
+
+                        // 验证时间
+                        const startTime = new Date(this.appointmentForm.startTime);
+                        const endTime = new Date(this.appointmentForm.endTime);
+
+                        if (endTime <= startTime) {
+                            this.$message.error('结束时间必须晚于开始时间');
+                            return;
+                        }
+
+                        this.submitLoading = true;
+
+                        let response;
+                        if (this.isEdit) {
+                            response = await apiClient.put(`/appointments/${this.appointmentForm.id}`, this.appointmentForm);
+                        } else {
+                            response = await apiClient.post('/appointments', this.appointmentForm);
+                        }
+
+                        if (response.code === 200) {
+                            this.$message.success(this.isEdit ? '更新成功' : '创建成功');
+                            this.dialogVisible = false;
+                            this.loadAppointmentsList();
+                        } else {
+                            this.$message.error(response.message || '操作失败');
+                        }
+                    } catch (error) {
+                        console.error('提交失败:', error);
+                        this.$message.error('操作失败');
+                    } finally {
+                        this.submitLoading = false;
+                    }
+                },
+
+                // 关闭对话框
+                handleDialogClose() {
+                    this.dialogVisible = false;
+                    this.resetForm();
+                },
+
+                // 重置表单
+                resetForm() {
+                    // 清理防抖定时器
+                    if (this.previewCostTimer) {
+                        clearTimeout(this.previewCostTimer);
+                        this.previewCostTimer = null;
+                    }
+
+                    this.appointmentForm = {
+                        id: undefined,
+                        coachId: undefined,
+                        studentId: undefined,
+                        tableId: undefined,
+                        startTime: "",
+                        endTime: "",
+                        cost: 0,
+                        status: 0
+                    };
+                    if (this.$refs.appointmentFormRef) {
+                        this.$refs.appointmentFormRef.clearValidate();
+                    }
+                },
+
+                // 获取当前有效的验证规则（学员角色时不需要验证学员ID）
+                getCurrentRules() {
+                    const rules = { ...this.appointmentRules };
+                    if (this.isStudent) {
+                        delete rules.studentId; // 学员角色时不需要验证学员ID
+                    }
+                    return rules;
+                }
+            },
+
+            async mounted() {
+                // 首先加载用户信息
+                this.loadUserInfo();
+
+                await Promise.all([
+                    this.loadCoachOptions(),
+                    this.loadStudentOptions(),
+                    this.loadTableOptions()
+                ]);
+                await this.loadAppointmentsList();
+            },
+
+            beforeUnmount() {
+                // 清理防抖定时器
+                if (this.previewCostTimer) {
+                    clearTimeout(this.previewCostTimer);
+                    this.previewCostTimer = null;
+                }
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__appointments");
+    </script>
+</body>
+
+</html>

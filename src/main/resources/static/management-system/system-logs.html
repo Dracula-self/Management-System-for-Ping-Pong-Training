@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>系统日志管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+
+        .log-card {
+            transition: all 0.3s ease;
+        }
+
+        .log-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .details-content {
+            max-height: 80px;
+            overflow: hidden;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .action-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__system-logs" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="操作用户">
+                            <el-input v-model="searchParams.userName" placeholder="请输入用户姓名" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="操作类型">
+                            <el-input v-model="searchParams.action" placeholder="请输入操作类型" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="操作日期">
+                            <el-date-picker v-model="searchParams.logDate" type="date" placeholder="请选择操作日期"
+                                value-format="YYYY-MM-DD" style="width: 178px;"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="时间范围">
+                            <el-date-picker v-model="searchParams.dateRange" type="datetimerange" range-separator="至"
+                                start-placeholder="开始时间" end-placeholder="结束时间" value-format="YYYY-MM-DD HH:mm:ss"
+                                style="width: 300px;"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div>
+                        <el-button type="success" @click="handleRefresh">
+                            <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新数据
+                        </el-button>
+                        <el-button type="warning" @click="handleExport">
+                            <iconify-icon icon="mdi:download" width="16" height="16" class="mr-1"></iconify-icon>导出日志
+                        </el-button>
+                        <el-button type="danger" @click="handleCleanOldLogs">
+                            <iconify-icon icon="mdi:delete-sweep" width="16" height="16"
+                                class="mr-1"></iconify-icon>清理旧日志
+                        </el-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日志列表 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium">系统日志列表</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">共 {{ pagination.total }} 条记录</span>
+                        <el-button size="small" @click="loadLogsList">
+                            <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                        </el-button>
+                    </div>
+                </div>
+
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无日志数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="日志ID" width="80"></el-table-column>
+                    <el-table-column label="操作用户" width="150">
+                        <template #default="scope">
+                            <div class="user-info" v-if="scope.row.userName">
+                                <div class="user-avatar">
+                                    <iconify-icon icon="mdi:account" width="16" height="16"></iconify-icon>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-sm">{{ scope.row.userName }}</div>
+                                    <div class="text-xs text-gray-500">ID: {{ scope.row.userId }}</div>
+                                </div>
+                            </div>
+                            <span v-else class="text-gray-400 text-sm">系统操作</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作类型" width="120">
+                        <template #default="scope">
+                            <span class="action-badge">
+                                {{ scope.row.action }}
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="details" label="操作详情" min-width="300">
+                        <template #default="scope">
+                            <div class="details-content" v-if="scope.row.details">
+                                {{ scope.row.details }}
+                            </div>
+                            <span v-else class="text-gray-400 text-sm">无详情信息</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="logTime" label="操作时间" width="240"></el-table-column>
+                    <el-table-column label="操作" width="160" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2">
+                                <el-button size="small" @click="handleView(scope.row)">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="mr-1"></iconify-icon>查看
+                                </el-button>
+                                <el-button size="small" type="danger" @click="handleDelete(scope.row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 查看日志详情对话框 -->
+            <el-dialog title="日志详情" v-model="viewDialogVisible" width="800px">
+                <div v-if="viewLog">
+                    <el-descriptions :column="2" border class="mb-4">
+                        <el-descriptions-item label="日志ID">{{ viewLog.id }}</el-descriptions-item>
+                        <el-descriptions-item label="操作用户">
+                            <div v-if="viewLog.userName">
+                                {{ viewLog.userName }} (ID: {{ viewLog.userId }})
+                            </div>
+                            <span v-else class="text-gray-400">系统操作</span>
+                        </el-descriptions-item>
+                        <el-descriptions-item label="操作类型">
+                            <span class="action-badge">{{ viewLog.action }}</span>
+                        </el-descriptions-item>
+                        <el-descriptions-item label="操作时间">{{ viewLog.logTime }}</el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-divider content-position="left">操作详情</el-divider>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div v-if="viewLog.details" class="whitespace-pre-wrap text-sm leading-relaxed">
+                            {{ viewLog.details }}
+                        </div>
+                        <div v-else class="text-gray-400 text-center py-8">
+                            <iconify-icon icon="mdi:information-outline" width="48" height="48"
+                                class="mb-2"></iconify-icon>
+                            <p>无详情信息</p>
+                        </div>
+                    </div>
+                </div>
+            </el-dialog>
+
+            <!-- 清理旧日志确认对话框 -->
+            <el-dialog title="清理旧日志" v-model="cleanDialogVisible" width="500px">
+                <div class="mb-4">
+                    <p class="text-gray-600 mb-4">请选择要清理的日志时间范围：</p>
+                    <el-form :model="cleanForm" label-width="120px">
+                        <el-form-item label="保留天数">
+                            <el-input-number v-model="cleanForm.keepDays" :min="1" :max="365"
+                                placeholder="保留最近多少天的日志"></el-input-number>
+                            <div class="text-xs text-gray-500 mt-1">将删除 {{ cleanForm.keepDays }} 天前的所有日志记录</div>
+                        </el-form-item>
+                    </el-form>
+                </div>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="cleanDialogVisible = false">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="danger" @click="handleConfirmClean" :loading="cleanLoading">
+                            <iconify-icon icon="mdi:delete-sweep" width="16" height="16"
+                                class="mr-1"></iconify-icon>确认清理
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 查询参数
+                    searchParams: {
+                        userName: "",
+                        action: "",
+                        logDate: undefined,
+                        dateRange: []
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 查看详情对话框
+                    viewDialogVisible: false,
+                    viewLog: null,
+                    // 清理日志对话框
+                    cleanDialogVisible: false,
+                    cleanLoading: false,
+                    cleanForm: {
+                        keepDays: 30
+                    }
+                };
+            },
+
+            methods: {
+                // 加载日志列表
+                async loadLogsList() {
+                    this.loading = true;
+                    try {
+                        // 处理搜索参数
+                        const params = { ...this.searchParams };
+                        if (params.dateRange && params.dateRange.length === 2) {
+                            params.startTime = params.dateRange[0];
+                            params.endTime = params.dateRange[1];
+                            delete params.dateRange;
+                        }
+
+                        const response = await apiClient.post('/system-logs/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: params
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                        } else {
+                            this.$message.error(response.message || '获取日志列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取日志列表失败:', error);
+                        this.$message.error('获取日志列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadLogsList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        userName: "",
+                        action: "",
+                        logDate: undefined,
+                        dateRange: []
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadLogsList();
+                },
+
+                // 刷新
+                handleRefresh() {
+                    this.loadLogsList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadLogsList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadLogsList();
+                },
+
+                // 查看详情
+                handleView(row) {
+                    this.viewLog = { ...row };
+                    this.viewDialogVisible = true;
+                },
+
+                // 删除日志
+                handleDelete(row) {
+                    this.$confirm(`确定要删除这条日志记录吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/system-logs/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('删除成功');
+                                this.loadLogsList();
+                            } else {
+                                this.$message.error(response.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除日志失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+
+                // 导出日志
+                async handleExport() {
+                    try {
+                        this.$message.info('正在导出日志，请稍候...');
+
+                        // 处理搜索参数
+                        const params = { ...this.searchParams };
+                        if (params.dateRange && params.dateRange.length === 2) {
+                            params.startTime = params.dateRange[0];
+                            params.endTime = params.dateRange[1];
+                            delete params.dateRange;
+                        }
+
+                        const response = await apiClient.post('/system-logs/export', params, {
+                            responseType: 'blob'
+                        });
+
+                        // 创建下载链接
+                        const blob = new Blob([response.data], { type: 'application/vnd.ms-excel' });
+                        const url = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = `系统日志_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                        link.click();
+                        window.URL.revokeObjectURL(url);
+
+                        this.$message.success('导出成功');
+                    } catch (error) {
+                        console.error('导出日志失败:', error);
+                        this.$message.error('导出失败');
+                    }
+                },
+
+                // 清理旧日志
+                handleCleanOldLogs() {
+                    this.cleanForm.keepDays = 30;
+                    this.cleanDialogVisible = true;
+                },
+
+                // 确认清理
+                async handleConfirmClean() {
+                    this.$confirm(`确定要删除 ${this.cleanForm.keepDays} 天前的所有日志吗？此操作不可恢复！`, '警告', {
+                        confirmButtonText: '确定删除',
+                        cancelButtonText: '取消',
+                        type: 'error',
+                    }).then(async () => {
+                        try {
+                            this.cleanLoading = true;
+                            const response = await apiClient.delete('/system-logs/clean', {
+                                params: { keepDays: this.cleanForm.keepDays }
+                            });
+
+                            if (response.code === 200) {
+                                this.$message.success(`清理完成，共删除 ${response.data.deletedCount || 0} 条记录`);
+                                this.cleanDialogVisible = false;
+                                this.loadLogsList();
+                            } else {
+                                this.$message.error(response.message || '清理失败');
+                            }
+                        } catch (error) {
+                            console.error('清理日志失败:', error);
+                            this.$message.error('清理失败');
+                        } finally {
+                            this.cleanLoading = false;
+                        }
+                    });
+                }
+            },
+
+            async mounted() {
+                await this.loadLogsList();
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__system-logs");
+    </script>
+</body>
+
+</html>

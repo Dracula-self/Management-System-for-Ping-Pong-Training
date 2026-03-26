@@ -1,0 +1,1047 @@
+2025-08-27 14:27:37.827 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 20504 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-08-27 14:27:37.829 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-08-27 14:27:37.829 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-08-27 14:27:38.714 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-08-27 14:27:38.722 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-27 14:27:38.740 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-08-27 14:27:38.740 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-27 14:27:38.775 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-08-27 14:27:38.776 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 793 ms
+2025-08-27 14:27:39.231 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-08-27 14:27:39.431 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-08-27 14:27:39.438 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-08-27 14:27:39.446 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 1.969 seconds (process running for 4.758)
+2025-08-27 14:27:56.356 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-27 14:27:56.356 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-08-27 14:27:56.357 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-08-27 14:27:56.526 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:27:56.525 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:27:56.525 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:27:56.525 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:27:56.528 [http-nio-8080-exec-3] WARN  c.q.p.interceptor.JwtInterceptor - API请求未携带token: /api/system-messages/search
+2025-08-27 14:27:56.528 [http-nio-8080-exec-4] WARN  c.q.p.interceptor.JwtInterceptor - API请求未携带token: /api/car-brands/all
+2025-08-27 14:27:56.528 [http-nio-8080-exec-2] WARN  c.q.p.interceptor.JwtInterceptor - API请求未携带token: /api/cars/search
+2025-08-27 14:27:56.528 [http-nio-8080-exec-5] WARN  c.q.p.interceptor.JwtInterceptor - API请求未携带token: /api/car-categories/all
+2025-08-27 14:27:57.465 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:27:57.693 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:11.448 [http-nio-8080-exec-10] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-08-27 14:28:11.555 [http-nio-8080-exec-10] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@7df8bc7e
+2025-08-27 14:28:11.557 [http-nio-8080-exec-10] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-08-27 14:28:11.577 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-08-27 14:28:11.593 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-08-27 14:28:11.622 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-08-27 14:28:11.625 [http-nio-8080-exec-10] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-08-27 14:28:12.816 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:12.818 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:28:12.818 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:28:12.819 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:28:12.819 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:28:12.847 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:28:12.847 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/cars/search
+2025-08-27 14:28:12.847 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-categories/all
+2025-08-27 14:28:12.847 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-brands/all
+2025-08-27 14:28:12.849 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-brands/all
+2025-08-27 14:28:12.849 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-categories/all
+2025-08-27 14:28:12.849 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/cars/search
+2025-08-27 14:28:12.891 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:12.914 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message WHERE message_status = ?
+2025-08-27 14:28:12.914 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 2(Integer)
+2025-08-27 14:28:12.925 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:12.926 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message WHERE message_status = ? ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:28:12.926 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 2(Integer), 5(Integer)
+2025-08-27 14:28:12.928 [http-nio-8080-exec-2] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:28:12.943 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-08-27 14:28:16.262 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:16.263 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:28:16.263 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:28:16.263 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:28:16.264 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:28:16.265 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/cars/search
+2025-08-27 14:28:16.265 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:28:16.265 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-brands/all
+2025-08-27 14:28:16.265 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/cars/search
+2025-08-27 14:28:16.265 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-categories/all
+2025-08-27 14:28:16.265 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-brands/all
+2025-08-27 14:28:16.266 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-categories/all
+2025-08-27 14:28:16.267 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message WHERE message_status = ?
+2025-08-27 14:28:16.268 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 2(Integer)
+2025-08-27 14:28:16.269 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:16.269 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message WHERE message_status = ? ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:28:16.269 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 2(Integer), 5(Integer)
+2025-08-27 14:28:16.270 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:28:16.311 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-08-27 14:28:16.340 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:16.471 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:16.471 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:28:16.471 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:28:16.471 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:28:16.472 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:28:16.473 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/cars/search
+2025-08-27 14:28:16.473 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:28:16.473 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-brands/all
+2025-08-27 14:28:16.473 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-categories/all
+2025-08-27 14:28:16.473 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-brands/all
+2025-08-27 14:28:16.473 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/cars/search
+2025-08-27 14:28:16.474 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-categories/all
+2025-08-27 14:28:16.476 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message WHERE message_status = ?
+2025-08-27 14:28:16.476 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 2(Integer)
+2025-08-27 14:28:16.477 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:16.477 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message WHERE message_status = ? ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:28:16.478 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 2(Integer), 5(Integer)
+2025-08-27 14:28:16.478 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:28:16.532 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-08-27 14:28:16.575 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:16.658 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:16.659 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:28:16.659 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:28:16.659 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:28:16.659 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:28:16.660 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/cars/search
+2025-08-27 14:28:16.660 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-brands/all
+2025-08-27 14:28:16.660 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:28:16.661 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-categories/all
+2025-08-27 14:28:16.661 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/cars/search
+2025-08-27 14:28:16.661 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-brands/all
+2025-08-27 14:28:16.661 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-categories/all
+2025-08-27 14:28:16.663 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message WHERE message_status = ?
+2025-08-27 14:28:16.664 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 2(Integer)
+2025-08-27 14:28:16.665 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:16.665 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message WHERE message_status = ? ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:28:16.665 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 2(Integer), 5(Integer)
+2025-08-27 14:28:16.667 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:28:16.712 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-08-27 14:28:16.838 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:16.839 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:28:16.839 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:28:16.839 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:28:16.839 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:28:16.841 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:28:16.841 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-categories/all
+2025-08-27 14:28:16.841 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-brands/all
+2025-08-27 14:28:16.841 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/cars/search
+2025-08-27 14:28:16.841 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/cars/search
+2025-08-27 14:28:16.841 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-categories/all
+2025-08-27 14:28:16.841 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-brands/all
+2025-08-27 14:28:16.844 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message WHERE message_status = ?
+2025-08-27 14:28:16.844 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 2(Integer)
+2025-08-27 14:28:16.845 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:16.845 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message WHERE message_status = ? ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:28:16.845 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 2(Integer), 5(Integer)
+2025-08-27 14:28:16.847 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:28:16.887 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-08-27 14:28:16.917 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:17.014 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:17.014 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:28:17.014 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:28:17.015 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:28:17.015 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:28:17.016 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:28:17.016 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/cars/search
+2025-08-27 14:28:17.016 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-brands/all
+2025-08-27 14:28:17.016 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-categories/all
+2025-08-27 14:28:17.016 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-brands/all
+2025-08-27 14:28:17.016 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/cars/search
+2025-08-27 14:28:17.016 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-categories/all
+2025-08-27 14:28:17.018 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message WHERE message_status = ?
+2025-08-27 14:28:17.019 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 2(Integer)
+2025-08-27 14:28:17.019 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:17.020 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message WHERE message_status = ? ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:28:17.020 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 2(Integer), 5(Integer)
+2025-08-27 14:28:17.021 [http-nio-8080-exec-3] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:28:17.066 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-08-27 14:28:17.099 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:17.198 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:17.198 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:28:17.198 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/cars/search
+2025-08-27 14:28:17.199 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-brands/all
+2025-08-27 14:28:17.199 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/car-categories/all
+2025-08-27 14:28:17.200 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/cars/search
+2025-08-27 14:28:17.200 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:28:17.200 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-brands/all
+2025-08-27 14:28:17.200 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/car-categories/all
+2025-08-27 14:28:17.200 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-brands/all
+2025-08-27 14:28:17.200 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/car-categories/all
+2025-08-27 14:28:17.200 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/cars/search
+2025-08-27 14:28:17.203 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message WHERE message_status = ?
+2025-08-27 14:28:17.203 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 2(Integer)
+2025-08-27 14:28:17.204 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:17.210 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message WHERE message_status = ? ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:28:17.210 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 2(Integer), 5(Integer)
+2025-08-27 14:28:17.211 [http-nio-8080-exec-10] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:28:17.264 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-08-27 14:28:17.298 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:18.921 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:28:20.940 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:20.941 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:28:20.952 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:25.112 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:28:25.230 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:29.885 [http-nio-8080-exec-1] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-08-27 14:28:29.885 [http-nio-8080-exec-1] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-08-27 14:28:29.887 [http-nio-8080-exec-1] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-08-27 14:28:29.888 [http-nio-8080-exec-1] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-08-27 14:28:33.781 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:28:33.815 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:33.939 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:28:33.939 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-08-27 14:28:36.902 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:28:37.021 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 14:28:37.022 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-08-27 14:28:37.026 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-08-27 14:28:37.026 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 14:28:37.028 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:28:37.029 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-08-27 14:28:37.029 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 14:28:37.030 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-08-27 14:28:37.078 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-08-27 14:28:37.078 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:37.078 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-08-27 14:28:44.770 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:28:51.648 [http-nio-8080-exec-10] INFO  c.quan.project.utils.FileUploadUtil - 创建目录: .\uploads\images\2025\08\27
+2025-08-27 14:28:51.650 [http-nio-8080-exec-10] ERROR c.quan.project.utils.FileUploadUtil - 文件上传失败
+java.io.IOException: java.io.FileNotFoundException: C:\Users\Administrator\AppData\Local\Temp\tomcat.8080.5033654467072508199\work\Tomcat\localhost\ROOT\.\uploads\images\2025\08\27\ace93f331cdf480ca97d590e58f474b7.jpg (系统找不到指定的路径。)
+	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:119)
+	at org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile.transferTo(StandardMultipartHttpServletRequest.java:266)
+	at com.quan.project.utils.FileUploadUtil.saveFile(FileUploadUtil.java:177)
+	at com.quan.project.utils.FileUploadUtil.uploadFile(FileUploadUtil.java:88)
+	at com.quan.project.controller.FileUploadController.uploadFile(FileUploadController.java:29)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.FileNotFoundException: C:\Users\Administrator\AppData\Local\Temp\tomcat.8080.5033654467072508199\work\Tomcat\localhost\ROOT\.\uploads\images\2025\08\27\ace93f331cdf480ca97d590e58f474b7.jpg (系统找不到指定的路径。)
+	at java.base/java.io.FileOutputStream.open0(Native Method)
+	at java.base/java.io.FileOutputStream.open(FileOutputStream.java:293)
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:235)
+	at java.base/java.io.FileOutputStream.<init>(FileOutputStream.java:184)
+	at org.apache.tomcat.util.http.fileupload.disk.DiskFileItem.write(DiskFileItem.java:551)
+	at org.apache.catalina.core.ApplicationPart.write(ApplicationPart.java:117)
+	... 54 common frames omitted
+2025-08-27 14:33:51.788 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown initiated...
+2025-08-27 14:33:51.792 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown completed.
+2025-08-27 14:33:53.943 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 26712 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-08-27 14:33:53.944 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-08-27 14:33:53.944 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-08-27 14:33:54.782 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-08-27 14:33:54.791 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-27 14:33:54.793 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-08-27 14:33:54.793 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-27 14:33:54.824 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-08-27 14:33:54.824 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 753 ms
+2025-08-27 14:33:55.299 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-08-27 14:33:55.497 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-08-27 14:33:55.505 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-08-27 14:33:55.513 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 1.944 seconds (process running for 2.472)
+2025-08-27 14:34:46.000 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-27 14:34:46.000 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-08-27 14:34:46.001 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-08-27 14:34:46.106 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:34:46.476 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 14:34:46.542 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 14:34:46.582 [http-nio-8080-exec-7] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-08-27 14:34:46.671 [http-nio-8080-exec-7] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@5ee39a71
+2025-08-27 14:34:46.673 [http-nio-8080-exec-7] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-08-27 14:34:46.748 [http-nio-8080-exec-7] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-08-27 14:34:46.763 [http-nio-8080-exec-7] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 14:34:46.779 [http-nio-8080-exec-7] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:34:46.782 [http-nio-8080-exec-7] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 14:34:46.782 [http-nio-8080-exec-7] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 14:34:46.785 [http-nio-8080-exec-7] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 14:34:46.991 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:34:46.992 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:34:49.107 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:34:49.244 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 14:34:49.245 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-08-27 14:34:49.249 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-08-27 14:34:49.249 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 14:34:49.251 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:34:49.251 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-08-27 14:34:49.251 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 14:34:49.252 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-08-27 14:34:49.293 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-08-27 14:34:49.293 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:34:49.293 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-08-27 14:34:52.304 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:34:55.529 [http-nio-8080-exec-5] INFO  c.quan.project.utils.FileUploadUtil - 文件保存成功: D:\workspace\project-template\java\my-springboot-project-17\uploads\images\2025\08\27\ed8428d0eb9b4b1098d387d2efda2a73.png
+2025-08-27 14:34:55.530 [http-nio-8080-exec-5] INFO  c.quan.project.utils.FileUploadUtil - 文件上传成功，文件名: 111.png, 大小: 18.6 KB
+2025-08-27 14:35:18.236 [http-nio-8080-exec-10] INFO  c.quan.project.utils.FileUploadUtil - 文件保存成功: D:\workspace\project-template\java\my-springboot-project-17\uploads\images\2025\08\27\e69a0be9f2d44102b6bedd42812546c5.jpg
+2025-08-27 14:35:18.236 [http-nio-8080-exec-10] INFO  c.quan.project.utils.FileUploadUtil - 文件上传成功，文件名: 微信图片_2025-07-30_095557_750.jpg, 大小: 43.8 KB
+2025-08-27 14:35:19.989 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/1
+2025-08-27 14:35:19.991 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/1
+2025-08-27 14:35:19.996 [http-nio-8080-exec-8] DEBUG c.q.p.mapper.UserMapper.selectById - ==>  Preparing: SELECT * FROM users WHERE id = ?
+2025-08-27 14:35:19.997 [http-nio-8080-exec-8] DEBUG c.q.p.mapper.UserMapper.selectById - ==> Parameters: 1(Integer)
+2025-08-27 14:35:19.998 [http-nio-8080-exec-8] DEBUG c.q.p.mapper.UserMapper.selectById - <==      Total: 1
+2025-08-27 14:35:19.999 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByUsernameExcludeId - ==>  Preparing: SELECT COUNT(*) FROM users WHERE username = ? AND id != ?
+2025-08-27 14:35:19.999 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByUsernameExcludeId - ==> Parameters: admin(String), 1(Integer)
+2025-08-27 14:35:20.000 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByUsernameExcludeId - <==      Total: 1
+2025-08-27 14:35:20.001 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByEmailExcludeId - ==>  Preparing: SELECT COUNT(*) FROM users WHERE email = ? AND id != ?
+2025-08-27 14:35:20.001 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByEmailExcludeId - ==> Parameters: admin@example.com(String), 1(Integer)
+2025-08-27 14:35:20.001 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByEmailExcludeId - <==      Total: 1
+2025-08-27 14:35:20.002 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByPhoneExcludeId - ==>  Preparing: SELECT COUNT(*) FROM users WHERE phone = ? AND id != ?
+2025-08-27 14:35:20.002 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByPhoneExcludeId - ==> Parameters: 13800138000(String), 1(Integer)
+2025-08-27 14:35:20.039 [http-nio-8080-exec-8] DEBUG c.q.p.m.U.countByPhoneExcludeId - <==      Total: 1
+2025-08-27 14:35:20.040 [http-nio-8080-exec-8] DEBUG c.q.project.mapper.UserMapper.update - ==>  Preparing: UPDATE users SET username = ?, phone = ?, email = ?, user_role = ?, user_status = ?, avatar = ?, update_time = ? WHERE id = ?
+2025-08-27 14:35:20.040 [http-nio-8080-exec-8] DEBUG c.q.project.mapper.UserMapper.update - ==> Parameters: admin(String), 13800138000(String), admin@example.com(String), 1(Integer), 1(Integer), /uploads/images/2025/08/27/e69a0be9f2d44102b6bedd42812546c5.jpg(String), 2025-08-27T14:35:20.039493500(LocalDateTime), 1(Integer)
+2025-08-27 14:35:20.044 [http-nio-8080-exec-8] DEBUG c.q.project.mapper.UserMapper.update - <==    Updates: 1
+2025-08-27 14:35:20.044 [http-nio-8080-exec-8] INFO  c.q.p.service.impl.UserServiceImpl - 成功更新用户，ID: 1, 用户名: admin
+2025-08-27 14:35:20.065 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 14:35:20.066 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-08-27 14:35:20.068 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-08-27 14:35:20.068 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 14:35:20.069 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:35:20.070 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-08-27 14:35:20.070 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 14:35:20.071 [http-nio-8080-exec-1] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-08-27 14:36:44.819 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:36:44.932 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:36:44.971 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:36:45.101 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 14:36:45.102 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-08-27 14:36:45.104 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-08-27 14:36:45.105 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 14:36:45.106 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:36:45.106 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-08-27 14:36:45.106 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 14:36:45.107 [http-nio-8080-exec-9] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-08-27 14:36:45.140 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-08-27 14:36:45.140 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-08-27 14:36:45.185 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:37:20.967 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:37:21.079 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/c6a9b1ade2f041f28f4ff6ddb3c2a0c6.jpg
+2025-08-27 14:37:21.116 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:37:21.267 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 14:37:21.268 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-08-27 14:37:21.270 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-08-27 14:37:21.270 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 14:37:21.272 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:37:21.272 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-08-27 14:37:21.272 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 14:37:21.275 [http-nio-8080-exec-10] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-08-27 14:37:21.319 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-08-27 14:37:21.319 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-08-27 14:37:21.367 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:37:22.589 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:37:22.701 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:37:25.592 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-08-27 14:37:25.593 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-08-27 14:37:25.594 [http-nio-8080-exec-5] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-08-27 14:37:25.595 [http-nio-8080-exec-5] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-08-27 14:37:26.724 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:37:26.902 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/element-plus/index.full.min.js.map
+2025-08-27 14:37:26.918 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 14:45:16.061 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:45:16.229 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 14:45:16.370 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 14:45:16.372 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-08-27 14:45:16.374 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-08-27 14:45:16.374 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 14:45:16.376 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 14:45:16.377 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-08-27 14:45:16.377 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 14:45:16.378 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-08-27 14:45:16.409 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-08-27 14:45:16.409 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-08-27 14:45:16.455 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:03:20.368 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:03:20.521 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:03:20.650 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 15:03:20.652 [http-nio-8080-exec-8] WARN  c.q.p.interceptor.JwtInterceptor - API请求token验证失败: 令牌已过期, 请求路径: /api/users/search
+2025-08-27 15:03:20.716 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:03:21.748 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:03:21.896 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:03:26.051 [http-nio-8080-exec-2] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-08-27 15:03:26.052 [http-nio-8080-exec-2] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-08-27 15:03:26.053 [http-nio-8080-exec-2] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-08-27 15:03:26.053 [http-nio-8080-exec-2] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-08-27 15:03:27.166 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:03:27.305 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:03:27.436 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/search
+2025-08-27 15:03:27.438 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/search
+2025-08-27 15:03:27.440 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM users
+2025-08-27 15:03:27.440 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:03:27.441 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 15:03:27.442 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==>  Preparing: SELECT * FROM users ORDER BY id DESC LIMIT ?
+2025-08-27 15:03:27.442 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 15:03:27.443 [http-nio-8080-exec-5] DEBUG c.q.p.m.U.selectPageByConditions - <==      Total: 4
+2025-08-27 15:03:27.475 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/08/04/447f5b96d58d4b50919737475f040b7b.jpg
+2025-08-27 15:03:27.475 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/30/5af5a89c2d334f208ee7c5c3a669b0b6.png
+2025-08-27 15:03:27.525 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:03:33.109 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:03:33.278 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 15:03:33.280 [http-nio-8080-exec-1] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 15:03:33.284 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-08-27 15:03:33.284 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:03:33.286 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 15:03:33.286 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 15:03:33.286 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 15:03:33.287 [http-nio-8080-exec-1] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 15:14:33.167 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown initiated...
+2025-08-27 15:14:33.168 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown completed.
+2025-08-27 15:14:37.281 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 27980 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-08-27 15:14:37.282 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-08-27 15:14:37.282 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-08-27 15:14:38.116 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-08-27 15:14:38.123 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-08-27 15:14:38.124 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-08-27 15:14:38.125 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-27 15:14:38.154 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-08-27 15:14:38.154 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 750 ms
+2025-08-27 15:14:38.596 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-08-27 15:14:38.799 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-08-27 15:14:38.808 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-08-27 15:14:38.816 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 1.874 seconds (process running for 2.361)
+2025-08-27 15:15:27.532 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-27 15:15:27.533 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-08-27 15:15:27.534 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-08-27 15:15:28.858 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:15:29.424 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-08-27 15:15:29.497 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-08-27 15:15:29.529 [http-nio-8080-exec-6] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-08-27 15:15:29.618 [http-nio-8080-exec-6] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@2d105bb9
+2025-08-27 15:15:29.620 [http-nio-8080-exec-6] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-08-27 15:15:29.699 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-08-27 15:15:29.715 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:15:29.730 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 15:15:29.733 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-08-27 15:15:29.734 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 15:15:29.737 [http-nio-8080-exec-6] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-08-27 15:15:30.622 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:15:31.546 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:15:31.714 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/api/banners/search
+2025-08-27 15:15:31.715 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/api/banners/search
+2025-08-27 15:15:31.716 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: api/api/banners/search
+2025-08-27 15:15:31.746 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:17:15.808 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:17:15.993 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:17:16.183 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:17:16.185 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:17:16.189 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:17:16.189 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:17:16.228 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:17:16.298 [http-nio-8080-exec-2] ERROR c.q.p.service.impl.BannerServiceImpl - 分页查询Banner失败
+org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+### The error may exist in file [D:\workspace\project-template\java\my-springboot-project-17\target\classes\mapper\BannerMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT count(0) FROM banners
+### Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+; bad SQL grammar []
+	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:246)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:92)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:439)
+	at jdk.proxy2/jdk.proxy2.$Proxy81.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:224)
+	at org.apache.ibatis.binding.MapperMethod.executeForMany(MapperMethod.java:147)
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:80)
+	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
+	at jdk.proxy2/jdk.proxy2.$Proxy82.selectPageByConditions(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy83.selectPageByConditions(Unknown Source)
+	at com.quan.project.service.impl.BannerServiceImpl.getBannerPage(BannerServiceImpl.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:379)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:721)
+	at com.quan.project.service.impl.BannerServiceImpl$$SpringCGLIB$$0.getBannerPage(<generated>)
+	at com.quan.project.controller.BannerController.search(BannerController.java:26)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:354)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
+	at jdk.proxy3/jdk.proxy3.$Proxy97.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)
+	at com.github.pagehelper.util.ExecutorUtil.executeAutoCount(ExecutorUtil.java:169)
+	at com.github.pagehelper.PageInterceptor.count(PageInterceptor.java:244)
+	at com.github.pagehelper.PageInterceptor.intercept(PageInterceptor.java:153)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:59)
+	at jdk.proxy2/jdk.proxy2.$Proxy95.query(Unknown Source)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:425)
+	... 84 common frames omitted
+2025-08-27 15:17:16.303 [http-nio-8080-exec-2] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 分页查询Banner失败, 请求路径: /api/banners/search
+2025-08-27 15:17:21.947 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:17:22.113 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:17:22.286 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:17:22.288 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:17:22.292 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:17:22.292 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:17:22.293 [http-nio-8080-exec-9] ERROR c.q.p.service.impl.BannerServiceImpl - 分页查询Banner失败
+org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+### The error may exist in file [D:\workspace\project-template\java\my-springboot-project-17\target\classes\mapper\BannerMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT count(0) FROM banners
+### Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+; bad SQL grammar []
+	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:246)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:92)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:439)
+	at jdk.proxy2/jdk.proxy2.$Proxy81.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:224)
+	at org.apache.ibatis.binding.MapperMethod.executeForMany(MapperMethod.java:147)
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:80)
+	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
+	at jdk.proxy2/jdk.proxy2.$Proxy82.selectPageByConditions(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy83.selectPageByConditions(Unknown Source)
+	at com.quan.project.service.impl.BannerServiceImpl.getBannerPage(BannerServiceImpl.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:379)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:721)
+	at com.quan.project.service.impl.BannerServiceImpl$$SpringCGLIB$$0.getBannerPage(<generated>)
+	at com.quan.project.controller.BannerController.search(BannerController.java:26)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:354)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
+	at jdk.proxy3/jdk.proxy3.$Proxy97.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)
+	at com.github.pagehelper.util.ExecutorUtil.executeAutoCount(ExecutorUtil.java:169)
+	at com.github.pagehelper.PageInterceptor.count(PageInterceptor.java:244)
+	at com.github.pagehelper.PageInterceptor.intercept(PageInterceptor.java:153)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:59)
+	at jdk.proxy2/jdk.proxy2.$Proxy95.query(Unknown Source)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:425)
+	... 84 common frames omitted
+2025-08-27 15:17:22.296 [http-nio-8080-exec-9] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 分页查询Banner失败, 请求路径: /api/banners/search
+2025-08-27 15:17:22.329 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:17:34.894 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:17:34.896 [http-nio-8080-exec-5] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:17:34.900 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:17:34.900 [http-nio-8080-exec-5] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:17:34.901 [http-nio-8080-exec-5] ERROR c.q.p.service.impl.BannerServiceImpl - 分页查询Banner失败
+org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+### The error may exist in file [D:\workspace\project-template\java\my-springboot-project-17\target\classes\mapper\BannerMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT count(0) FROM banners
+### Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+; bad SQL grammar []
+	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:246)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:92)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:439)
+	at jdk.proxy2/jdk.proxy2.$Proxy81.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:224)
+	at org.apache.ibatis.binding.MapperMethod.executeForMany(MapperMethod.java:147)
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:80)
+	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
+	at jdk.proxy2/jdk.proxy2.$Proxy82.selectPageByConditions(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy83.selectPageByConditions(Unknown Source)
+	at com.quan.project.service.impl.BannerServiceImpl.getBannerPage(BannerServiceImpl.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:379)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:721)
+	at com.quan.project.service.impl.BannerServiceImpl$$SpringCGLIB$$0.getBannerPage(<generated>)
+	at com.quan.project.controller.BannerController.search(BannerController.java:26)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:354)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
+	at jdk.proxy3/jdk.proxy3.$Proxy97.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)
+	at com.github.pagehelper.util.ExecutorUtil.executeAutoCount(ExecutorUtil.java:169)
+	at com.github.pagehelper.PageInterceptor.count(PageInterceptor.java:244)
+	at com.github.pagehelper.PageInterceptor.intercept(PageInterceptor.java:153)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:59)
+	at jdk.proxy2/jdk.proxy2.$Proxy95.query(Unknown Source)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:425)
+	... 84 common frames omitted
+2025-08-27 15:17:34.902 [http-nio-8080-exec-5] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 分页查询Banner失败, 请求路径: /api/banners/search
+2025-08-27 15:19:29.639 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:19:29.843 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:19:30.062 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:19:30.064 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:19:30.071 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:19:30.071 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:19:30.089 [http-nio-8080-exec-9] ERROR c.q.p.service.impl.BannerServiceImpl - 分页查询Banner失败
+org.springframework.jdbc.BadSqlGrammarException: 
+### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+### The error may exist in file [D:\workspace\project-template\java\my-springboot-project-17\target\classes\mapper\BannerMapper.xml]
+### The error may involve defaultParameterMap
+### The error occurred while setting parameters
+### SQL: SELECT count(0) FROM banners
+### Cause: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+; bad SQL grammar []
+	at org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:246)
+	at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:107)
+	at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:92)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:439)
+	at jdk.proxy2/jdk.proxy2.$Proxy81.selectList(Unknown Source)
+	at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:224)
+	at org.apache.ibatis.binding.MapperMethod.executeForMany(MapperMethod.java:147)
+	at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:80)
+	at org.apache.ibatis.binding.MapperProxy$PlainMethodInvoker.invoke(MapperProxy.java:141)
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86)
+	at jdk.proxy2/jdk.proxy2.$Proxy82.selectPageByConditions(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy83.selectPageByConditions(Unknown Source)
+	at com.quan.project.service.impl.BannerServiceImpl.getBannerPage(BannerServiceImpl.java:49)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:355)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:379)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:769)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:721)
+	at com.quan.project.service.impl.BannerServiceImpl$$SpringCGLIB$$0.getBannerPage(<generated>)
+	at com.quan.project.controller.BannerController.search(BannerController.java:26)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'my_project.banners' doesn't exist
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916)
+	at com.mysql.cj.jdbc.ClientPreparedStatement.execute(ClientPreparedStatement.java:354)
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.apache.ibatis.logging.jdbc.PreparedStatementLogger.invoke(PreparedStatementLogger.java:58)
+	at jdk.proxy3/jdk.proxy3.$Proxy97.execute(Unknown Source)
+	at org.apache.ibatis.executor.statement.PreparedStatementHandler.query(PreparedStatementHandler.java:65)
+	at org.apache.ibatis.executor.statement.RoutingStatementHandler.query(RoutingStatementHandler.java:80)
+	at org.apache.ibatis.executor.SimpleExecutor.doQuery(SimpleExecutor.java:65)
+	at org.apache.ibatis.executor.BaseExecutor.queryFromDatabase(BaseExecutor.java:336)
+	at org.apache.ibatis.executor.BaseExecutor.query(BaseExecutor.java:158)
+	at org.apache.ibatis.executor.CachingExecutor.query(CachingExecutor.java:110)
+	at com.github.pagehelper.util.ExecutorUtil.executeAutoCount(ExecutorUtil.java:169)
+	at com.github.pagehelper.PageInterceptor.count(PageInterceptor.java:244)
+	at com.github.pagehelper.PageInterceptor.intercept(PageInterceptor.java:153)
+	at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:59)
+	at jdk.proxy2/jdk.proxy2.$Proxy95.query(Unknown Source)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:154)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+	at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:142)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:425)
+	... 84 common frames omitted
+2025-08-27 15:19:30.091 [http-nio-8080-exec-9] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 分页查询Banner失败, 请求路径: /api/banners/search
+2025-08-27 15:19:30.110 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:21:41.837 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:21:42.020 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-08-27 15:21:42.229 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:21:42.231 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:21:42.236 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:21:42.237 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:21:42.274 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:21:42.277 [http-nio-8080-exec-7] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 15:21:48.725 [http-nio-8080-exec-9] INFO  c.quan.project.utils.FileUploadUtil - 文件保存成功: D:\workspace\project-template\java\my-springboot-project-17\uploads\images\2025\08\27\e20b80cb93fb40c3b7d11811b470f371.jpg
+2025-08-27 15:21:48.726 [http-nio-8080-exec-9] INFO  c.quan.project.utils.FileUploadUtil - 文件上传成功，文件名: 微信图片_2025-07-30_095557_750.jpg, 大小: 43.8 KB
+2025-08-27 15:22:08.110 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:22:08.112 [http-nio-8080-exec-10] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:22:08.115 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:22:08.116 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:22:08.116 [http-nio-8080-exec-10] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 15:22:08.148 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-08-27 15:22:09.319 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:22:09.321 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:22:09.325 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:22:09.325 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:22:09.325 [http-nio-8080-exec-4] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 15:22:16.339 [http-nio-8080-exec-1] INFO  c.quan.project.utils.FileUploadUtil - 文件保存成功: D:\workspace\project-template\java\my-springboot-project-17\uploads\images\2025\08\27\e6a8104d69e8445fb2966e031c794dd3.jpg
+2025-08-27 15:22:16.339 [http-nio-8080-exec-1] INFO  c.quan.project.utils.FileUploadUtil - 文件上传成功，文件名: 微信图片_2025-07-30_095557_750.jpg, 大小: 43.8 KB
+2025-08-27 15:22:17.324 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners
+2025-08-27 15:22:17.325 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners
+2025-08-27 15:22:17.329 [http-nio-8080-exec-7] DEBUG c.q.p.mapper.BannerMapper.insert - ==>  Preparing: INSERT INTO banners ( title, image_url, link_url, sort_order, create_time ) VALUES ( ?, ?, ?, ?, NOW() )
+2025-08-27 15:22:17.330 [http-nio-8080-exec-7] DEBUG c.q.p.mapper.BannerMapper.insert - ==> Parameters: 123(String), /uploads/images/2025/08/27/e6a8104d69e8445fb2966e031c794dd3.jpg(String), (String), 0(Integer)
+2025-08-27 15:22:17.331 [http-nio-8080-exec-7] DEBUG c.q.p.mapper.BannerMapper.insert - <==    Updates: 1
+2025-08-27 15:22:17.334 [http-nio-8080-exec-7] INFO  c.q.p.service.impl.BannerServiceImpl - 成功添加Banner，ID: 1, 标题: 123
+2025-08-27 15:22:17.385 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-08-27 15:22:17.386 [http-nio-8080-exec-9] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-08-27 15:22:17.390 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-08-27 15:22:17.391 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-08-27 15:22:17.392 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-08-27 15:22:17.392 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-08-27 15:22:17.392 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-08-27 15:22:17.393 [http-nio-8080-exec-9] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-08-27 15:36:25.046 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown initiated...
+2025-08-27 15:36:25.051 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Shutdown completed.

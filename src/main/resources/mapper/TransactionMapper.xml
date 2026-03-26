@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.TransactionMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="TransactionResultMap" type="com.quan.project.entity.Transaction">
+        <id property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="type" column="type"/>
+        <result property="amount" column="amount"/>
+        <result property="notes" column="notes"/>
+        <result property="transactionTime" column="transaction_time"/>
+    </resultMap>
+
+    <!-- TransactionVO 结果映射 -->
+    <resultMap id="TransactionVOResultMap" type="com.quan.project.vo.TransactionVO">
+        <id property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="type" column="type"/>
+        <result property="amount" column="amount"/>
+        <result property="notes" column="notes"/>
+        <result property="transactionTime" column="transaction_time"/>
+        <!-- 关联信息 -->
+        <result property="studentName" column="student_name"/>
+        <result property="studentUsername" column="student_username"/>
+    </resultMap>
+
+    <!-- 插入流水记录 -->
+    <insert id="insert" parameterType="com.quan.project.entity.Transaction" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO transactions (student_id, type, amount, notes, transaction_time)
+        VALUES (#{studentId}, #{type}, #{amount}, #{notes}, NOW())
+    </insert>
+
+    <!-- 根据ID删除流水记录 -->
+    <delete id="deleteById">
+        DELETE FROM transactions WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID查询流水记录 -->
+    <select id="selectById" resultMap="TransactionResultMap">
+        SELECT * FROM transactions WHERE id = #{id}
+    </select>
+
+    <!-- 分页查询流水记录（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="TransactionResultMap">
+        SELECT * FROM transactions
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.studentId != null">
+                    AND student_id = #{request.params.studentId}
+                </if>
+                <if test="request.params.type != null">
+                    AND type = #{request.params.type}
+                </if>
+                <if test="request.params.startDate != null">
+                    AND DATE(transaction_time) >= #{request.params.startDate}
+                </if>
+                <if test="request.params.endDate != null">
+                    AND DATE(transaction_time) &lt;= #{request.params.endDate}
+                </if>
+                <if test="request.params.minAmount != null">
+                    AND ABS(amount) >= #{request.params.minAmount}
+                </if>
+                <if test="request.params.maxAmount != null">
+                    AND ABS(amount) &lt;= #{request.params.maxAmount}
+                </if>
+            </if>
+        </where>
+        ORDER BY transaction_time DESC
+    </select>
+
+    <!-- 根据学员ID查询流水记录 -->
+    <select id="selectByStudentId" resultMap="TransactionResultMap">
+        SELECT * FROM transactions WHERE student_id = #{studentId} ORDER BY transaction_time DESC
+    </select>
+
+    <!-- 根据学员ID和类型查询流水记录 -->
+    <select id="selectByStudentIdAndType" resultMap="TransactionResultMap">
+        SELECT * FROM transactions 
+        WHERE student_id = #{studentId} AND type = #{type} 
+        ORDER BY transaction_time DESC
+    </select>
+
+    <!-- 计算学员账户余额 -->
+    <select id="calculateBalance" resultType="java.math.BigDecimal">
+        SELECT COALESCE(SUM(amount), 0) FROM transactions WHERE student_id = #{studentId}
+    </select>
+
+    <!-- 查询学员最近的流水记录 -->
+    <select id="selectRecentByStudentId" resultMap="TransactionResultMap">
+        SELECT * FROM transactions 
+        WHERE student_id = #{studentId} 
+        ORDER BY transaction_time DESC 
+        LIMIT #{limit}
+    </select>
+
+    <!-- 统计学员指定类型的流水总金额 -->
+    <select id="sumAmountByStudentIdAndType" resultType="java.math.BigDecimal">
+        SELECT COALESCE(SUM(amount), 0) FROM transactions 
+        WHERE student_id = #{studentId} AND type = #{type}
+    </select>
+
+    <!-- 分页查询流水记录（包含学员姓名） -->
+    <select id="selectPageWithInfo" resultMap="TransactionVOResultMap">
+        SELECT 
+            t.id, t.student_id, t.type, t.amount, t.notes, t.transaction_time,
+            COALESCE(u.real_name, u.username) AS student_name,
+            u.username AS student_username
+        FROM transactions t
+        LEFT JOIN users u ON t.student_id = u.id
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.studentId != null">
+                    AND t.student_id = #{request.params.studentId}
+                </if>
+                <if test="request.params.type != null">
+                    AND t.type = #{request.params.type}
+                </if>
+                <if test="request.params.minAmount != null">
+                    AND ABS(t.amount) >= #{request.params.minAmount}
+                </if>
+                <if test="request.params.maxAmount != null">
+                    AND ABS(t.amount) &lt;= #{request.params.maxAmount}
+                </if>
+                <if test="request.params.transactionDate != null">
+                    AND DATE(t.transaction_time) = #{request.params.transactionDate}
+                </if>
+                <if test="request.params.startDate != null">
+                    AND DATE(t.transaction_time) >= #{request.params.startDate}
+                </if>
+                <if test="request.params.endDate != null">
+                    AND DATE(t.transaction_time) &lt;= #{request.params.endDate}
+                </if>
+                <!-- 校区管理员权限过滤 -->
+                <if test="request.params.campusId != null">
+                    AND u.campus_id = #{request.params.campusId}
+                </if>
+            </if>
+        </where>
+        ORDER BY t.transaction_time DESC
+    </select>
+
+</mapper>

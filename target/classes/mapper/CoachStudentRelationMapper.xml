@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.CoachStudentRelationMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="CoachStudentRelationResultMap" type="com.quan.project.entity.CoachStudentRelation">
+        <id property="id" column="id"/>
+        <result property="coachId" column="coach_id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- 师生关系VO结果映射（包含用户信息） -->
+    <resultMap id="CoachStudentRelationVOResultMap" type="com.quan.project.vo.CoachStudentRelationVO">
+        <id property="id" column="id"/>
+        <result property="coachId" column="coach_id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <!-- 关联用户信息 -->
+        <result property="coachName" column="coach_name"/>
+        <result property="studentName" column="student_name"/>
+        <result property="coachLevel" column="coach_level"/>
+        <result property="achievements" column="achievements"/>
+        <result property="campusName" column="campus_name"/>
+    </resultMap>
+
+    <!-- 插入师生关系 -->
+    <insert id="insert" parameterType="com.quan.project.entity.CoachStudentRelation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO coach_student_relations (coach_id, student_id, status, create_time)
+        VALUES (#{coachId}, #{studentId}, #{status}, NOW())
+    </insert>
+
+    <!-- 根据ID删除师生关系 -->
+    <delete id="deleteById">
+        DELETE FROM coach_student_relations WHERE id = #{id}
+    </delete>
+
+    <!-- 更新师生关系状态 -->
+    <update id="updateStatus">
+        UPDATE coach_student_relations SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID查询师生关系 -->
+    <select id="selectById" resultMap="CoachStudentRelationResultMap">
+        SELECT * FROM coach_student_relations WHERE id = #{id}
+    </select>
+
+    <!-- 分页查询师生关系（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="CoachStudentRelationResultMap">
+        SELECT * FROM coach_student_relations
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.coachId != null">
+                    AND coach_id = #{request.params.coachId}
+                </if>
+                <if test="request.params.studentId != null">
+                    AND student_id = #{request.params.studentId}
+                </if>
+                <if test="request.params.status != null">
+                    AND status = #{request.params.status}
+                </if>
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据教练ID查询师生关系列表 -->
+    <select id="selectByCoachId" resultMap="CoachStudentRelationResultMap">
+        SELECT * FROM coach_student_relations WHERE coach_id = #{coachId} ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据学员ID查询师生关系列表 -->
+    <select id="selectByStudentId" resultMap="CoachStudentRelationResultMap">
+        SELECT * FROM coach_student_relations WHERE student_id = #{studentId} ORDER BY create_time DESC
+    </select>
+
+    <!-- 查询教练和学员之间的关系 -->
+    <select id="selectByCoachAndStudent" resultMap="CoachStudentRelationResultMap">
+        SELECT * FROM coach_student_relations 
+        WHERE coach_id = #{coachId} AND student_id = #{studentId}
+        ORDER BY create_time DESC
+        LIMIT 1
+    </select>
+
+    <!-- 统计教练的学员数量 -->
+    <select id="countStudentsByCoachId" resultType="int">
+        SELECT COUNT(*) FROM coach_student_relations 
+        WHERE coach_id = #{coachId} AND status = 1
+    </select>
+
+    <!-- 统计学员的教练数量 -->
+    <select id="countCoachesByStudentId" resultType="int">
+        SELECT COUNT(*) FROM coach_student_relations 
+        WHERE student_id = #{studentId} AND status = 1
+    </select>
+
+    <!-- 查询学员的已确认教练关系 -->
+    <select id="selectConfirmedByStudentId" resultMap="CoachStudentRelationResultMap">
+        SELECT * FROM coach_student_relations 
+        WHERE student_id = #{studentId} AND status = 1
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 查询教练的已确认学员关系 -->
+    <select id="selectConfirmedByCoachId" resultMap="CoachStudentRelationResultMap">
+        SELECT * FROM coach_student_relations 
+        WHERE coach_id = #{coachId} AND status = 1
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 分页查询师生关系（包含用户信息） -->
+    <select id="selectPageWithUserInfo" resultMap="CoachStudentRelationVOResultMap">
+        SELECT 
+            csr.id,
+            csr.coach_id,
+            csr.student_id,
+            csr.status,
+            csr.create_time,
+            COALESCE(coach.real_name, coach.username) AS coach_name,
+            COALESCE(student.real_name, student.username) AS student_name,
+            coach.coach_level,
+            coach.achievements,
+            campus.name AS campus_name
+        FROM coach_student_relations csr
+        LEFT JOIN users coach ON csr.coach_id = coach.id
+        LEFT JOIN users student ON csr.student_id = student.id
+        LEFT JOIN campus ON coach.campus_id = campus.id
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.coachId != null">
+                    AND csr.coach_id = #{request.params.coachId}
+                </if>
+                <if test="request.params.studentId != null">
+                    AND csr.student_id = #{request.params.studentId}
+                </if>
+                <if test="request.params.status != null">
+                    AND csr.status = #{request.params.status}
+                </if>
+                <if test="request.params.campusId != null">
+                    AND coach.campus_id = #{request.params.campusId}
+                </if>
+            </if>
+        </where>
+        ORDER BY csr.create_time DESC
+    </select>
+
+</mapper>

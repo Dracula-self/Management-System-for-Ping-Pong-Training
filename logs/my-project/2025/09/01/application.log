@@ -1,0 +1,176 @@
+2025-09-01 17:49:34.044 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 31364 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-09-01 17:49:34.045 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-09-01 17:49:34.045 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-01 17:49:35.241 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-09-01 17:49:35.256 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-01 17:49:35.258 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-09-01 17:49:35.258 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-01 17:49:35.299 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-09-01 17:49:35.299 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1060 ms
+2025-09-01 17:49:35.943 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-09-01 17:49:36.177 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-01 17:49:36.180 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-09-01 17:49:36.193 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-09-01 17:49:36.205 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-09-01 17:50:00.251 [main] INFO  com.quan.project.ProjectApplication - Starting ProjectApplication using Java 17.0.12 with PID 19876 (D:\workspace\project-template\java\my-springboot-project-17\target\classes started by Administrator in D:\workspace\project-template\java\my-springboot-project-17)
+2025-09-01 17:50:00.252 [main] DEBUG com.quan.project.ProjectApplication - Running with Spring Boot v3.3.13, Spring v6.1.21
+2025-09-01 17:50:00.253 [main] INFO  com.quan.project.ProjectApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-01 17:50:01.226 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-09-01 17:50:01.234 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-09-01 17:50:01.235 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-09-01 17:50:01.235 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-01 17:50:01.268 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-09-01 17:50:01.268 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 885 ms
+2025-09-01 17:50:01.773 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2025-09-01 17:50:01.975 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-09-01 17:50:01.982 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-09-01 17:50:01.989 [main] INFO  com.quan.project.ProjectApplication - Started ProjectApplication in 2.109 seconds (process running for 2.565)
+2025-09-01 17:50:02.445 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-01 17:50:02.445 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-09-01 17:50:02.446 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-09-01 17:50:02.473 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: ws
+2025-09-01 17:50:05.646 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: 
+2025-09-01 17:50:05.676 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:09.325 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-09-01 17:50:09.325 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-09-01 17:50:09.325 [http-nio-8080-exec-7] WARN  c.q.p.interceptor.JwtInterceptor - API请求未携带token: /api/system-messages/search
+2025-09-01 17:50:09.325 [http-nio-8080-exec-6] WARN  c.q.p.interceptor.JwtInterceptor - API请求未携带token: /api/banners/search
+2025-09-01 17:50:10.006 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-01 17:50:10.006 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-01 17:50:10.014 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:10.490 [http-nio-8080-exec-1] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:14.676 [http-nio-8080-exec-10] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Starting...
+2025-09-01 17:50:14.868 [http-nio-8080-exec-10] INFO  com.zaxxer.hikari.pool.HikariPool - SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@4c7abe3e
+2025-09-01 17:50:14.870 [http-nio-8080-exec-10] INFO  com.zaxxer.hikari.HikariDataSource - SpringBootHikariCP - Start completed.
+2025-09-01 17:50:14.893 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - ==>  Preparing: SELECT * FROM users WHERE username = ? AND password = ?
+2025-09-01 17:50:14.910 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - ==> Parameters: admin(String), 123456(String)
+2025-09-01 17:50:14.971 [http-nio-8080-exec-10] DEBUG c.q.project.mapper.UserMapper.login - <==      Total: 1
+2025-09-01 17:50:14.975 [http-nio-8080-exec-10] INFO  c.q.p.service.impl.UserServiceImpl - 用户登录成功，用户名: admin
+2025-09-01 17:50:16.152 [http-nio-8080-exec-7] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item2.jpg
+2025-09-01 17:50:16.152 [http-nio-8080-exec-6] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/images/item1.jpg
+2025-09-01 17:50:16.154 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-09-01 17:50:16.154 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-09-01 17:50:16.180 [http-nio-8080-exec-2] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-09-01 17:50:16.180 [http-nio-8080-exec-4] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-09-01 17:50:16.188 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:16.248 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-01 17:50:16.248 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-01 17:50:16.248 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-01 17:50:16.248 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-01 17:50:16.261 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-01 17:50:16.261 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-01 17:50:16.262 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-01 17:50:16.262 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-01 17:50:16.262 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-01 17:50:16.262 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-01 17:50:16.264 [http-nio-8080-exec-2] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-01 17:50:16.264 [http-nio-8080-exec-4] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-01 17:50:20.768 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/system-messages/search
+2025-09-01 17:50:20.769 [http-nio-8080-exec-8] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/system-messages/search
+2025-09-01 17:50:20.772 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM system_message
+2025-09-01 17:50:20.772 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-01 17:50:20.773 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-01 17:50:20.773 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==>  Preparing: SELECT * FROM system_message ORDER BY is_top DESC, id DESC LIMIT ?
+2025-09-01 17:50:20.773 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - ==> Parameters: 10(Integer)
+2025-09-01 17:50:20.774 [http-nio-8080-exec-8] DEBUG c.q.p.m.S.selectPageByConditions - <==      Total: 1
+2025-09-01 17:50:20.789 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: images/2025/07/28/107be95b0fc44f9f979407d29f9a61c1.png
+2025-09-01 17:50:20.805 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:26.243 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:28.712 [http-nio-8080-exec-10] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:30.317 [http-nio-8080-exec-1] INFO  c.q.p.service.impl.AiChatServiceImpl - AI服务可用性检查结果: true (使用默认系统消息)
+2025-09-01 17:50:32.489 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/1
+2025-09-01 17:50:32.491 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/1
+2025-09-01 17:50:32.493 [http-nio-8080-exec-6] DEBUG c.q.p.mapper.UserMapper.selectById - ==>  Preparing: SELECT * FROM users WHERE id = ?
+2025-09-01 17:50:32.494 [http-nio-8080-exec-6] DEBUG c.q.p.mapper.UserMapper.selectById - ==> Parameters: 1(Integer)
+2025-09-01 17:50:32.495 [http-nio-8080-exec-6] DEBUG c.q.p.mapper.UserMapper.selectById - <==      Total: 1
+2025-09-01 17:50:32.509 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-09-01 17:50:32.511 [http-nio-8080-exec-3] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-09-01 17:50:32.514 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-01 17:50:32.515 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-01 17:50:32.516 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-01 17:50:32.516 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-01 17:50:32.516 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-01 17:50:32.517 [http-nio-8080-exec-3] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-01 17:50:32.531 [http-nio-8080-exec-9] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:50:35.404 [http-nio-8080-exec-2] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-01 17:50:37.392 [http-nio-8080-exec-4] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-01 17:50:58.540 [http-nio-8080-exec-8] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:51:08.604 [http-nio-8080-exec-5] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: common/plugins/axios/axios.min.js.map
+2025-09-01 17:51:08.726 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/users/1
+2025-09-01 17:51:08.726 [http-nio-8080-exec-7] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/users/1
+2025-09-01 17:51:08.727 [http-nio-8080-exec-7] DEBUG c.q.p.mapper.UserMapper.selectById - ==>  Preparing: SELECT * FROM users WHERE id = ?
+2025-09-01 17:51:08.727 [http-nio-8080-exec-7] DEBUG c.q.p.mapper.UserMapper.selectById - ==> Parameters: 1(Integer)
+2025-09-01 17:51:08.728 [http-nio-8080-exec-7] DEBUG c.q.p.mapper.UserMapper.selectById - <==      Total: 1
+2025-09-01 17:51:08.751 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - JWT拦截器拦截API请求: /api/banners/search
+2025-09-01 17:51:08.752 [http-nio-8080-exec-6] DEBUG c.q.p.interceptor.JwtInterceptor - API请求token验证成功，用户: admin, ID: 1, 路径: /api/banners/search
+2025-09-01 17:51:08.755 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==>  Preparing: SELECT count(0) FROM banners
+2025-09-01 17:51:08.756 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - ==> Parameters: 
+2025-09-01 17:51:08.757 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions_COUNT - <==      Total: 1
+2025-09-01 17:51:08.757 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==>  Preparing: SELECT id, title, image_url, link_url, sort_order, create_time, update_time FROM banners ORDER BY sort_order DESC, create_time DESC LIMIT ?
+2025-09-01 17:51:08.757 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - ==> Parameters: 5(Integer)
+2025-09-01 17:51:08.758 [http-nio-8080-exec-6] DEBUG c.q.p.m.B.selectPageByConditions - <==      Total: 1
+2025-09-01 17:51:08.778 [http-nio-8080-exec-3] WARN  c.q.p.e.GlobalExceptionHandler - 请求的资源不存在: favicon.ico
+2025-09-01 17:51:18.215 [http-nio-8080-exec-2] ERROR c.q.p.e.GlobalExceptionHandler - 系统异常: Request method 'POST' is not supported, 请求路径: /api/users/change-password
+org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.handleNoMatch(RequestMappingInfoHandlerMapping.java:267)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.lookupHandlerMethod(AbstractHandlerMethodMapping.java:441)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:382)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:127)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:68)
+	at org.springframework.web.servlet.handler.AbstractHandlerMapping.getHandler(AbstractHandlerMapping.java:507)
+	at org.springframework.web.servlet.DispatcherServlet.getHandler(DispatcherServlet.java:1284)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1065)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1769)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:842)

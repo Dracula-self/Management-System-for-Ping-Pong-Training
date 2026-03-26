@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的课表</title>
+    <link rel="stylesheet" href="../common/plugins/element-plus/index.css">
+    <link rel="stylesheet" href="../common/plugins/tailwindcss/tailwind.min.css">
+    <style>
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #e5e5e5;
+            text-align: center;
+            vertical-align: middle;
+            height: 60px;
+            padding: 8px;
+        }
+
+        .schedule-table th {
+            background-color: #f8fafc;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .time-header {
+            background-color: #f1f5f9 !important;
+            width: 80px;
+            font-size: 13px;
+        }
+
+        .schedule-cell.has-appointment {
+            background-color: #fef3f3;
+            color: #dc2626;
+        }
+
+        .schedule-cell.empty {
+            background-color: #f9fafb;
+            color: #9ca3af;
+        }
+
+        .appointment-info {
+            line-height: 1.3;
+            font-size: 12px;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #d97706;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+
+        .status-confirmed {
+            background-color: #d1fae5;
+            color: #059669;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50" style="padding: 16px;">
+<div id="app">
+    <div id="page-my-schedule" v-cloak>
+        <!-- 标题栏 -->
+        <div class="mb-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-gray-800">我的课表</h2>
+                <el-button type="primary" @click="loadSchedule" :loading="loading" size="large">
+                    <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>
+                    刷新课表
+                </el-button>
+            </div>
+        </div>
+
+        <!-- 课表展示 -->
+        <div v-if="scheduleData" class="bg-white rounded-lg shadow-lg p-6">
+            <div class="mb-6 text-center">
+                <h3 class="text-xl font-semibold text-gray-800">
+                    {{ scheduleData.coachName }}的课表
+                </h3>
+                <p class="text-gray-600 mt-1">{{ formatWeekRange() }}</p>
+            </div>
+
+            <!-- 课表表格 -->
+            <div class="overflow-x-auto">
+                <table class="schedule-table">
+                    <!-- 表头 -->
+                    <thead>
+                    <tr>
+                        <th class="time-header">时间</th>
+                        <th v-for="day in scheduleData.weekDays" :key="day.date">
+                            <div>{{ day.dayName }}</div>
+                            <div class="text-sm text-gray-500">{{ formatDate(day.date) }}</div>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <!-- 时间行 -->
+                    <tbody>
+                    <tr v-for="hour in timeSlots" :key="hour">
+                        <td class="time-header">
+                            {{ String(hour).padStart(2, '0') }}:00
+                        </td>
+                        <td v-for="day in scheduleData.weekDays" :key="`${day.date}-${hour}`"
+                            :class="getCellClass(day.date, hour)"
+                            class="schedule-cell">
+
+                            <!-- 有预约的情况 -->
+                            <div v-if="getAppointment(day.date, hour)" class="appointment-info">
+                                <div :class="getStatusClass(getAppointment(day.date, hour).status)">
+                                    {{ getAppointment(day.date, hour).status }}
+                                </div>
+                                <div class="font-medium">{{ getAppointment(day.date, hour).studentName }}</div>
+                                <div class="text-xs">{{ getAppointment(day.date, hour).tableNumber }}号台</div>
+                            </div>
+
+                            <!-- 空闲时段 -->
+                            <div v-else class="text-xs text-gray-400">
+                                空闲
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 加载提示 -->
+        <div v-else-if="loading" class="text-center py-12">
+            <el-loading :loading="loading" text="加载课表中..."></el-loading>
+        </div>
+
+        <!-- 空状态 -->
+        <div v-else class="text-center py-12">
+            <div class="text-gray-500">请点击刷新按钮加载课表</div>
+        </div>
+    </div>
+</div>
+
+<script src="../common/plugins/vue/vue.global.js"></script>
+<script src="../common/plugins/element-plus/index.full.min.js"></script>
+<script src="../common/plugins/iconify/iconify.min.js"></script>
+<script src="../common/js/axios-config.js"></script>
+
+<script>
+    const { createApp, ref, onMounted } = Vue;
+
+    const app = createApp({
+        setup() {
+            // 响应式数据
+            const loading = ref(false);
+            const scheduleData = ref(null);
+
+            // 时间段配置（8:00-22:00）
+            const timeSlots = ref([8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]);
+
+            // 加载课表数据
+            const loadSchedule = async () => {
+                loading.value = true;
+                try {
+                    const response = await apiClient.get('/appointments/coach/my-schedule');
+
+                    if (response.code === 200) {
+                        scheduleData.value = response.data;
+                    } else {
+                        ElMessage.error(response.message || '加载课表失败');
+                    }
+                } catch (error) {
+                    console.error('加载课表失败:', error);
+                    ElMessage.error('加载课表失败');
+                } finally {
+                    loading.value = false;
+                }
+            };
+
+            // 获取单元格样式
+            const getCellClass = (date, hour) => {
+                const appointment = getAppointment(date, hour);
+                return appointment ? 'has-appointment' : 'empty';
+            };
+
+            // 获取预约信息
+            const getAppointment = (date, hour) => {
+                if (!scheduleData.value?.scheduleData) return null;
+                const key = `${date}-${hour}`;
+                return scheduleData.value.scheduleData[key] || null;
+            };
+
+            // 获取状态样式
+            const getStatusClass = (status) => {
+                return status === '待确认' ? 'status-pending' : 'status-confirmed';
+            };
+
+            // 格式化日期
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                return `${date.getMonth() + 1}/${date.getDate()}`;
+            };
+
+            // 格式化周期范围
+            const formatWeekRange = () => {
+                if (!scheduleData.value?.weekDays || scheduleData.value.weekDays.length === 0) return '';
+                const firstDay = scheduleData.value.weekDays[0].date;
+                const lastDay = scheduleData.value.weekDays[6].date;
+                return `${formatDate(firstDay)} - ${formatDate(lastDay)}`;
+            };
+
+            // 页面加载时自动获取课表
+            onMounted(() => {
+                loadSchedule();
+            });
+
+            return {
+                loading,
+                scheduleData,
+                timeSlots,
+                loadSchedule,
+                getCellClass,
+                getAppointment,
+                getStatusClass,
+                formatDate,
+                formatWeekRange
+            };
+        }
+    });
+
+    app.use(ElementPlus);
+    app.mount("#page-my-schedule");
+</script>
+</body>
+</html>

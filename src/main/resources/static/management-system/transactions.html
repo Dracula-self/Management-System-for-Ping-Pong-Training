@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>账户流水管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__transactions" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="学员">
+                            <el-select v-model="searchParams.studentId" placeholder="请选择学员" clearable filterable
+                                style="width: 178px;">
+                                <el-option v-for="student in studentOptions" :key="student.id"
+                                    :label="student.realName || student.username" :value="student.id">
+                                    <span>{{ student.realName || student.username }}</span>
+                                    <span style="color: #8492a6; font-size: 13px; float: right;">{{ student.username
+                                        }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="流水类型">
+                            <el-select v-model="searchParams.type" placeholder="请选择类型" clearable style="width: 178px;">
+                                <el-option label="充值" :value="1"></el-option>
+                                <el-option label="课程消费" :value="2"></el-option>
+                                <el-option label="课程退款" :value="3"></el-option>
+                                <el-option label="比赛报名费" :value="4"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="金额范围">
+                            <el-input-number v-model="searchParams.minAmount" placeholder="最小金额" :precision="2"
+                                style="width: 85px;"></el-input-number>
+                            <span class="mx-2">-</span>
+                            <el-input-number v-model="searchParams.maxAmount" placeholder="最大金额" :precision="2"
+                                style="width: 85px;"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="交易日期">
+                            <el-date-picker v-model="searchParams.transactionDate" type="date" placeholder="请选择交易日期"
+                                value-format="YYYY-MM-DD" style="width: 178px;"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div>
+                        <el-button type="primary" @click="handleAddRecharge">
+                            <iconify-icon icon="mdi:cash-plus" width="16" height="16" class="mr-1"></iconify-icon>手工充值
+                        </el-button>
+                        <!-- <el-button type="success" @click="handleExport">
+                            <iconify-icon icon="mdi:download" width="16" height="16" class="mr-1"></iconify-icon>导出流水
+                        </el-button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 统计卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <el-card>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <iconify-icon icon="mdi:cash-plus" width="40" height="40"
+                                class="text-green-500"></iconify-icon>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">今日充值</p>
+                            <p class="text-2xl font-bold text-green-600">¥{{ statistics.todayRecharge || 0 }}</p>
+                        </div>
+                    </div>
+                </el-card>
+                <el-card>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <iconify-icon icon="mdi:cash-minus" width="40" height="40"
+                                class="text-red-500"></iconify-icon>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">今日消费</p>
+                            <p class="text-2xl font-bold text-red-600">¥{{ statistics.todayConsumption || 0 }}</p>
+                        </div>
+                    </div>
+                </el-card>
+                <el-card>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <iconify-icon icon="mdi:cash-refund" width="40" height="40"
+                                class="text-blue-500"></iconify-icon>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">今日退款</p>
+                            <p class="text-2xl font-bold text-blue-600">¥{{ statistics.todayRefund || 0 }}</p>
+                        </div>
+                    </div>
+                </el-card>
+                <el-card>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <iconify-icon icon="mdi:account-cash" width="40" height="40"
+                                class="text-purple-500"></iconify-icon>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">总余额</p>
+                            <p class="text-2xl font-bold text-purple-600">¥{{ statistics.totalBalance || 0 }}</p>
+                        </div>
+                    </div>
+                </el-card>
+            </div>
+
+            <!-- 流水表格 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-medium">流水记录</h3>
+                    <el-button size="small" @click="loadTransactionsList">
+                        <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                    </el-button>
+                </div>
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无流水数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                    <el-table-column prop="studentName" label="学员"></el-table-column>
+                    <el-table-column prop="type" label="类型">
+                        <template #default="scope">
+                            <el-tag v-if="scope.row.type === 1" type="success" size="small">充值</el-tag>
+                            <el-tag v-else-if="scope.row.type === 2" type="warning" size="small">课程消费</el-tag>
+                            <el-tag v-else-if="scope.row.type === 3" type="info" size="small">课程退款</el-tag>
+                            <el-tag v-else-if="scope.row.type === 4" type="danger" size="small">比赛报名费</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="amount" label="金额">
+                        <template #default="scope">
+                            <span v-if="scope.row.amount > 0" class="text-green-600 font-semibold">+¥{{ scope.row.amount
+                                }}</span>
+                            <span v-else class="text-red-600 font-semibold">¥{{ scope.row.amount }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="notes" label="备注">
+                        <template #default="scope">
+                            <span>{{ scope.row.notes || '-' }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="transactionTime" label="交易时间"></el-table-column>
+                    <el-table-column label="操作" width="200" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2">
+                                <el-button size="small" @click="handleView(scope.row)">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="mr-1"></iconify-icon>查看
+                                </el-button>
+                                <el-button v-if="scope.row.type === 1" size="small" type="danger"
+                                    @click="handleDelete(scope.row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 手工充值对话框 -->
+            <el-dialog title="手工充值" v-model="rechargeDialogVisible" width="600px"
+                :before-close="handleRechargeDialogClose">
+                <el-form ref="rechargeFormRef" :model="rechargeForm" :rules="rechargeRules" label-width="100px">
+                    <el-form-item label="选择学员" prop="studentId">
+                        <el-select v-model="rechargeForm.studentId" placeholder="请选择学员" filterable style="width: 100%;">
+                            <el-option v-for="student in studentOptions" :key="student.id"
+                                :label="student.realName || student.username" :value="student.id">
+                                <span>{{ student.realName || student.username }}</span>
+                                <span style="color: #8492a6; font-size: 13px; float: right;">余额: ¥{{ student.balance
+                                    }}</span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="充值金额" prop="amount">
+                        <el-input-number v-model="rechargeForm.amount" :min="1" :max="10000" :precision="2"
+                            placeholder="请输入充值金额" style="width: 100%;"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="充值备注" prop="notes">
+                        <el-input v-model="rechargeForm.notes" type="textarea" :rows="3"
+                            placeholder="请输入充值备注"></el-input>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="handleRechargeDialogClose">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="handleRechargeSubmit" :loading="rechargeLoading">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>确定
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+
+            <!-- 查看详情对话框 -->
+            <el-dialog title="流水详情" v-model="viewDialogVisible" width="600px">
+                <el-descriptions :column="2" border v-if="viewTransaction">
+                    <el-descriptions-item label="流水ID">{{ viewTransaction.id }}</el-descriptions-item>
+                    <el-descriptions-item label="学员">{{ viewTransaction.studentName }}</el-descriptions-item>
+                    <el-descriptions-item label="流水类型">
+                        <el-tag v-if="viewTransaction.type === 1" type="success" size="small">充值</el-tag>
+                        <el-tag v-else-if="viewTransaction.type === 2" type="warning" size="small">课程消费</el-tag>
+                        <el-tag v-else-if="viewTransaction.type === 3" type="info" size="small">课程退款</el-tag>
+                        <el-tag v-else-if="viewTransaction.type === 4" type="danger" size="small">比赛报名费</el-tag>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="金额">
+                        <span v-if="viewTransaction.amount > 0" class="text-green-600 font-semibold">+¥{{
+                            viewTransaction.amount }}</span>
+                        <span v-else class="text-red-600 font-semibold">¥{{ viewTransaction.amount }}</span>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="交易时间" :span="2">{{ viewTransaction.transactionTime
+                        }}</el-descriptions-item>
+                    <el-descriptions-item label="备注" :span="2">
+                        <div class="whitespace-pre-wrap">{{ viewTransaction.notes || '无' }}</div>
+                    </el-descriptions-item>
+                </el-descriptions>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 查询参数
+                    searchParams: {
+                        studentId: undefined,
+                        type: undefined,
+                        minAmount: undefined,
+                        maxAmount: undefined,
+                        transactionDate: undefined
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 学员选项
+                    studentOptions: [],
+                    // 统计数据
+                    statistics: {
+                        todayRecharge: 0,
+                        todayConsumption: 0,
+                        todayRefund: 0,
+                        totalBalance: 0
+                    },
+                    // 充值对话框
+                    rechargeDialogVisible: false,
+                    rechargeLoading: false,
+                    // 查看详情对话框
+                    viewDialogVisible: false,
+                    viewTransaction: null,
+                    // 表单数据
+                    rechargeForm: {
+                        studentId: undefined,
+                        amount: undefined,
+                        notes: ""
+                    },
+                    // 表单验证规则
+                    rechargeRules: {
+                        studentId: [
+                            { required: true, message: "请选择学员", trigger: "change" }
+                        ],
+                        amount: [
+                            { required: true, message: "请输入充值金额", trigger: "blur" },
+                            { type: "number", min: 1, max: 10000, message: "金额必须在1到10000之间", trigger: "blur" }
+                        ]
+                    }
+                };
+            },
+
+            methods: {
+                // 加载流水列表
+                async loadTransactionsList() {
+                    this.loading = true;
+                    try {
+                        const response = await apiClient.post('/transactions/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.searchParams
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                        } else {
+                            this.$message.error(response.message || '获取流水列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取流水列表失败:', error);
+                        this.$message.error('获取流水列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 加载学员选项
+                async loadStudentOptions() {
+                    try {
+                        const response = await apiClient.post('/users/search', {
+                            pageNum: 1,
+                            pageSize: 1000,
+                            params: {
+                                userRole: 4, // 学员
+                                userStatus: 1 // 正常状态
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.studentOptions = response.data.list || [];
+                        }
+                    } catch (error) {
+                        console.error('获取学员列表失败:', error);
+                    }
+                },
+
+                // 加载统计数据
+                async loadStatistics() {
+                    try {
+                        // 今日充值
+                        const rechargeResponse = await apiClient.post('/transactions/search', {
+                            pageNum: 1,
+                            pageSize: 1,
+                            params: {
+                                type: 1,
+                                transactionDate: new Date().toISOString().split('T')[0]
+                            }
+                        });
+
+                        // 今日消费
+                        const consumptionResponse = await apiClient.post('/transactions/search', {
+                            pageNum: 1,
+                            pageSize: 1,
+                            params: {
+                                type: 2,
+                                transactionDate: new Date().toISOString().split('T')[0]
+                            }
+                        });
+
+                        // 今日退款
+                        const refundResponse = await apiClient.post('/transactions/search', {
+                            pageNum: 1,
+                            pageSize: 1,
+                            params: {
+                                type: 3,
+                                transactionDate: new Date().toISOString().split('T')[0]
+                            }
+                        });
+
+                        // 计算统计数据（这里简化处理，实际应该在后端计算）
+                        this.statistics = {
+                            todayRecharge: 0,
+                            todayConsumption: 0,
+                            todayRefund: 0,
+                            totalBalance: this.studentOptions.reduce((sum, student) => sum + (student.balance || 0), 0)
+                        };
+                    } catch (error) {
+                        console.error('获取统计数据失败:', error);
+                    }
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadTransactionsList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        studentId: undefined,
+                        type: undefined,
+                        minAmount: undefined,
+                        maxAmount: undefined,
+                        transactionDate: undefined
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadTransactionsList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadTransactionsList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadTransactionsList();
+                },
+
+                // 手工充值
+                handleAddRecharge() {
+                    this.resetRechargeForm();
+                    this.rechargeDialogVisible = true;
+                },
+
+                // 导出流水
+                handleExport() {
+                    this.$message.info('导出功能开发中...');
+                },
+
+                // 查看详情
+                handleView(row) {
+                    this.viewTransaction = row;
+                    this.viewDialogVisible = true;
+                },
+
+                // 删除流水记录
+                handleDelete(row) {
+                    this.$confirm(`确定要删除这条流水记录吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/transactions/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('删除成功');
+                                this.loadTransactionsList();
+                            } else {
+                                this.$message.error(response.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除流水记录失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+
+                // 充值提�?
+                async handleRechargeSubmit() {
+                    try {
+                        const valid = await this.$refs.rechargeFormRef.validate();
+                        if (!valid) return;
+
+                        this.rechargeLoading = true;
+
+                        const response = await apiClient.post('/transactions/manual-recharge', null, {
+                            params: {
+                                studentId: this.rechargeForm.studentId,
+                                amount: this.rechargeForm.amount,
+                                notes: this.rechargeForm.notes
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.$message.success('充值成功');
+                            this.rechargeDialogVisible = false;
+                            this.loadTransactionsList();
+                            this.loadStudentOptions(); // 刷新学员余额
+                            this.loadStatistics(); // 刷新统计数据
+                        } else {
+                            this.$message.error(response.message || '充值失败');
+                        }
+                    } catch (error) {
+                        console.error('充值失败:', error);
+                        this.$message.error('充值失败');
+                    } finally {
+                        this.rechargeLoading = false;
+                    }
+                },
+
+                // 关闭充值对话框
+                handleRechargeDialogClose() {
+                    this.rechargeDialogVisible = false;
+                    this.resetRechargeForm();
+                },
+
+                // 重置充值表单
+                resetRechargeForm() {
+                    this.rechargeForm = {
+                        studentId: undefined,
+                        amount: undefined,
+                        notes: ""
+                    };
+                    if (this.$refs.rechargeFormRef) {
+                        this.$refs.rechargeFormRef.clearValidate();
+                    }
+                }
+            },
+
+            async mounted() {
+                await this.loadStudentOptions();
+                await this.loadStatistics();
+                await this.loadTransactionsList();
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__transactions");
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.CampusMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="CampusResultMap" type="com.quan.project.entity.Campus">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <result property="contactPerson" column="contact_person"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="contactEmail" column="contact_email"/>
+        <result property="managerId" column="manager_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- 插入校区 -->
+    <insert id="insert" parameterType="com.quan.project.entity.Campus" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO campus (name, address, contact_person, contact_phone, contact_email, manager_id, create_time)
+        VALUES (#{name}, #{address}, #{contactPerson}, #{contactPhone}, #{contactEmail}, #{managerId}, NOW())
+    </insert>
+
+    <!-- 根据ID删除校区 -->
+    <delete id="deleteById">
+        DELETE FROM campus WHERE id = #{id}
+    </delete>
+
+    <!-- 更新校区信息 -->
+    <update id="update" parameterType="com.quan.project.entity.Campus">
+        UPDATE campus SET
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="address != null">
+            address = #{address},
+        </if>
+        <if test="contactPerson != null">
+            contact_person = #{contactPerson},
+        </if>
+        <if test="contactPhone != null">
+            contact_phone = #{contactPhone},
+        </if>
+        <if test="contactEmail != null">
+            contact_email = #{contactEmail},
+        </if>
+        <if test="managerId != null">
+            manager_id = #{managerId},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID查询校区 -->
+    <select id="selectById" resultMap="CampusResultMap">
+        SELECT * FROM campus WHERE id = #{id}
+    </select>
+
+    <!-- 查询所有校区 -->
+    <select id="selectAll" resultMap="CampusResultMap">
+        SELECT * FROM campus ORDER BY create_time DESC
+    </select>
+
+    <!-- 分页查询校区（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="CampusResultMap">
+        SELECT * FROM campus
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.name != null and request.params.name != '' and request.params.name.trim() != ''">
+                    AND name LIKE CONCAT('%', #{request.params.name}, '%')
+                </if>
+                <if test="request.params.address != null and request.params.address != '' and request.params.address.trim() != ''">
+                    AND address LIKE CONCAT('%', #{request.params.address}, '%')
+                </if>
+                <if test="request.params.contactPerson != null and request.params.contactPerson != '' and request.params.contactPerson.trim() != ''">
+                    AND contact_person LIKE CONCAT('%', #{request.params.contactPerson}, '%')
+                </if>
+                <if test="request.params.managerId != null">
+                    AND manager_id = #{request.params.managerId}
+                </if>
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据管理员ID查询校区 -->
+    <select id="selectByManagerId" resultMap="CampusResultMap">
+        SELECT * FROM campus WHERE manager_id = #{managerId}
+    </select>
+
+    <!-- 根据校区名称查询校区 -->
+    <select id="selectByName" resultMap="CampusResultMap">
+        SELECT * FROM campus WHERE name = #{name}
+    </select>
+
+</mapper>

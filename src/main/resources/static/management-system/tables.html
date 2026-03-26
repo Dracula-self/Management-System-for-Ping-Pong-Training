@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>球台管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__tables" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="校区">
+                            <el-select v-model="searchParams.campusId" placeholder="请选择校区" clearable
+                                style="width: 178px;">
+                                <el-option v-for="campus in campusOptions" :key="campus.id" :label="campus.name"
+                                    :value="campus.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="球台编号">
+                            <el-input v-model="searchParams.tableNumber" placeholder="请输入球台编号" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div>
+                        <el-button type="primary" @click="handleAdd">
+                            <iconify-icon icon="mdi:plus" width="16" height="16" class="mr-1"></iconify-icon>新增球台
+                        </el-button>
+                        <el-button type="success" @click="handleBatchAdd">
+                            <iconify-icon icon="mdi:plus-box-multiple" width="16" height="16"
+                                class="mr-1"></iconify-icon>批量新增
+                        </el-button>
+                        <el-button type="danger" @click="handleBatchDelete" :disabled="selectedRows.length === 0">
+                            <iconify-icon icon="mdi:delete-multiple" width="16" height="16"
+                                class="mr-1"></iconify-icon>批量删除
+                        </el-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 统计卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <el-card>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <iconify-icon icon="mdi:table-tennis" width="40" height="40"
+                                class="text-blue-500"></iconify-icon>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">球台总数</p>
+                            <p class="text-2xl font-bold text-blue-600">{{ statistics.totalTables || 0 }}</p>
+                        </div>
+                    </div>
+                </el-card>
+                <el-card>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <iconify-icon icon="mdi:check-circle" width="40" height="40"
+                                class="text-green-500"></iconify-icon>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">空闲球台</p>
+                            <p class="text-2xl font-bold text-green-600">{{ statistics.availableTables || 0 }}</p>
+                        </div>
+                    </div>
+                </el-card>
+                <el-card>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <iconify-icon icon="mdi:clock" width="40" height="40"
+                                class="text-orange-500"></iconify-icon>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-600">使用中球台</p>
+                            <p class="text-2xl font-bold text-orange-600">{{ statistics.busyTables || 0 }}</p>
+                        </div>
+                    </div>
+                </el-card>
+            </div>
+
+            <!-- 球台表格 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-medium">球台列表</h3>
+                    <el-button size="small" @click="loadTablesList">
+                        <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                    </el-button>
+                </div>
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无球台数据"
+                    class="w-full" @selection-change="handleSelectionChange">
+                    <el-table-column type="selection" width="55"></el-table-column>
+                    <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                    <el-table-column prop="campusName" label="所属校区"></el-table-column>
+                    <el-table-column prop="tableNumber" label="球台编号"></el-table-column>
+                    <el-table-column prop="status" label="状态">
+                        <template #default="scope">
+                            <el-tag v-if="scope.row.status === 'available'" type="success" size="small">空闲</el-tag>
+                            <el-tag v-else-if="scope.row.status === 'busy'" type="warning" size="small">使用中</el-tag>
+                            <el-tag v-else-if="scope.row.status === 'maintenance'" type="danger"
+                                size="small">维护中</el-tag>
+                            <el-tag v-else type="info" size="small">未知</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="currentAppointment" label="当前预约">
+                        <template #default="scope">
+                            <div v-if="scope.row.currentAppointment">
+                                <p class="text-sm">{{ scope.row.currentAppointment.studentName }} vs {{
+                                    scope.row.currentAppointment.coachName }}</p>
+                                <p class="text-xs text-gray-500">{{ scope.row.currentAppointment.startTime }} - {{
+                                    scope.row.currentAppointment.endTime }}</p>
+                            </div>
+                            <span v-else class="text-gray-400">-</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="300" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2">
+                                <el-button size="small" @click="handleView(scope.row)">
+                                    <iconify-icon icon="mdi:eye" width="16" height="16" class="mr-1"></iconify-icon>查看
+                                </el-button>
+                                <el-button size="small" type="primary" @click="handleEdit(scope.row)">
+                                    <iconify-icon icon="mdi:pencil" width="16" height="16"
+                                        class="mr-1"></iconify-icon>编辑
+                                </el-button>
+                                <el-button size="small" type="danger" @click="handleDelete(scope.row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 新增/编辑对话框-->
+            <el-dialog :title="dialogTitle" v-model="dialogVisible" width="500px" :before-close="handleDialogClose">
+                <el-form ref="tableFormRef" :model="tableForm" :rules="tableRules" label-width="100px">
+                    <el-form-item label="所属校区" prop="campusId">
+                        <el-select v-model="tableForm.campusId" placeholder="请选择校区" style="width: 100%;">
+                            <el-option v-for="campus in campusOptions" :key="campus.id" :label="campus.name"
+                                :value="campus.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="球台编号" prop="tableNumber">
+                        <el-input v-model="tableForm.tableNumber" placeholder="请输入球台编号"></el-input>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="handleDialogClose">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>确定
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+
+            <!-- 批量新增对话框-->
+            <el-dialog title="批量新增球台" v-model="batchAddDialogVisible" width="600px"
+                :before-close="handleBatchAddDialogClose">
+                <el-form ref="batchAddFormRef" :model="batchAddForm" :rules="batchAddRules" label-width="100px">
+                    <el-form-item label="所属校区" prop="campusId">
+                        <el-select v-model="batchAddForm.campusId" placeholder="请选择校区" style="width: 100%;">
+                            <el-option v-for="campus in campusOptions" :key="campus.id" :label="campus.name"
+                                :value="campus.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="编号前缀" prop="prefix">
+                        <el-input v-model="batchAddForm.prefix" placeholder="如：A、B、号台等"></el-input>
+                    </el-form-item>
+                    <el-form-item label="起始编号" prop="startNumber">
+                        <el-input-number v-model="batchAddForm.startNumber" :min="1" :max="100"
+                            placeholder="起始编号"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="结束编号" prop="endNumber">
+                        <el-input-number v-model="batchAddForm.endNumber" :min="1" :max="100"
+                            placeholder="结束编号"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="预览">
+                        <div class="bg-gray-100 p-3 rounded">
+                            <p class="text-sm text-gray-600 mb-2">将创建以下球台：</p>
+                            <div class="flex flex-wrap gap-2">
+                                <el-tag v-for="preview in previewTables" :key="preview" size="small">{{ preview
+                                    }}</el-tag>
+                            </div>
+                        </div>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="handleBatchAddDialogClose">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="handleBatchAddSubmit" :loading="batchAddLoading">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>确定
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+
+            <!-- 查看详情对话框-->
+            <el-dialog title="球台详情" v-model="viewDialogVisible" width="600px">
+                <el-descriptions :column="2" border v-if="viewTable">
+                    <el-descriptions-item label="球台ID">{{ viewTable.id }}</el-descriptions-item>
+                    <el-descriptions-item label="球台编号">{{ viewTable.tableNumber }}</el-descriptions-item>
+                    <el-descriptions-item label="所属校区">{{ viewTable.campusName }}</el-descriptions-item>
+                    <el-descriptions-item label="状态">
+                        <el-tag v-if="viewTable.status === 'available'" type="success" size="small">空闲</el-tag>
+                        <el-tag v-else-if="viewTable.status === 'busy'" type="warning" size="small">使用中</el-tag>
+                        <el-tag v-else-if="viewTable.status === 'maintenance'" type="danger" size="small">维护中</el-tag>
+                        <el-tag v-else type="info" size="small">未知</el-tag>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="当前预约" :span="2" v-if="viewTable.currentAppointment">
+                        <div>
+                            <p><strong>学员：</strong>{{ viewTable.currentAppointment.studentName }}</p>
+                            <p><strong>教练：</strong>{{ viewTable.currentAppointment.coachName }}</p>
+                            <p><strong>时间：</strong>{{ viewTable.currentAppointment.startTime }} - {{
+                                viewTable.currentAppointment.endTime }}</p>
+                            <p><strong>费用：</strong>¥{{ viewTable.currentAppointment.cost }}</p>
+                        </div>
+                    </el-descriptions-item>
+                    <el-descriptions-item label="当前预约" :span="2" v-else>
+                        <span class="text-gray-400">无</span>
+                    </el-descriptions-item>
+                </el-descriptions>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted, computed } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 查询参数
+                    searchParams: {
+                        campusId: undefined,
+                        tableNumber: ""
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    selectedRows: [],
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 校区选项
+                    campusOptions: [],
+                    // 统计数据
+                    statistics: {
+                        totalTables: 0,
+                        availableTables: 0,
+                        busyTables: 0
+                    },
+                    // 对话框相关
+                    dialogVisible: false,
+                    dialogTitle: "新增球台",
+                    isEdit: false,
+                    submitLoading: false,
+                    // 批量新增对话框
+                    batchAddDialogVisible: false,
+                    batchAddLoading: false,
+                    // 查看详情对话框
+                    viewDialogVisible: false,
+                    viewTable: null,
+                    // 表单数据
+                    tableForm: {
+                        id: undefined,
+                        campusId: undefined,
+                        tableNumber: ""
+                    },
+                    // 批量新增表单
+                    batchAddForm: {
+                        campusId: undefined,
+                        prefix: "",
+                        startNumber: 1,
+                        endNumber: 10
+                    },
+                    // 表单验证规则
+                    tableRules: {
+                        campusId: [
+                            { required: true, message: "请选择校区", trigger: "change" }
+                        ],
+                        tableNumber: [
+                            { required: true, message: "请输入球台编号", trigger: "blur" },
+                            { min: 1, max: 20, message: "长度在1到20个字符", trigger: "blur" }
+                        ]
+                    },
+                    // 批量新增验证规则
+                    batchAddRules: {
+                        campusId: [
+                            { required: true, message: "请选择校区", trigger: "change" }
+                        ],
+                        prefix: [
+                            { required: true, message: "请输入编号前缀", trigger: "blur" }
+                        ],
+                        startNumber: [
+                            { required: true, message: "请输入起始编号", trigger: "blur" }
+                        ],
+                        endNumber: [
+                            { required: true, message: "请输入结束编号", trigger: "blur" }
+                        ]
+                    }
+                };
+            },
+
+            computed: {
+                // 预览批量创建的球台
+                previewTables() {
+                    if (!this.batchAddForm.prefix || !this.batchAddForm.startNumber || !this.batchAddForm.endNumber) {
+                        return [];
+                    }
+
+                    if (this.batchAddForm.endNumber < this.batchAddForm.startNumber) {
+                        return [];
+                    }
+
+                    const tables = [];
+                    for (let i = this.batchAddForm.startNumber; i <= this.batchAddForm.endNumber; i++) {
+                        tables.push(`${this.batchAddForm.prefix}${i}`);
+                    }
+                    return tables.slice(0, 20); // 最多预览20个
+                }
+            },
+
+            methods: {
+                // 加载球台列表
+                async loadTablesList() {
+                    this.loading = true;
+                    try {
+                        const response = await apiClient.post('/tables/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.searchParams
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                            this.updateStatistics();
+                        } else {
+                            this.$message.error(response.message || '获取球台列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取球台列表失败:', error);
+                        this.$message.error('获取球台列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 加载校区选项
+                async loadCampusOptions() {
+                    try {
+                        const response = await apiClient.post('/campus/search', {
+                            pageNum: 1,
+                            pageSize: 1000,
+                            params: {}
+                        });
+
+                        if (response.code === 200) {
+                            this.campusOptions = response.data.list || [];
+                        }
+                    } catch (error) {
+                        console.error('获取校区列表失败:', error);
+                    }
+                },
+
+                // 更新统计数据
+                updateStatistics() {
+                    this.statistics = {
+                        totalTables: this.tableData.length,
+                        availableTables: this.tableData.filter(t => t.status === 'available').length,
+                        busyTables: this.tableData.filter(t => t.status === 'busy').length
+                    };
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadTablesList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        campusId: undefined,
+                        tableNumber: ""
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadTablesList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadTablesList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadTablesList();
+                },
+
+                // 选择变化
+                handleSelectionChange(selection) {
+                    this.selectedRows = selection;
+                },
+
+                // 新增
+                handleAdd() {
+                    this.isEdit = false;
+                    this.dialogTitle = "新增球台";
+                    this.resetForm();
+                    this.dialogVisible = true;
+                },
+
+                // 批量新增
+                handleBatchAdd() {
+                    this.resetBatchAddForm();
+                    this.batchAddDialogVisible = true;
+                },
+
+                // 批量删除
+                handleBatchDelete() {
+                    if (this.selectedRows.length === 0) {
+                        this.$message.warning('请选择要删除的球台');
+                        return;
+                    }
+
+                    this.$confirm(`确定要删除选中的 ${this.selectedRows.length} 个球台吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const promises = this.selectedRows.map(table =>
+                                apiClient.delete(`/tables/${table.id}`)
+                            );
+
+                            await Promise.all(promises);
+                            this.$message.success('批量删除成功');
+                            this.loadTablesList();
+                        } catch (error) {
+                            console.error('批量删除失败:', error);
+                            this.$message.error('批量删除失败');
+                        }
+                    });
+                },
+
+                // 编辑
+                handleEdit(row) {
+                    this.isEdit = true;
+                    this.dialogTitle = "编辑球台";
+                    this.tableForm = { ...row };
+                    this.dialogVisible = true;
+                },
+
+                // 查看详情
+                handleView(row) {
+                    this.viewTable = row;
+                    this.viewDialogVisible = true;
+                },
+
+                // 删除
+                handleDelete(row) {
+                    this.$confirm(`确定要删除球台"${row.tableNumber}"吗？`, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/tables/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('删除成功');
+                                this.loadTablesList();
+                            } else {
+                                this.$message.error(response.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除球台失败:', error);
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+
+                // 提交表单
+                async handleSubmit() {
+                    try {
+                        const valid = await this.$refs.tableFormRef.validate();
+                        if (!valid) return;
+
+                        this.submitLoading = true;
+
+                        let response;
+                        if (this.isEdit) {
+                            response = await apiClient.put(`/tables/${this.tableForm.id}`, this.tableForm);
+                        } else {
+                            response = await apiClient.post('/tables', this.tableForm);
+                        }
+
+                        if (response.code === 200) {
+                            this.$message.success(this.isEdit ? '更新成功' : '创建成功');
+                            this.dialogVisible = false;
+                            this.loadTablesList();
+                        } else {
+                            this.$message.error(response.message || '操作失败');
+                        }
+                    } catch (error) {
+                        console.error('提交失败:', error);
+                        this.$message.error('操作失败');
+                    } finally {
+                        this.submitLoading = false;
+                    }
+                },
+
+                // 批量新增提交
+                async handleBatchAddSubmit() {
+                    try {
+                        const valid = await this.$refs.batchAddFormRef.validate();
+                        if (!valid) return;
+
+                        if (this.batchAddForm.endNumber < this.batchAddForm.startNumber) {
+                            this.$message.error('结束编号不能小于起始编号');
+                            return;
+                        }
+
+                        if (this.batchAddForm.endNumber - this.batchAddForm.startNumber > 50) {
+                            this.$message.error('一次最多创建50个球台');
+                            return;
+                        }
+
+                        this.batchAddLoading = true;
+
+                        const tables = [];
+                        for (let i = this.batchAddForm.startNumber; i <= this.batchAddForm.endNumber; i++) {
+                            tables.push({
+                                campusId: this.batchAddForm.campusId,
+                                tableNumber: `${this.batchAddForm.prefix}${i}`
+                            });
+                        }
+
+                        const promises = tables.map(table => apiClient.post('/tables', table));
+                        await Promise.all(promises);
+
+                        this.$message.success(`成功创建 ${tables.length} 个球台`);
+                        this.batchAddDialogVisible = false;
+                        this.loadTablesList();
+                    } catch (error) {
+                        console.error('批量创建失败:', error);
+                        this.$message.error('批量创建失败');
+                    } finally {
+                        this.batchAddLoading = false;
+                    }
+                },
+
+                // 关闭对话框
+                handleDialogClose() {
+                    this.dialogVisible = false;
+                    this.resetForm();
+                },
+
+                // 关闭批量新增对话框
+                handleBatchAddDialogClose() {
+                    this.batchAddDialogVisible = false;
+                    this.resetBatchAddForm();
+                },
+
+                // 重置表单
+                resetForm() {
+                    this.tableForm = {
+                        id: undefined,
+                        campusId: undefined,
+                        tableNumber: ""
+                    };
+                    if (this.$refs.tableFormRef) {
+                        this.$refs.tableFormRef.clearValidate();
+                    }
+                },
+
+                // 重置批量新增表单
+                resetBatchAddForm() {
+                    this.batchAddForm = {
+                        campusId: undefined,
+                        prefix: "",
+                        startNumber: 1,
+                        endNumber: 10
+                    };
+                    if (this.$refs.batchAddFormRef) {
+                        this.$refs.batchAddFormRef.clearValidate();
+                    }
+                }
+            },
+
+            async mounted() {
+                await this.loadCampusOptions();
+                await this.loadTablesList();
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__tables");
+    </script>
+</body>
+
+</html>

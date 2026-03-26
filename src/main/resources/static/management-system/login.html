@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乒乓球培训管理系统 - 登录</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <!-- Vue 3 -->
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <!-- Element Plus -->
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <!-- 引入 Axios -->
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <!-- 引入 Axios 配置（包含用户API） -->
+    <script src="/common/js/axios-config.js"></script>
+</head>
+
+<body class="bg-gradient-to-r from-blue-700 to-indigo-800 min-h-screen flex items-center justify-center p-4">
+    <div id="app" v-cloak>
+        <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md" style="width: 384px;">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">乒乓球培训管理系统</h1>
+                <p class="text-gray-600">请登录您的账户</p>
+            </div>
+
+            <el-form @submit.prevent="handleLogin" :model="loginForm" ref="loginFormRef">
+                <el-form-item>
+                    <el-input v-model="loginForm.username" placeholder="请输入用户名" :disabled="loading" size="large"
+                        clearable @keyup.enter="handleLogin">
+                        <template #prefix>
+                            <iconify-icon icon="mdi:account" width="16" height="16"
+                                class="text-gray-500"></iconify-icon>
+                        </template>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-input v-model="loginForm.password" type="password" placeholder="请输入密码" :disabled="loading"
+                        size="large" show-password clearable @keyup.enter="handleLogin">
+                        <template #prefix>
+                            <iconify-icon icon="mdi:lock" width="16" height="16" class="text-gray-500"></iconify-icon>
+                        </template>
+                    </el-input>
+                </el-form-item>
+
+                <!-- 验证码输入框 -->
+                <el-form-item>
+                    <div class="flex gap-3">
+                        <el-input v-model="loginForm.captcha" placeholder="请输入验证码" :disabled="loading" maxlength="4"
+                            size="large" clearable @keyup.enter="handleLogin" class="flex-1">
+                            <template #prefix>
+                                <iconify-icon icon="mdi:shield-check" width="16" height="16"
+                                    class="text-gray-500"></iconify-icon>
+                            </template>
+                        </el-input>
+                        <div
+                            class="w-32 h-12 flex-shrink-0 overflow-hidden border border-gray-200 rounded cursor-pointer">
+                            <img :src="captchaImage" alt="验证码" class="w-full h-full object-cover"
+                                @click="refreshCaptcha" title="点击图片刷新验证码" />
+                        </div>
+                    </div>
+                </el-form-item>
+
+                <div class="flex justify-end mb-4">
+                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm" @click.prevent="handleForgotPassword">
+                        忘记密码？
+                    </a>
+                </div>
+
+                <el-form-item>
+                    <el-button type="primary" @click="handleLogin" :loading="loading" size="large" class="w-full">
+                        登录
+                    </el-button>
+                </el-form-item>
+            </el-form>
+
+            <div class="mt-8 text-center">
+                <p class="text-gray-500 text-sm">&copy; 2025 乒乓球培训管理系统. 保留所有权利.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    loginForm: {
+                        username: '',
+                        password: '',
+                        captcha: ''
+                    },
+                    loading: false,
+                    captchaImage: '',
+                    captchaToken: '',
+                    refreshingCaptcha: false
+                };
+            },
+            methods: {
+                // 登录处理函数
+                async handleLogin() {
+                    // 基础验证
+                    if (!this.loginForm.username.trim()) {
+                        this.$message.warning('请输入用户名');
+                        return;
+                    }
+                    if (!this.loginForm.password.trim()) {
+                        this.$message.warning('请输入密码');
+                        return;
+                    }
+                    if (!this.loginForm.captcha.trim()) {
+                        this.$message.warning('请输入验证码');
+                        return;
+                    }
+                    if (this.loginForm.captcha.trim().length !== 4) {
+                        this.$message.warning('验证码长度不正确');
+                        return;
+                    }
+
+                    this.loading = true;
+
+                    try {
+                        console.log('开始登录:', this.loginForm.username);
+
+                        // 创建登录数据对象
+                        const loginData = {
+                            username: this.loginForm.username,
+                            password: this.loginForm.password,
+                            captcha: this.loginForm.captcha,
+                            captchaToken: this.captchaToken
+                        };
+
+                        // 调用登录 API（包含验证码）
+                        const result = await apiClient.post('/users/login', loginData);
+
+                        console.log('登录响应:', result);
+
+                        if (result.code === 200) {
+                            this.$message.success('登录成功！');
+
+                            // 使用统一的保存方法
+                            if (result.data && result.data.accessToken && result.data.user) {
+                                saveLoginInfo(result.data.accessToken, result.data.user);
+                            }
+
+                            // 跳转到主页面
+                            setTimeout(() => {
+                                window.location.href = '/management-system/index.html';
+                            }, 1000);
+                        }
+                        // axios拦截器已经处理了错误情况，这里不需要再处理
+
+                    } catch (error) {
+                        console.error('登录失败:', error);
+                        // 登录失败后刷新验证码
+                        this.refreshCaptcha();
+                        this.loginForm.captcha = '';
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 处理忘记密码
+                handleForgotPassword() {
+                    this.$message.info('请联系管理员重置密码');
+                },
+
+                // 加载验证码
+                async loadCaptcha() {
+                    try {
+                        const response = await apiClient.get('/captcha/generate');
+                        console.log('验证码响应:', response);
+                        // 使用统一响应格式：response.data
+                        if (response && response.data) {
+                            this.captchaImage = response.data.captchaImage;
+                            this.captchaToken = response.data.captchaToken;
+                            console.log('验证码图片已设置:', this.captchaImage ? '有数据' : '无数据');
+                        }
+                    } catch (error) {
+                        console.error('加载验证码失败:', error);
+                    }
+                },
+
+                // 刷新验证码
+                async refreshCaptcha() {
+                    if (this.refreshingCaptcha) return;
+
+                    this.refreshingCaptcha = true;
+                    try {
+                        await this.loadCaptcha();
+                        this.loginForm.captcha = '';
+                    } finally {
+                        this.refreshingCaptcha = false;
+                    }
+                }
+            },
+            mounted() {
+                console.log('登录页面Vue应用已挂载');
+
+                // 检查是否已经登录
+                if (isLoggedIn()) {
+                    console.log('用户已登录，跳转到主页');
+                    window.location.href = '/management-system/index.html';
+                }
+
+                // 加载验证码
+                this.loadCaptcha();
+            }
+        });
+
+        // 使用 Element Plus
+        app.use(ElementPlus);
+
+        // 挂载应用
+        app.mount('#app');
+
+        console.log('🚀 登录页面 Vue 应用已启动');
+    </script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</body>
+
+</html>

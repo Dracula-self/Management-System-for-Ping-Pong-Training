@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.EvaluationMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="EvaluationResultMap" type="com.quan.project.entity.Evaluation">
+        <id property="id" column="id"/>
+        <result property="appointmentId" column="appointment_id"/>
+        <result property="studentFeedback" column="student_feedback"/>
+        <result property="coachFeedback" column="coach_feedback"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- 插入评价 -->
+    <insert id="insert" parameterType="com.quan.project.entity.Evaluation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO evaluations (appointment_id, student_feedback, coach_feedback, create_time)
+        VALUES (#{appointmentId}, #{studentFeedback}, #{coachFeedback}, NOW())
+    </insert>
+
+    <!-- 根据ID删除评价 -->
+    <delete id="deleteById">
+        DELETE FROM evaluations WHERE id = #{id}
+    </delete>
+
+    <!-- 更新评价信息 -->
+    <update id="update" parameterType="com.quan.project.entity.Evaluation">
+        UPDATE evaluations SET
+        <if test="studentFeedback != null">
+            student_feedback = #{studentFeedback},
+        </if>
+        <if test="coachFeedback != null">
+            coach_feedback = #{coachFeedback},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID查询评价 -->
+    <select id="selectById" resultMap="EvaluationResultMap">
+        SELECT * FROM evaluations WHERE id = #{id}
+    </select>
+
+    <!-- 分页查询评价（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="EvaluationResultMap">
+        SELECT e.*, a.student_id, a.coach_id FROM evaluations e
+        LEFT JOIN appointments a ON e.appointment_id = a.id
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.appointmentId != null">
+                    AND e.appointment_id = #{request.params.appointmentId}
+                </if>
+                <if test="request.params.studentId != null">
+                    AND a.student_id = #{request.params.studentId}
+                </if>
+                <if test="request.params.coachId != null">
+                    AND a.coach_id = #{request.params.coachId}
+                </if>
+                <if test="request.params.startDate != null">
+                    AND DATE(e.create_time) >= #{request.params.startDate}
+                </if>
+                <if test="request.params.endDate != null">
+                    AND DATE(e.create_time) &lt;= #{request.params.endDate}
+                </if>
+                <if test="request.params.hasStudentFeedback != null">
+                    <if test="request.params.hasStudentFeedback == true">
+                        AND e.student_feedback IS NOT NULL AND e.student_feedback != ''
+                    </if>
+                    <if test="request.params.hasStudentFeedback == false">
+                        AND (e.student_feedback IS NULL OR e.student_feedback = '')
+                    </if>
+                </if>
+                <if test="request.params.hasCoachFeedback != null">
+                    <if test="request.params.hasCoachFeedback == true">
+                        AND e.coach_feedback IS NOT NULL AND e.coach_feedback != ''
+                    </if>
+                    <if test="request.params.hasCoachFeedback == false">
+                        AND (e.coach_feedback IS NULL OR e.coach_feedback = '')
+                    </if>
+                </if>
+            </if>
+        </where>
+        ORDER BY e.create_time DESC
+    </select>
+
+    <!-- 根据预约ID查询评价 -->
+    <select id="selectByAppointmentId" resultMap="EvaluationResultMap">
+        SELECT * FROM evaluations WHERE appointment_id = #{appointmentId}
+    </select>
+
+    <!-- 查询学员的评价记录 -->
+    <select id="selectByStudentId" resultMap="EvaluationResultMap">
+        SELECT e.* FROM evaluations e
+        LEFT JOIN appointments a ON e.appointment_id = a.id
+        WHERE a.student_id = #{studentId}
+        ORDER BY e.create_time DESC
+    </select>
+
+    <!-- 查询教练的评价记录 -->
+    <select id="selectByCoachId" resultMap="EvaluationResultMap">
+        SELECT e.* FROM evaluations e
+        LEFT JOIN appointments a ON e.appointment_id = a.id
+        WHERE a.coach_id = #{coachId}
+        ORDER BY e.create_time DESC
+    </select>
+
+    <!-- 查询待评价的预约（学员视角） -->
+    <select id="selectPendingEvaluationsForStudent" resultMap="EvaluationResultMap">
+        SELECT e.* FROM evaluations e
+        LEFT JOIN appointments a ON e.appointment_id = a.id
+        WHERE a.student_id = #{studentId}
+        AND a.status = 2  -- 已完成状态
+        AND (e.student_feedback IS NULL OR e.student_feedback = '')
+        ORDER BY a.end_time DESC
+    </select>
+
+    <!-- 查询待评价的预约（教练视角） -->
+    <select id="selectPendingEvaluationsForCoach" resultMap="EvaluationResultMap">
+        SELECT e.* FROM evaluations e
+        LEFT JOIN appointments a ON e.appointment_id = a.id
+        WHERE a.coach_id = #{coachId}
+        AND a.status = 2  -- 已完成状态
+        AND (e.coach_feedback IS NULL OR e.coach_feedback = '')
+        ORDER BY a.end_time DESC
+    </select>
+
+    <!-- 统计用户评价数量 -->
+    <select id="countEvaluationsByUser" resultType="int">
+        SELECT COUNT(*) FROM evaluations e
+        LEFT JOIN appointments a ON e.appointment_id = a.id
+        WHERE 1=1
+        <if test="userRole == 4">  <!-- 学员 -->
+            AND a.student_id = #{userId}
+        </if>
+        <if test="userRole == 3">  <!-- 教练 -->
+            AND a.coach_id = #{userId}
+        </if>
+    </select>
+
+</mapper>

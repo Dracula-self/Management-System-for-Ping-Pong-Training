@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50" style="padding: 16px;">
+    <div id="app">
+        <div id="page-management__user" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="用户名">
+                            <el-input v-model="searchParams.username" placeholder="请输入用户名" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="真实姓名">
+                            <el-input v-model="searchParams.realName" placeholder="请输入真实姓名" clearable
+                                style="width: 178px;"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户角色">
+                            <el-select v-model="searchParams.userRole" placeholder="请选择角色" clearable
+                                style="width: 178px;">
+                                <el-option label="超级管理员" :value="1"></el-option>
+                                <el-option label="校区管理员" :value="2"></el-option>
+                                <el-option label="教练" :value="3"></el-option>
+                                <el-option label="学员" :value="4"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="用户状态">
+                            <el-select v-model="searchParams.userStatus" placeholder="请选择状态" clearable
+                                style="width: 178px;">
+                                <el-option label="待审核" :value="0"></el-option>
+                                <el-option label="正常" :value="1"></el-option>
+                                <el-option label="禁用" :value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="所属校区">
+                            <el-select v-model="searchParams.campusId" placeholder="请选择校区" clearable
+                                style="width: 178px;">
+                                <el-option v-for="campus in campusOptions" :key="campus.id" :label="campus.name"
+                                    :value="campus.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="searchUsers">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="resetSearch">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div>
+                        <el-button type="primary" @click="showAddDialog">
+                            <iconify-icon icon="mdi:plus" width="16" height="16" class="mr-1"></iconify-icon>新增用户
+                        </el-button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 用户表格 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-medium">用户列表</h3>
+                    <el-button size="small" @click="loadUsers">
+                        <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                    </el-button>
+                </div>
+                <el-table :data="users" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无用户数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                    <el-table-column label="头像">
+                        <template #default="{ row }">
+                            <div class="flex justify-center">
+                                <div v-if="row.avatar" class="w-10 h-10 rounded-full overflow-hidden">
+                                    <img :src="row.avatar" class="w-full h-full object-cover" />
+                                </div>
+                                <div v-else
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                    <iconify-icon icon="mdi:account" width="16" height="16"></iconify-icon>
+                                </div>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="username" label="用户名"></el-table-column>
+                    <el-table-column prop="realName" label="真实姓名"></el-table-column>
+                    <el-table-column prop="gender" label="性别">
+                        <template #default="{ row }">
+                            <span v-if="row.gender === 1">男</span>
+                            <span v-else-if="row.gender === 2">女</span>
+                            <span v-else>-</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="age" label="年龄">
+                        <template #default="{ row }">
+                            <span>{{ row.age || '-' }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="phone" label="手机号"></el-table-column>
+                    <el-table-column prop="email" label="邮箱">
+                        <template #default="{ row }">
+                            <span>{{ row.email || '-' }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="campusName" label="所属校区" v-if="showCampusColumn">
+                        <template #default="{ row }">
+                            <span>{{ getCampusName(row.campusId) || '-' }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="userRole" label="角色">
+                        <template #default="{ row }">
+                            <el-tag :type="getRoleTagType(row.userRole)">
+                                {{ getRoleText(row.userRole) }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="userStatus" label="状态">
+                        <template #default="{ row }">
+                            <el-tag :type="getStatusTagType(row.userStatus)">
+                                {{ getStatusText(row.userStatus) }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="balance" label="账户余额" v-if="showBalanceColumn">
+                        <template #default="{ row }">
+                            <span v-if="row.userRole === 4">￥{{ (row.balance || 0).toFixed(2) }}</span>
+                            <span v-else>-</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="createTime" label="创建时间"></el-table-column>
+                    <el-table-column label="操作" width="200" fixed="right">
+                        <template #default="{ row }">
+                            <div class="flex gap-2">
+                                <el-button size="small" @click="showEditDialog(row)">
+                                    <iconify-icon icon="mdi:pencil" width="16" height="16"
+                                        class="mr-1"></iconify-icon>编辑
+                                </el-button>
+                                <el-button size="small" type="danger" @click="deleteUser(row)">
+                                    <iconify-icon icon="mdi:delete" width="16" height="16"
+                                        class="mr-1"></iconify-icon>删除
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 新增/编辑用户对话框 -->
+            <el-dialog :title="dialogTitle" v-model="dialogVisible" width="600px" @close="resetForm">
+                <el-form :model="userForm" :rules="formRules" ref="userFormRef" label-width="100px">
+                    <el-form-item label="头像" prop="avatar">
+                        <div class="flex items-center">
+                            <div v-if="userForm.avatar" class="mr-4">
+                                <img :src="userForm.avatar"
+                                    class="w-16 h-16 rounded-full object-cover border border-gray-200" />
+                            </div>
+                            <div v-else class="mr-4">
+                                <div
+                                    class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                    <iconify-icon icon="mdi:account" width="16" height="16"></iconify-icon>
+                                </div>
+                            </div>
+                            <el-upload class="avatar-uploader" action="/api/file/upload" :show-file-list="false"
+                                :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                                <el-button type="primary">选择头像</el-button>
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <el-form-item label="用户名" prop="username">
+                            <el-input v-model="userForm.username" :disabled="isEdit"></el-input>
+                        </el-form-item>
+                        <el-form-item label="真实姓名" prop="realName">
+                            <el-input v-model="userForm.realName"></el-input>
+                        </el-form-item>
+                    </div>
+
+                    <el-form-item label="密码" prop="password" v-if="!isEdit">
+                        <el-input v-model="userForm.password" type="password" show-password></el-input>
+                    </el-form-item>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <el-form-item label="性别" prop="gender">
+                            <el-select v-model="userForm.gender" placeholder="请选择性别" style="width: 100%">
+                                <el-option label="男" :value="1"></el-option>
+                                <el-option label="女" :value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="年龄" prop="age">
+                            <el-input v-model.number="userForm.age" type="number" placeholder="请输入年龄"></el-input>
+                        </el-form-item>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <el-form-item label="手机号" prop="phone">
+                            <el-input v-model="userForm.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="邮箱" prop="email">
+                            <el-input v-model="userForm.email"></el-input>
+                        </el-form-item>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <el-form-item label="角色" prop="userRole">
+                            <el-select v-model="userForm.userRole" style="width: 100%" @change="handleRoleChange">
+                                <el-option label="超级管理员" :value="1"></el-option>
+                                <el-option label="校区管理员" :value="2"></el-option>
+                                <el-option label="教练" :value="3"></el-option>
+                                <el-option label="学员" :value="4"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="状态" prop="userStatus">
+                            <el-select v-model="userForm.userStatus" style="width: 100%">
+                                <el-option label="待审核" :value="0"></el-option>
+                                <el-option label="正常" :value="1"></el-option>
+                                <el-option label="禁用" :value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </div>
+
+                    <!-- 校区选择 (超级管理员除外都需要关联校区) -->
+                    <el-form-item label="所属校区" prop="campusId" v-if="userForm.userRole >= 2">
+                        <el-select v-model="userForm.campusId" placeholder="请选择所属校区" style="width: 100%">
+                            <el-option v-for="campus in campusOptions" :key="campus.id" :label="campus.name"
+                                :value="campus.id" :disabled="isCampusDisabled(campus.id)"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <!-- 教练专用字段 -->
+                    <div v-if="userForm.userRole === 3">
+                        <el-form-item label="教练级别" prop="coachLevel">
+                            <el-select v-model="userForm.coachLevel" placeholder="请选择教练级别" style="width: 100%">
+                                <el-option label="高级教练" :value="1"></el-option>
+                                <el-option label="中级教练" :value="2"></el-option>
+                                <el-option label="初级教练" :value="3"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="过往成绩" prop="achievements">
+                            <el-input v-model="userForm.achievements" type="textarea" :rows="3"
+                                placeholder="请输入教练的过往比赛成绩"></el-input>
+                        </el-form-item>
+                    </div>
+
+                    <!-- 学员专用字段 -->
+                    <div v-if="userForm.userRole === 4">
+                        <el-form-item label="账户余额" prop="balance">
+                            <el-input v-model.number="userForm.balance" type="number" step="0.01" placeholder="请输入余额">
+                                <template #prepend>￥</template>
+                            </el-input>
+                        </el-form-item>
+                    </div>
+                </el-form>
+
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <el-button @click="dialogVisible = false">
+                            <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>取消
+                        </el-button>
+                        <el-button type="primary" @click="saveUser" :loading="saving">
+                            <iconify-icon icon="mdi:content-save" width="16" height="16" class="mr-1"></iconify-icon>{{
+                            isEdit ? '更新' : '创建' }}
+                        </el-button>
+                    </div>
+                </template>
+            </el-dialog>
+        </div>
+    </div>
+    <script>
+        const { ElMessage, ElMessageBox } = ElementPlus
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    users: [],
+                    loading: false,
+                    saving: false,
+                    searchParams: {
+                        username: '',
+                        realName: '',
+                        userRole: undefined,
+                        userStatus: undefined,
+                        campusId: undefined
+                    },
+                    dialogVisible: false,
+                    isEdit: false,
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    userForm: {
+                        id: null,
+                        username: '',
+                        password: '',
+                        realName: '',
+                        gender: undefined,
+                        age: undefined,
+                        email: '',
+                        phone: '',
+                        userRole: 4,
+                        userStatus: 1,
+                        avatar: '',
+                        achievements: '',
+                        coachLevel: undefined,
+                        balance: 0,
+                        campusId: undefined
+                    },
+                    // 校区选项
+                    campusOptions: [],
+                    formRules: {
+                        username: [
+                            { required: true, message: '请输入用户名', trigger: 'blur' },
+                            { min: 3, max: 50, message: '用户名长度在3到50个字符', trigger: 'blur' }
+                        ],
+                        realName: [
+                            { required: true, message: '请输入真实姓名', trigger: 'blur' },
+                            { max: 50, message: '真实姓名不能超过50个字符', trigger: 'blur' }
+                        ],
+                        password: [
+                            { required: true, message: '请输入密码', trigger: 'blur' },
+                            { min: 6, max: 20, message: '密码长度在6到20个字符', trigger: 'blur' }
+                        ],
+                        email: [
+                            { required: false, message: '请输入邮箱', trigger: 'blur' },
+                            { type: 'email', message: '请输入有效的邮箱地址', trigger: 'blur' }
+                        ],
+                        phone: [
+                            { required: true, message: '请输入手机号', trigger: 'blur' },
+                            { pattern: /^1[3-9]\d{9}$/, message: '请输入有效的手机号', trigger: 'blur' }
+                        ],
+                        age: [
+                            {
+                                validator: (rule, value, callback) => {
+                                    if (value === '' || value === null || value === undefined) {
+                                        callback(); // 年龄非必填，允许为空
+                                        return;
+                                    }
+                                    const age = Number(value);
+                                    if (isNaN(age) || age < 1 || age > 120) {
+                                        callback(new Error('年龄必须在1-120之间'));
+                                    } else {
+                                        callback();
+                                    }
+                                },
+                                trigger: 'blur'
+                            }
+                        ],
+                        userRole: [
+                            { required: true, message: '请选择用户角色', trigger: 'change' }
+                        ],
+                        userStatus: [
+                            { required: true, message: '请选择用户状态', trigger: 'change' }
+                        ],
+                        coachLevel: [
+                            { required: true, message: '请选择教练级别', trigger: 'change' }
+                        ],
+                        balance: [
+                            {
+                                validator: (rule, value, callback) => {
+                                    if (value === '' || value === null || value === undefined) {
+                                        callback(); // 余额可以为空，默认为0
+                                        return;
+                                    }
+                                    const balance = Number(value);
+                                    if (isNaN(balance) || balance < 0) {
+                                        callback(new Error('余额不能为负数'));
+                                    } else {
+                                        callback();
+                                    }
+                                },
+                                trigger: 'blur'
+                            }
+                        ],
+                        campusId: [
+                            {
+                                validator: (rule, value, callback) => {
+                                    // 获取当前表单的角色
+                                    const currentRole = this.userForm ? this.userForm.userRole : null;
+                                    // 校区管理员、教练、学员都需要关联校区
+                                    if (currentRole >= 2 && (value === null || value === undefined)) {
+                                        callback(new Error('请选择所属校区'));
+                                    } else {
+                                        callback();
+                                    }
+                                },
+                                trigger: 'change'
+                            }
+                        ]
+                    },
+                    originalUserRole: '', // 用于保存原始角色
+                    originalUserStatus: '' // 用于保存原始状态
+                }
+            },
+            computed: {
+                dialogTitle() {
+                    return this.isEdit ? '编辑用户' : '新增用户';
+                },
+                showBalanceColumn() {
+                    // 检查是否有学员角色的用户，如果有则显示余额列
+                    return this.users.some(user => user.userRole === 4);
+                },
+                showCampusColumn() {
+                    // 检查是否有需要显示校区的用户（校区管理员、教练、学员）
+                    return this.users.some(user => user.userRole >= 2);
+                }
+            },
+            methods: {
+                // 加载用户列表
+                async loadUsers() {
+                    this.loading = true;
+                    try {
+                        // 检查分页API是否可用
+                        const response = await apiClient.post('/users/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.getSearchParams()
+                        });
+
+                        if (response.code === 200) {
+                            const pageResult = response.data;
+                            this.users = pageResult.list || [];
+                            this.pagination.total = pageResult.total;
+                            console.log('✅ 分页用户列表加载成功，共', this.users.length, '条记录，总计', pageResult.total, '条');
+                        } else {
+                            ElMessage.error(response.message || '加载用户列表失败');
+                        }
+                    } catch (error) {
+                        console.error('加载用户列表失败:', error);
+                        ElMessage.error('加载用户列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 加载校区选项
+                async loadCampusOptions() {
+                    try {
+                        const response = await apiClient.get('/campus/all');
+                        if (response.code === 200) {
+                            this.campusOptions = response.data || [];
+                        }
+                    } catch (error) {
+                        console.error('获取校区列表失败:', error);
+                    }
+                },
+
+                // 根据校区ID获取校区名称
+                getCampusName(campusId) {
+                    if (!campusId) return '-';
+                    const campus = this.campusOptions.find(c => c.id === campusId);
+                    return campus ? campus.name : '-';
+                },
+
+                // 搜索用户
+                async searchUsers() {
+                    // 重置到第一页
+                    this.pagination.pageNum = 1;
+                    this.loadUsers();
+                },
+
+                // 获取搜索参数
+                getSearchParams() {
+                    const params = {};
+                    if (this.searchParams.username && this.searchParams.username.trim()) {
+                        params.username = this.searchParams.username.trim();
+                    }
+                    if (this.searchParams.realName && this.searchParams.realName.trim()) {
+                        params.realName = this.searchParams.realName.trim();
+                    }
+                    if (this.searchParams.userRole !== undefined) {
+                        params.userRole = this.searchParams.userRole;
+                    }
+                    if (this.searchParams.userStatus !== undefined) {
+                        params.userStatus = this.searchParams.userStatus;
+                    }
+                    if (this.searchParams.campusId !== undefined) {
+                        params.campusId = this.searchParams.campusId;
+                    }
+                    return params;
+                },
+
+                // 显示新增对话框
+                showAddDialog() {
+                    this.isEdit = false;
+                    this.dialogVisible = true;
+                    this.resetForm();
+                },
+
+                // 显示编辑对话框
+                showEditDialog(user) {
+                    this.isEdit = true;
+                    this.dialogVisible = true;
+                    this.userForm = {
+                        id: user.id,
+                        username: user.username,
+                        password: '',
+                        realName: user.realName || '',
+                        gender: user.gender,
+                        age: user.age,
+                        email: user.email || '',
+                        phone: user.phone || '',
+                        userRole: user.userRole,
+                        userStatus: user.userStatus,
+                        avatar: user.avatar || '',
+                        achievements: user.achievements || '',
+                        coachLevel: user.coachLevel,
+                        balance: user.balance || 0,
+                        campusId: user.campusId
+                    };
+                    // 保存原始值用于比较
+                    this.originalUserRole = user.userRole;
+                    this.originalUserStatus = user.userStatus;
+                },
+
+                // 保存用户
+                async saveUser() {
+                    try {
+                        await this.$refs.userFormRef.validate();
+                    } catch (error) {
+                        return;
+                    }
+
+                    this.saving = true;
+                    try {
+                        let response;
+                        if (this.isEdit) {
+                            // 更新用户
+                            const updateData = { ...this.userForm };
+                            delete updateData.password; // 编辑时不传密码
+
+                            // 检查是否需要更新角色或状态
+                            if (updateData.userRole !== this.originalUserRole) {
+                                await apiClient.put(`/users/${updateData.id}/role?userRole=${updateData.userRole}`);
+                            }
+
+                            if (updateData.userStatus !== this.originalUserStatus) {
+                                await apiClient.put(`/users/${updateData.id}/status?userStatus=${updateData.userStatus}`);
+                            }
+
+                            // 更新其他信息
+                            response = await apiClient.put(`/users/${this.userForm.id}`, updateData);
+                        } else {
+                            // 新增用户
+                            response = await apiClient.post('/users', this.userForm);
+                        }
+
+                        if (response.code === 200) {
+                            ElMessage.success(this.isEdit ? '用户更新成功' : '用户创建成功');
+                            this.dialogVisible = false;
+                            this.loadUsers();
+                        } else {
+                            ElMessage.error(response.message || '操作失败');
+                        }
+                    } catch (error) {
+                        console.error('保存用户失败:', error);
+                        ElMessage.error('保存用户失败');
+                    } finally {
+                        this.saving = false;
+                    }
+                },
+
+                // 删除用户
+                async deleteUser(user) {
+                    try {
+                        await ElMessageBox.confirm(`确定要删除用户 "${user.username}" 吗？`, '确认删除', {
+                            type: 'warning'
+                        });
+
+                        const response = await apiClient.delete(`/users/${user.id}`);
+                        if (response.code === 200) {
+                            ElMessage.success('用户删除成功');
+                            this.loadUsers();
+                        } else {
+                            ElMessage.error(response.message || '删除失败');
+                        }
+                    } catch (error) {
+                        if (error !== 'cancel') {
+                            console.error('删除用户失败:', error);
+                            ElMessage.error('删除用户失败');
+                        }
+                    }
+                },
+
+                // 重置表单
+                resetForm() {
+                    this.userForm = {
+                        id: null,
+                        username: '',
+                        password: '',
+                        realName: '',
+                        gender: undefined,
+                        age: undefined,
+                        email: '',
+                        phone: '',
+                        userRole: 4,
+                        userStatus: 1,
+                        avatar: '',
+                        achievements: '',
+                        coachLevel: undefined,
+                        balance: 0,
+                        campusId: undefined
+                    };
+                    this.originalUserRole = '';
+                    this.originalUserStatus = '';
+                    if (this.$refs.userFormRef) {
+                        this.$refs.userFormRef.resetFields();
+                    }
+                },
+
+                // 头像上传前的验证
+                beforeAvatarUpload(file) {
+                    const isImage = file.type.startsWith('image/');
+                    const isLt2M = file.size / 1024 / 1024 < 2;
+
+                    if (!isImage) {
+                        ElMessage.error('头像必须是图片格式!');
+                        return false;
+                    }
+                    if (!isLt2M) {
+                        ElMessage.error('头像大小不能超过 2MB!');
+                        return false;
+                    }
+                    return true;
+                },
+
+                // 头像上传成功的处理
+                handleAvatarSuccess(response) {
+                    if (response.code === 200) {
+                        this.userForm.avatar = response.data.fileUrl;
+                        ElMessage.success('头像上传成功');
+                    } else {
+                        ElMessage.error(response.message || '头像上传失败');
+                    }
+                },
+
+                // 处理每页显示条数变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1; // 重置到第一页
+                    this.loadUsersWithSearch();
+                },
+
+                // 处理页码变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadUsersWithSearch();
+                },
+
+                // 根据是否有搜索条件来决定加载方式
+                loadUsersWithSearch() {
+                    this.loadUsers();
+                },
+
+                // 重置搜索条件
+                resetSearch() {
+                    this.searchParams = {
+                        username: '',
+                        realName: '',
+                        userRole: undefined,
+                        userStatus: undefined,
+                        campusId: undefined
+                    };
+                    this.loadUsers();
+                },
+
+                // 获取角色文本
+                getRoleText(role) {
+                    const roleMap = {
+                        1: '超级管理员',
+                        2: '校区管理员',
+                        3: '教练',
+                        4: '学员'
+                    };
+                    return roleMap[role] || '未知';
+                },
+
+                // 获取角色标签类型
+                getRoleTagType(role) {
+                    const typeMap = {
+                        1: 'danger',    // 超级管理员 - 红色
+                        2: 'warning',   // 校区管理员 - 橙色
+                        3: 'primary',   // 教练 - 蓝色
+                        4: 'success'    // 学员 - 绿色
+                    };
+                    return typeMap[role] || '';
+                },
+
+                // 获取状态文本
+                getStatusText(status) {
+                    const statusMap = {
+                        0: '待审核',
+                        1: '正常',
+                        2: '禁用'
+                    };
+                    return statusMap[status] || '未知';
+                },
+
+                // 获取状态标签类型
+                getStatusTagType(status) {
+                    const typeMap = {
+                        0: 'warning',   // 待审核 - 橙色
+                        1: 'success',   // 正常 - 绿色
+                        2: 'danger'     // 禁用 - 红色
+                    };
+                    return typeMap[status] || '';
+                },
+
+                // 校区禁用逻辑（仅对校区管理员角色生效）
+                isCampusDisabled(campusId) {
+                    // 只有校区管理员角色才需要校区唯一性限制
+                    if (this.userForm.userRole !== 2) {
+                        return false; // 教练和学员不限制
+                    }
+
+                    // 如果是编辑状态且当前用户已绑定此校区，则不禁用
+                    if (this.isEdit && this.userForm.campusId === campusId) {
+                        return false;
+                    }
+
+                    // 检查是否有其他校区管理员已绑定此校区
+                    return this.users.some(user =>
+                        user.userRole === 2 && // 校区管理员
+                        user.campusId === campusId &&
+                        user.id !== this.userForm.id // 排除当前编辑的用户
+                    );
+                },
+
+                // 处理角色变化
+                handleRoleChange(role) {
+                    // 根据角色设置默认值
+                    if (role === 4) { // 学员
+                        if (this.userForm.balance === undefined || this.userForm.balance === null) {
+                            this.userForm.balance = 0;
+                        }
+                    } else {
+                        this.userForm.balance = 0;
+                        this.userForm.coachLevel = undefined;
+                        this.userForm.achievements = '';
+                    }
+
+                    if (role === 3) { // 教练
+                        if (!this.userForm.coachLevel) {
+                            this.userForm.coachLevel = 3; // 默认初级教练
+                        }
+                    }
+
+                    // 超级管理员不需要关联校区
+                    if (role === 1) {
+                        this.userForm.campusId = undefined;
+                    }
+
+                    // 如果切换为校区管理员，检查当前选择的校区是否已被其他管理员占用
+                    if (role === 2 && this.userForm.campusId && this.isCampusDisabled(this.userForm.campusId)) {
+                        this.userForm.campusId = undefined;
+                        ElMessage.warning('所选校区已有管理员，请选择其他校区');
+                    }
+                }
+            },
+            async mounted() {
+                await this.loadCampusOptions();
+                this.loadUsers();
+            }
+        })
+
+        app.use(ElementPlus)
+        app.mount('#page-management__user')
+    </script>
+</body>
+
+</html>

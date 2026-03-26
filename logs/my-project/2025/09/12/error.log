@@ -1,0 +1,2 @@
+2025-09-12 17:03:36.681 [http-nio-8080-exec-4] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 用户名已存在，不能重复添加, 请求路径: /api/users
+2025-09-12 17:03:41.747 [http-nio-8080-exec-2] ERROR c.q.p.e.GlobalExceptionHandler - 业务异常: 用户名已存在，不能重复添加, 请求路径: /api/users

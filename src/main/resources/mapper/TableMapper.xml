@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quan.project.mapper.TableMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="TableResultMap" type="com.quan.project.entity.Table">
+        <id property="id" column="id"/>
+        <result property="campusId" column="campus_id"/>
+        <result property="tableNumber" column="table_number"/>
+    </resultMap>
+
+    <!-- 球台VO结果映射（包含校区名称、状态、当前预约信息） -->
+    <resultMap id="TableVOResultMap" type="com.quan.project.vo.TableVO">
+        <id property="id" column="id"/>
+        <result property="campusId" column="campus_id"/>
+        <result property="tableNumber" column="table_number"/>
+        <result property="campusName" column="campus_name"/>
+        <result property="status" column="status"/>
+        <!-- 当前预约信息 -->
+        <association property="currentAppointment" javaType="com.quan.project.vo.TableVO$CurrentAppointmentInfo">
+            <result property="appointmentId" column="appointment_id"/>
+            <result property="studentName" column="student_name"/>
+            <result property="coachName" column="coach_name"/>
+            <result property="startTime" column="start_time"/>
+            <result property="endTime" column="end_time"/>
+            <result property="cost" column="cost"/>
+        </association>
+    </resultMap>
+
+    <!-- 插入球台 -->
+    <insert id="insert" parameterType="com.quan.project.entity.Table" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tables (campus_id, table_number)
+        VALUES (#{campusId}, #{tableNumber})
+    </insert>
+
+    <!-- 根据ID删除球台 -->
+    <delete id="deleteById">
+        DELETE FROM tables WHERE id = #{id}
+    </delete>
+
+    <!-- 更新球台信息 -->
+    <update id="update" parameterType="com.quan.project.entity.Table">
+        UPDATE tables SET
+        <if test="campusId != null">
+            campus_id = #{campusId},
+        </if>
+        <if test="tableNumber != null and tableNumber != ''">
+            table_number = #{tableNumber},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID查询球台 -->
+    <select id="selectById" resultMap="TableResultMap">
+        SELECT * FROM tables WHERE id = #{id}
+    </select>
+
+    <!-- 查询所有球台 -->
+    <select id="selectAll" resultMap="TableResultMap">
+        SELECT * FROM tables ORDER BY campus_id, table_number
+    </select>
+
+    <!-- 分页查询球台（支持动态条件） -->
+    <select id="selectPageByConditions" resultMap="TableResultMap">
+        SELECT * FROM tables
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.campusId != null">
+                    AND campus_id = #{request.params.campusId}
+                </if>
+                <if test="request.params.tableNumber != null and request.params.tableNumber != '' and request.params.tableNumber.trim() != ''">
+                    AND table_number LIKE CONCAT('%', #{request.params.tableNumber}, '%')
+                </if>
+            </if>
+        </where>
+        ORDER BY campus_id, table_number
+    </select>
+
+    <!-- 根据校区ID查询球台 -->
+    <select id="selectByCampusId" resultMap="TableResultMap">
+        SELECT * FROM tables WHERE campus_id = #{campusId} ORDER BY table_number
+    </select>
+
+    <!-- 根据校区ID和球台编号查询球台 -->
+    <select id="selectByCampusIdAndTableNumber" resultMap="TableResultMap">
+        SELECT * FROM tables WHERE campus_id = #{campusId} AND table_number = #{tableNumber}
+    </select>
+
+    <!-- 查询指定校区在指定时间段可用的球台 -->
+    <select id="selectAvailableTablesByCampusAndTime" resultMap="TableResultMap">
+        SELECT t.* FROM tables t
+        WHERE t.campus_id = #{campusId}
+        AND t.id NOT IN (
+            SELECT DISTINCT a.table_id FROM appointments a
+            WHERE a.table_id IS NOT NULL
+            AND a.status IN (0, 1)  -- 待确认或已预约
+            AND ((a.start_time >= #{startTime} AND a.start_time &lt; #{endTime})
+            OR (a.end_time > #{startTime} AND a.end_time &lt;= #{endTime})
+            OR (a.start_time &lt; #{startTime} AND a.end_time > #{endTime}))
+        )
+        ORDER BY t.table_number
+    </select>
+
+    <!-- 统计校区球台数量 -->
+    <select id="countByCampusId" resultType="int">
+        SELECT COUNT(*) FROM tables WHERE campus_id = #{campusId}
+    </select>
+
+    <!-- 分页查询球台（包含校区名称、状态、当前预约信息） -->
+    <select id="selectPageWithInfo" resultMap="TableVOResultMap">
+        SELECT 
+            t.id,
+            t.campus_id,
+            t.table_number,
+            c.name AS campus_name,
+            CASE 
+                WHEN ca.id IS NOT NULL AND ca.status IN (0, 1) AND NOW() BETWEEN ca.start_time AND ca.end_time THEN 'busy'
+                ELSE 'available'
+            END AS status,
+            ca.id AS appointment_id,
+            COALESCE(student.real_name, student.username) AS student_name,
+            COALESCE(coach.real_name, coach.username) AS coach_name,
+            DATE_FORMAT(ca.start_time, '%Y-%m-%d %H:%i:%s') AS start_time,
+            DATE_FORMAT(ca.end_time, '%Y-%m-%d %H:%i:%s') AS end_time,
+            CONCAT('¥', ca.cost) AS cost
+        FROM tables t
+        LEFT JOIN campus c ON t.campus_id = c.id
+        LEFT JOIN appointments ca ON t.id = ca.table_id 
+            AND ca.status IN (0, 1) 
+            AND NOW() BETWEEN ca.start_time AND ca.end_time
+        LEFT JOIN users student ON ca.student_id = student.id
+        LEFT JOIN users coach ON ca.coach_id = coach.id
+        <where>
+            <if test="request != null and request.params != null">
+                <if test="request.params.campusId != null">
+                    AND t.campus_id = #{request.params.campusId}
+                </if>
+                <if test="request.params.tableNumber != null and request.params.tableNumber != '' and request.params.tableNumber.trim() != ''">
+                    AND t.table_number LIKE CONCAT('%', #{request.params.tableNumber}, '%')
+                </if>
+            </if>
+        </where>
+        ORDER BY t.campus_id, t.table_number
+    </select>
+
+</mapper>

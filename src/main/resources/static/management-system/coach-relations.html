@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>师生关系管理</title>
+    <!-- Element Plus CSS -->
+    <link rel="stylesheet" href="/common/plugins/element-plus/index.css" />
+    <!-- Iconify 图标 -->
+    <script src="/common/plugins/iconify/iconify-icon.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="/common/plugins/tailwindcss/tailwind.min.js"></script>
+    <script src="/common/plugins/vue/vue.global.js"></script>
+    <script src="/common/plugins/element-plus/index.full.js"></script>
+    <script src="/common/plugins/axios/axios.min.js"></script>
+    <script src="/common/js/axios-config.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div id="app">
+        <div id="page-management__coach-relations" v-cloak>
+            <!-- 工具栏：分为查询区和操作区 -->
+            <div class="mb-5">
+                <!-- 查询表单区 -->
+                <div class="p-4 bg-white rounded-lg shadow mb-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-medium">查询条件</h3>
+                    </div>
+                    <el-form :inline="true">
+                        <el-form-item label="教练" v-if="!isCoach">
+                            <el-select v-model="searchParams.coachId" placeholder="请选择教练" clearable filterable
+                                style="width: 178px;">
+                                <el-option v-for="coach in coachOptions" :key="coach.id"
+                                    :label="coach.realName || coach.username" :value="coach.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="学员" v-if="!isStudent">
+                            <el-select v-model="searchParams.studentId" placeholder="请选择学员" clearable filterable
+                                style="width: 178px;">
+                                <el-option v-for="student in studentOptions" :key="student.id"
+                                    :label="student.realName || student.username" :value="student.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="状态">
+                            <el-select v-model="searchParams.status" placeholder="请选择状态" clearable
+                                style="width: 178px;">
+                                <el-option label="待教练确认" :value="0"></el-option>
+                                <el-option label="已确认" :value="1"></el-option>
+                                <el-option label="已解约" :value="2"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSearch">
+                                <iconify-icon icon="mdi:magnify" width="16" height="16" class="mr-1"></iconify-icon>搜索
+                            </el-button>
+                            <el-button @click="handleReset">
+                                <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>重置
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+                <!-- 操作区 -->
+                <div class="p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                    <h3 class="text-lg font-medium">数据操作</h3>
+                    <div v-if="isStudent">
+                        <el-button type="primary" @click="showApplyDialog">
+                            <iconify-icon icon="mdi:account-plus" width="16" height="16"
+                                class="mr-1"></iconify-icon>申请教练
+                        </el-button>
+                    </div>
+                    <div v-else class="text-gray-500 text-sm">
+                        {{ isCoach ? '教练确认模式' : '查看模式' }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 师生关系表格 -->
+            <div class="bg-white rounded-lg shadow p-4 mb-5">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-medium">师生关系列表</h3>
+                    <el-button size="small" @click="loadRelationsList">
+                        <iconify-icon icon="mdi:refresh" width="16" height="16" class="mr-1"></iconify-icon>刷新
+                    </el-button>
+                </div>
+                <el-table :data="tableData" :border="true" v-loading="loading" style="width: 100%" empty-text="暂无师生关系数据"
+                    class="w-full">
+                    <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                    <el-table-column prop="coachName" label="教练"></el-table-column>
+                    <el-table-column prop="studentName" label="学员"></el-table-column>
+                    <el-table-column prop="status" label="状态">
+                        <template #default="scope">
+                            <el-tag v-if="scope.row.status === 0" type="warning" size="small">待教练确认</el-tag>
+                            <el-tag v-else-if="scope.row.status === 1" type="success" size="small">已确认</el-tag>
+                            <el-tag v-else-if="scope.row.status === 2" type="danger" size="small">已解约</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="createTime" label="申请时间"></el-table-column>
+                    <el-table-column label="操作" width="240" fixed="right">
+                        <template #default="scope">
+                            <div class="flex gap-2">
+                                <!-- 教练确认申请按钮 -->
+                                <el-button v-if="scope.row.status === 0 && isCoach && scope.row.coachId === userInfo.id"
+                                    size="small" type="success" @click="handleConfirm(scope.row)">
+                                    <iconify-icon icon="mdi:check" width="16" height="16" class="mr-1"></iconify-icon>确认
+                                </el-button>
+                                <!-- 教练拒绝申请按钮 -->
+                                <el-button v-if="scope.row.status === 0 && isCoach && scope.row.coachId === userInfo.id"
+                                    size="small" type="danger" @click="handleReject(scope.row)">
+                                    <iconify-icon icon="mdi:close" width="16" height="16" class="mr-1"></iconify-icon>拒绝
+                                </el-button>
+                                <!-- 解约按钮 (已确认的关系才能解约) -->
+                                <el-button
+                                    v-if="scope.row.status === 1 && ((isStudent && scope.row.studentId === userInfo.id) || (isCoach && scope.row.coachId === userInfo.id))"
+                                    size="small" type="warning" @click="handleTerminate(scope.row)">
+                                    <iconify-icon icon="mdi:account-remove" width="16" height="16"
+                                        class="mr-1"></iconify-icon>解约
+                                </el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页组件 -->
+                <div class="mt-5 flex justify-end">
+                    <el-pagination v-model:current-page="pagination.pageNum" v-model:page-size="pagination.pageSize"
+                        :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
+                        layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"></el-pagination>
+                </div>
+            </div>
+
+            <!-- 申请教练对话框 -->
+            <el-dialog title="申请教练" v-model="applyDialogVisible" width="600px" :before-close="handleApplyDialogClose">
+                <div class="mb-4">
+                    <h4 class="text-lg font-medium mb-2">可选择的教练列表</h4>
+                    <p class="text-gray-500 text-sm mb-4">您最多可以选择2位教练，请选择您希望的教练：</p>
+                </div>
+                <el-table :data="availableCoaches" :border="true" style="width: 100%" empty-text="暂无可选择的教练">
+                    <el-table-column label="头像" width="80">
+                        <template #default="{ row }">
+                            <div class="flex justify-center">
+                                <div v-if="row.avatar" class="w-10 h-10 rounded-full overflow-hidden">
+                                    <img :src="row.avatar" class="w-full h-full object-cover" />
+                                </div>
+                                <div v-else
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                    <iconify-icon icon="mdi:account" width="16" height="16"></iconify-icon>
+                                </div>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="realName" label="姓名"></el-table-column>
+                    <el-table-column prop="coachLevel" label="级别">
+                        <template #default="{ row }">
+                            <el-tag :type="getCoachLevelTagType(row.coachLevel)">
+                                {{ getCoachLevelText(row.coachLevel) }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="achievements" label="成绩" show-overflow-tooltip></el-table-column>
+                    <el-table-column label="操作" width="100">
+                        <template #default="{ row }">
+                            <el-button size="small" type="primary" @click="applyToCoach(row)">
+                                <iconify-icon icon="mdi:account-plus" width="16" height="16"
+                                    class="mr-1"></iconify-icon>申请
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+
+        const app = createApp({
+            data() {
+                return {
+                    // 用户信息
+                    userInfo: null,
+                    userRole: 0,
+                    // 查询参数
+                    searchParams: {
+                        coachId: undefined,
+                        studentId: undefined,
+                        status: undefined
+                    },
+                    // 表格数据
+                    tableData: [],
+                    loading: false,
+                    // 分页参数
+                    pagination: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    // 选项数据
+                    coachOptions: [],
+                    studentOptions: [],
+                    // 申请教练对话框
+                    applyDialogVisible: false,
+                    availableCoaches: []
+                };
+            },
+
+            computed: {
+                // 是否是教练角色
+                isCoach() {
+                    return this.userRole === 3;
+                },
+
+                // 是否是学员角色
+                isStudent() {
+                    return this.userRole === 4;
+                }
+            },
+
+            methods: {
+                // 加载用户信息
+                loadUserInfo() {
+                    const userInfo = getCurrentUserInfo();
+                    if (userInfo) {
+                        this.userInfo = userInfo;
+                        this.userRole = userInfo.userRole;
+                    }
+                },
+
+                // 加载师生关系列表
+                async loadRelationsList() {
+                    this.loading = true;
+                    try {
+                        // 后端已根据用户角色自动过滤数据
+                        const response = await apiClient.post('/coach-student-relations/search', {
+                            pageNum: this.pagination.pageNum,
+                            pageSize: this.pagination.pageSize,
+                            params: this.searchParams
+                        });
+
+                        if (response.code === 200) {
+                            this.tableData = response.data.list || [];
+                            this.pagination.total = response.data.total || 0;
+                        } else {
+                            this.$message.error(response.message || '获取师生关系列表失败');
+                        }
+                    } catch (error) {
+                        console.error('获取师生关系列表失败:', error);
+                        this.$message.error('获取师生关系列表失败');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // 加载教练选项
+                async loadCoachOptions() {
+                    try {
+                        const response = await apiClient.post('/users/search', {
+                            pageNum: 1,
+                            pageSize: 1000,
+                            params: {
+                                userRole: 3, // 教练
+                                userStatus: 1 // 正常状态
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.coachOptions = response.data.list || [];
+                        }
+                    } catch (error) {
+                        console.error('获取教练列表失败:', error);
+                    }
+                },
+
+                // 加载学员选项
+                async loadStudentOptions() {
+                    try {
+                        const response = await apiClient.post('/users/search', {
+                            pageNum: 1,
+                            pageSize: 1000,
+                            params: {
+                                userRole: 4, // 学员
+                                userStatus: 1 // 正常状态
+                            }
+                        });
+
+                        if (response.code === 200) {
+                            this.studentOptions = response.data.list || [];
+                        }
+                    } catch (error) {
+                        console.error('获取学员列表失败:', error);
+                    }
+                },
+
+                // 获取教练级别文本
+                getCoachLevelText(level) {
+                    const levelMap = {
+                        1: '高级教练',
+                        2: '中级教练',
+                        3: '初级教练'
+                    };
+                    return levelMap[level] || '未知级别';
+                },
+
+                // 获取教练级别标签类型
+                getCoachLevelTagType(level) {
+                    const typeMap = {
+                        1: 'danger',  // 高级 - 红色
+                        2: 'warning', // 中级 - 橙色
+                        3: 'success'  // 初级 - 绿色
+                    };
+                    return typeMap[level] || '';
+                },
+
+                // 查询
+                handleSearch() {
+                    this.pagination.pageNum = 1;
+                    this.loadRelationsList();
+                },
+
+                // 重置
+                handleReset() {
+                    this.searchParams = {
+                        coachId: undefined,
+                        studentId: undefined,
+                        status: undefined
+                    };
+                    this.pagination.pageNum = 1;
+                    this.loadRelationsList();
+                },
+
+                // 分页大小变化
+                handleSizeChange(val) {
+                    this.pagination.pageSize = val;
+                    this.pagination.pageNum = 1;
+                    this.loadRelationsList();
+                },
+
+                // 当前页变化
+                handleCurrentChange(val) {
+                    this.pagination.pageNum = val;
+                    this.loadRelationsList();
+                },
+
+                // 显示申请教练对话框
+                async showApplyDialog() {
+                    try {
+                        // 获取可申请的教练列表
+                        const response = await apiClient.get('/coach-student-relations/available-coaches');
+                        if (response.code === 200) {
+                            this.availableCoaches = response.data || [];
+                            this.applyDialogVisible = true;
+                        } else {
+                            this.$message.error(response.message || '获取可选择教练失败');
+                        }
+                    } catch (error) {
+                        console.error('获取可选择教练失败:', error);
+                        this.$message.error('获取可选择教练失败');
+                    }
+                },
+
+                // 申请教练
+                async applyToCoach(coach) {
+                    try {
+                        const response = await apiClient.post('/coach-student-relations/apply', {
+                            coachId: coach.id
+                        });
+
+                        if (response.code === 200) {
+                            this.$message.success('申请已发送，请等待教练确认');
+                            this.applyDialogVisible = false;
+                            this.loadRelationsList();
+                        } else {
+                            this.$message.error(response.message || '申请失败');
+                        }
+                    } catch (error) {
+                        console.error('申请教练失败:', error);
+                        this.$message.error('申请失败');
+                    }
+                },
+
+                // 教练确认申请
+                async handleConfirm(row) {
+                    try {
+                        const response = await apiClient.put(`/coach-student-relations/${row.id}/approve?approved=true`);
+                        if (response.code === 200) {
+                            this.$message.success('确认成功');
+                            this.loadRelationsList();
+                        } else {
+                            this.$message.error(response.message || '确认失败');
+                        }
+                    } catch (error) {
+                        console.error('确认师生关系失败:', error);
+                        this.$message.error('确认失败');
+                    }
+                },
+
+                // 教练拒绝申请
+                async handleReject(row) {
+                    this.$confirm('确定要拒绝该师生关系申请吗？', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.put(`/coach-student-relations/${row.id}/approve?approved=false`);
+                            if (response.code === 200) {
+                                this.$message.success('已拒绝申请');
+                                this.loadRelationsList();
+                            } else {
+                                this.$message.error(response.message || '操作失败');
+                            }
+                        } catch (error) {
+                            console.error('拒绝师生关系失败:', error);
+                            this.$message.error('操作失败');
+                        }
+                    });
+                },
+
+                // 解约师生关系
+                async handleTerminate(row) {
+                    this.$confirm('确定要解除该师生关系吗？解除后将无法预约该教练的课程。', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning',
+                    }).then(async () => {
+                        try {
+                            const response = await apiClient.delete(`/coach-student-relations/${row.id}`);
+                            if (response.code === 200) {
+                                this.$message.success('解约成功');
+                                this.loadRelationsList();
+                            } else {
+                                this.$message.error(response.message || '解约失败');
+                            }
+                        } catch (error) {
+                            console.error('解约师生关系失败:', error);
+                            this.$message.error('解约失败');
+                        }
+                    });
+                },
+
+                // 关闭申请对话框
+                handleApplyDialogClose() {
+                    this.applyDialogVisible = false;
+                }
+            },
+
+            async mounted() {
+                // 首先加载用户信息
+                this.loadUserInfo();
+
+                // 加载选项数据
+                if (!this.isCoach) {
+                    await this.loadCoachOptions();
+                }
+                if (!this.isStudent) {
+                    await this.loadStudentOptions();
+                }
+
+                // 加载师生关系列表
+                await this.loadRelationsList();
+            }
+        });
+
+        app.use(ElementPlus);
+        app.mount("#page-management__coach-relations");
+    </script>
+</body>
+
+</html>
